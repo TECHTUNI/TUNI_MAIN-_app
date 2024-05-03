@@ -10,8 +10,10 @@ class Product {
   final dynamic size;
   final String quantity;
   final String color;
+  // final String? type;
 
   Product(
+      // this.type,
       {required this.id,
       required this.name,
       required this.gender,
@@ -26,6 +28,7 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic> productData) {
     return Product(
+      // type:productData['type'],
       id: productData['id'],
       name: productData['name'],
       gender: productData['gender'],
@@ -39,5 +42,4 @@ class Product {
       color: productData['color'],
     );
   }
-
 }

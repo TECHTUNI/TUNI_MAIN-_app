@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:tuni/bloc/favorite_bloc/favorite_repository.dart';
+import 'package:tuni/bloc/home_bloc/home_bloc_repository.dart';
 import 'package:tuni/screens/bottom_nav/pages/Home/pages_in_home_page/category_product_list.dart';
 import 'package:tuni/screens/bottom_nav/pages/Home/pages_in_home_page/product_detail_page.dart';
 import 'package:tuni/screens/search/search_widget.dart';
@@ -21,33 +22,36 @@ class MainPageSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return SliverAppBar(
       foregroundColor: Colors.black,
       title: const Text(
         'TUNI',
         style: TextStyle(
-            letterSpacing: 8, fontSize: 30, fontWeight: FontWeight.w500),
+          letterSpacing: 8,
+          fontSize: 30,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       actions: [
         IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchScreen()));
-              // SearchBar(
-              //   controller: _searchController,
-              //   onChanged: (value) {
-              //     // Perform search operation based on the value
-              //   },
-              // );
-            },
-            icon: const Icon(
-              Icons.search,
-              size: 35,
-            ))
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SearchScreen()),
+            );
+          },
+          icon: const Icon(
+            Icons.search,
+            size: 35,
+          ),
+        )
       ],
       floating: true,
       snap: true,
-      toolbarHeight: 80,
+      toolbarHeight: screenHeight * 0.1,
     );
   }
 }
@@ -64,69 +68,85 @@ class MainPageFilterByCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-        width: screenWidth,
-        height: screenHeight * .42,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AllCategory(),
-                        ));
-                  },
-                  child: mainPageCircularAvatar(
-                      screenWidth: screenWidth, name: 'ALL'),
+      width: screenWidth,
+      height: screenHeight * .42,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AllCategory(),
+                    ),
+                  );
+                },
+                child: mainPageCircularAvatar(
+                  screenWidth: screenWidth,
+                  name: 'ALL',
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MenCategory(),
-                        ));
-                  },
-                  child: mainPageCircularAvatar(
-                      screenWidth: screenWidth, name: 'MEN'),
-                )
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => WomenCategory(),
-                        ));
-                  },
-                  child: mainPageCircularAvatar(
-                      screenWidth: screenWidth, name: 'WOMEN'),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MenCategory(),
+                    ),
+                  );
+                },
+                child: mainPageCircularAvatar(
+                  screenWidth: screenWidth,
+                  name: 'MEN',
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => KidsCategory(),
-                        ));
-                  },
-                  child: mainPageCircularAvatar(
-                      screenWidth: screenWidth, name: 'KIDS'),
-                )
-              ],
-            ),
-          ],
-        ));
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WomenCategory(),
+                    ),
+                  );
+                },
+                child: mainPageCircularAvatar(
+                  screenWidth: screenWidth,
+                  name: 'WOMEN',
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => KidsCategory(),
+                    ),
+                  );
+                },
+                child: mainPageCircularAvatar(
+                  screenWidth: screenWidth,
+                  name: 'KIDS',
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -138,14 +158,16 @@ class MainPageSeeMoreTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AllCategory(),
-              ));
-        },
-        child: const Text('view all products'));
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AllCategory(),
+          ),
+        );
+      },
+      child: const Text('view all products'),
+    );
   }
 }
 
@@ -159,6 +181,11 @@ class MainPageGridViewProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeRepository homeRepository = HomeRepository();
+    homeRepository.fetchallProducts();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: SizedBox(
@@ -177,7 +204,9 @@ class MainPageGridViewProductList extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: .75, crossAxisCount: 2),
+                childAspectRatio: .7,
+                crossAxisCount: 2,
+              ),
               itemCount: products.length < 4 ? products.length : 4,
               itemBuilder: (context, index) {
                 final productId = products[index]["id"];
@@ -192,6 +221,21 @@ class MainPageGridViewProductList extends StatelessWidget {
                 final category = products[index]["category"];
                 final time = products[index]["time"];
                 final List size = products[index]["size"];
+                // itemCount:
+                //     homeRepository.products.length < 4 ? products.length : 4,
+                // itemBuilder: (context, index) {
+                //   final productId = homeRepository.products[index].id;
+                //   final productName = homeRepository.products[index].name;
+                //   final productPrice = homeRepository.products[index].price;
+                //   final imageUrl = homeRepository.products[index].imageUrlList[0];
+                //   final imageUrlList =
+                //       homeRepository.products[index].imageUrlList;
+                //   final color = homeRepository.products[index].color;
+                //   final brand = homeRepository.products[index].brand;
+                //   final price = homeRepository.products[index].price;
+                //   final gender = homeRepository.products[index].gender;
+                //   final time = homeRepository.products[index].time;
+                //   final List size = homeRepository.products[index].size;
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -254,9 +298,10 @@ Widget mainPageCircularAvatar({
           Text(
             name,
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-                color: Colors.blueGrey.shade800),
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+              color: Colors.blueGrey.shade800,
+            ),
           ),
         ],
       ),
@@ -275,16 +320,17 @@ TextStyle customTextStyle() {
 FavoriteBloc favoriteBloc = FavoriteBloc();
 FavoriteRepository favoriteRepository = FavoriteRepository();
 
-Widget mainPageView(
-    {required String productName,
-    required String productPrice,
-    required String imageUrl,
-    required int index,
-    required String productId,
-    required String time,
-    required String gender,
-    required String category,
-    required String brand}) {
+Widget mainPageView({
+  required String productName,
+  required String productPrice,
+  required String imageUrl,
+  required int index,
+  required String productId,
+  required String time,
+  required String gender,
+  required String category,
+  required String brand,
+}) {
   return Center(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,8 +357,8 @@ Widget mainPageView(
                 ),
               ),
               decoration: BoxDecoration(
-                  // color: Colors.amber,
-                  borderRadius: BorderRadius.circular(30)),
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
           ],
         ),
@@ -320,17 +366,18 @@ Widget mainPageView(
           width: 160,
           height: 60,
           padding: const EdgeInsets.all(10),
-          // color: Colors.red,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Text(productName.toUpperCase(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: customTextStyle()),
+                child: Text(
+                  productName.toUpperCase(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: customTextStyle(),
+                ),
               ),
-              Text("₹${productPrice}/-", style: customTextStyle())
+              Text("₹$productPrice/-", style: customTextStyle())
             ],
           ),
         ),
@@ -344,6 +391,9 @@ class MainPageCarouselSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
       child: CarouselSlider(
         items: [
@@ -354,7 +404,7 @@ class MainPageCarouselSlider extends StatelessWidget {
           return Builder(
             builder: (BuildContext context) {
               return Container(
-                width: MediaQuery.of(context).size.width,
+                width: screenWidth,
                 margin: const EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade300,
@@ -375,22 +425,6 @@ class MainPageCarouselSlider extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      Positioned(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Center(
-                            child: Text(
-                              item['text']!,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 33,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 3,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -399,8 +433,8 @@ class MainPageCarouselSlider extends StatelessWidget {
           );
         }).toList(),
         options: CarouselOptions(
-          autoPlay: true, // Enable auto play
-          // Add other options here
+          autoPlay: true,
+          viewportFraction: 1,
         ),
       ),
     );

@@ -43,15 +43,14 @@ class RazorPayEvent extends CartEvent {
   final List<OrderModel> orderList;
   final Map<dynamic, dynamic> address;
 
-  RazorPayEvent({
-    required this.context,
-    required this.amount,
-    required this.orderList,
-    required this.address,
-    required this.name,
-    required this.email,
-    required this.mobile
-  });
+  RazorPayEvent(
+      {required this.context,
+      required this.amount,
+      required this.orderList,
+      required this.address,
+      required this.name,
+      required this.email,
+      required this.mobile});
 }
 
 class CancelOrderedProductEvent extends CartEvent {

@@ -16,17 +16,6 @@ class AuthRepository {
     return userCredential;
   }
 
-// original ....
-  // Future<void> signIn({required String email, required String password}) async {
-  //   try {
-  //     UserCredential userCredential = await auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     User user = userCredential.user!;
-  //   } catch (e) {
-  //     throw e.toString();
-  //   }
-  // }
-  // test..
   Future<bool> signIn({required String email, required String password}) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(

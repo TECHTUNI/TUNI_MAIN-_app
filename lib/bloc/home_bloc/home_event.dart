@@ -28,6 +28,3 @@ class OnAddedToCartButtonPressedEvent extends HomeEvent {
     required this.itemCount,
   });
 }
-
-
-

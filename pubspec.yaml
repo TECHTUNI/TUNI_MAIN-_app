@@ -37,7 +37,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   firebase_auth: ^4.19.1
-  flutter_bloc: ^8.1.5
   firebase_core: ^2.29.0
   blueprint: ^0.0.3
   another_flutter_splash_screen: ^1.2.0
@@ -58,6 +57,7 @@ dependencies:
   provider: ^6.1.2
   timeline_tile: ^2.0.0
   side_navigation: ^1.0.4
+  flutter_bloc: ^8.1.5
 
 dev_dependencies:
   flutter_test:
@@ -109,6 +109,7 @@ flutter:
     - Assets/logo/Tuni logo.svg
     - Assets/Animation - 1713270345550.json
     - Assets/Animations/Animation - 1713270854970.json
+    - Assets/home_page/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

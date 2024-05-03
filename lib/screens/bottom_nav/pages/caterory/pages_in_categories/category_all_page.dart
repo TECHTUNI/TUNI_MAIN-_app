@@ -1,92 +1,78 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tuni/screens/bottom_nav/pages/caterory/categories_refactor.dart';
+import 'package:provider/provider.dart';
+import 'package:tuni/model/new_product%20model.dart';
+import 'package:tuni/provider/product_provider.dart';
 
 import '../../Home/pages_in_home_page/product_detail_page.dart';
+import '../categories_refactor.dart';
 
-class AllCategory extends StatelessWidget {
-  AllCategory({super.key});
+class AllCategory extends StatefulWidget {
+  @override
+  _AllCategoryState createState() => _AllCategoryState();
+}
 
-  final User? user = FirebaseAuth.instance.currentUser;
+class _AllCategoryState extends State<AllCategory> {
+  @override
+  void initState() {
+    super.initState();
+    // Provider.of<ProdcuctProvider>(context, listen: false).fetchallproduct();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final firestore =
-        FirebaseFirestore.instance.collection('Clothes').snapshots();
+    final productProvider = Provider.of<ProdcuctProvider>(context);
+    final List<Productdetails> products = productProvider.Allproducts;
 
     return Scaffold(
-        appBar: AppBar(
-          foregroundColor: Colors.black,
-          title: const Text(
-            'All',
-            style: TextStyle(letterSpacing: 3, fontSize: 20),
-          ),
-          toolbarHeight: 60,
+      appBar: AppBar(
+        foregroundColor: Colors.black,
+        title: const Text(
+          'All',
+          style: TextStyle(letterSpacing: 3, fontSize: 20),
         ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: firestore,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const SizedBox(
-                height: 500,
-                child: Center(
-                  child: Text("Currently this category not available"),
-                ),
-              );
-            }
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text('Some Error Occurred'),
-              );
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return GridView.builder(
+        toolbarHeight: 60,
+      ),
+      body: products.isEmpty
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : GridView.builder(
               padding: const EdgeInsets.all(10),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, childAspectRatio: .72),
-              itemCount: snapshot.data!.docs.length,
+                crossAxisCount: 2,
+                childAspectRatio: .72,
+              ),
+              itemCount: products.length,
               itemBuilder: (context, index) {
-                final productId = snapshot.data!.docs[index]["id"];
-                final productName = snapshot.data!.docs[index]["name"];
-                final productPrice = snapshot.data!.docs[index]["price"];
-                final imageUrl = snapshot.data!.docs[index]["imageUrl"][0];
-                final imageUrlList = snapshot.data!.docs[index]["imageUrl"];
-                final color = snapshot.data!.docs[index]["color"];
-                final brand = snapshot.data!.docs[index]["brand"];
-                final price = snapshot.data!.docs[index]["price"];
-                final gender = snapshot.data!.docs[index]["gender"];
-                final category = snapshot.data!.docs[index]["category"];
-                final time = snapshot.data!.docs[index]["time"];
-                final List size = snapshot.data!.docs[index]["size"];
+                final product = products[index];
                 return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductDetailPage(
-                                productId: productId,
-                                productName: productName,
-                                imageUrl: imageUrlList,
-                                color: color,
-                                brand: brand,
-                                price: price,
-                                size: size,
-                                category: category,
-                                gender: gender,
-                                time: time),
-                          ));
-                    },
-                    child: productView(productName, productPrice, imageUrl));
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailPage(
+                          productId: product.id,
+                          productName: product.name,
+                          imageUrl: product.imageUrlList,
+                          color: product.color,
+                          brand: product.brand,
+                          price: product.price,
+                          size: product.size,
+                          category: product.name,
+                          gender: product.gender,
+                          time: product.time,
+                        ),
+                      ),
+                    );
+                  },
+                  child: productView(
+                    product.name,
+                    product.price.toString(),
+                    product.imageUrlList[0],
+                  ),
+                );
               },
-            );
-          },
-        ));
+            ),
+    );
   }
 }
-
-// Text(snapshot.data!.docs[index]['name']),

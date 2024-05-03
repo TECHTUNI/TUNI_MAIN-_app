@@ -26,9 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
           height: 500,
           width: 300,
           child:
-              Lottie.asset('Assets/Animations/Animation - 1713270854970.json')
-          //  Image.asset("Assets/LOGO.png"),
-          ),
+              Lottie.asset('Assets/Animations/Animation - 1713270854970.json')),
       nextScreen: user != null ? BottomNavBarPage() : LogInPage(),
     );
   }

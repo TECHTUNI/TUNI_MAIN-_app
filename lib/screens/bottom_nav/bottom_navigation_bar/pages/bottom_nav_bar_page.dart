@@ -23,15 +23,15 @@ class BottomNavBarPage extends StatelessWidget {
               child: bottomNavScreen.elementAt(state.tabIndex),
             ),
             bottomNavigationBar: GNav(
-              activeColor: Colors.blueGrey.shade900,
-              style: GnavStyle.google,
-              onTabChange: (index) {
-                BlocProvider.of<BottomNavBloc>(context).add(TabChangeEvent(tabIndex: index));
-              },
-              selectedIndex: state.tabIndex,
-              gap: 10,
-              tabs: bottomNavItems
-            ));
+                activeColor: Colors.blueGrey.shade900,
+                style: GnavStyle.google,
+                onTabChange: (index) {
+                  BlocProvider.of<BottomNavBloc>(context)
+                      .add(TabChangeEvent(tabIndex: index));
+                },
+                selectedIndex: state.tabIndex,
+                gap: 10,
+                tabs: bottomNavItems));
       },
     );
   }

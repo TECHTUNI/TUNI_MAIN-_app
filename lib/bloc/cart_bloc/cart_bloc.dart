@@ -8,11 +8,10 @@ import 'package:flutter/material.dart';
 // import 'package:meta/meta.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:tuni/bloc/cart_bloc/cart_repository.dart';
+import 'package:tuni/model/cart_model.dart';
+import 'package:tuni/model/product_order_model.dart';
+import 'package:tuni/screens/bottom_nav/bottom_navigation_bar/pages/bottom_nav_bar_page.dart';
 import 'package:tuni/screens/drawer/pages_in_drawer/my_orders/user_orders.dart';
-
-import '../../../../../model/cart_model.dart';
-import '../../model/product_order_model.dart';
-import '../../screens/bottom_nav/bottom_navigation_bar/pages/bottom_nav_bar_page.dart';
 
 part 'cart_event.dart';
 
@@ -31,8 +30,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<OnDeleteCartItem>(onDeleteCartItem);
     on<AddCartItemCountEvent>(addCartItemCountEvent);
     on<RemoveCartItemCountEvent>(removeCartItemCountEvent);
-    // on<GetTotalProductPrice>(getTotalProductPrice);
-    // on<RazorPayEventListenersEvent>(razorPayEventListenersEvent);
+
     on<RazorPayEvent>(razorPayEvent);
     on<CancelOrderedProductEvent>(cancelOrderedProductEvent);
   }

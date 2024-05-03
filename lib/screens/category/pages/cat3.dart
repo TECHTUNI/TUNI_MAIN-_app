@@ -11,22 +11,17 @@ class Cat3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // Provide constraints for the GridView.builder
         constraints: BoxConstraints.expand(),
         child: GridView.builder(
-          // Provide grid dimensions and spacing
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 0,
             mainAxisSpacing: 0,
-            childAspectRatio: 0.6, // Adjust this value according to your needs
+            childAspectRatio: 0.6,
           ),
           itemBuilder: (BuildContext context, int index) {
-            // Replace this with your custom item builder logic
             return Container(
-              // Provide dimensions for each grid item
-              width: MediaQuery.of(context).size.width /
-                  2, // Half of the screen width
+              width: MediaQuery.of(context).size.width / 2,
               height: 100,
               child: productView(
                 'Mens t-shirt',

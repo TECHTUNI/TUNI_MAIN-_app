@@ -18,7 +18,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   int itemCount = 1;
   bool isFavorite = false;
 
-
   HomeBloc() : super(HomeInitial()) {
     on<OnLogoutEvent>(onLogoutEvent);
     on<OnAddCartButtonPressed>(onAddCartButtonPressed);
@@ -63,24 +62,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> onAddedToCartButtonPressedEvent(
       OnAddedToCartButtonPressedEvent event, Emitter<HomeState> emit) async {
     try {
-      if(event.selectedSize.isEmpty) {
+      if (event.selectedSize.isEmpty) {
         emit(SizeNotSelectedState());
         return;
       }
       homeRepository.addProductToCart(
-        id: event.id,
-        name: event.name,
-        image: event.image,
-        price: event.price,
-        color: event.color,
-        itemCount: event.itemCount,
-        selectedSize: event.selectedSize
-      );
+          id: event.id,
+          name: event.name,
+          image: event.image,
+          price: event.price,
+          color: event.color,
+          itemCount: event.itemCount,
+          selectedSize: event.selectedSize);
       emit(AddedToCartSuccessState(size: ' ', itemCount: 1));
     } catch (e) {
       throw e.toString();
     }
   }
-
-
 }
