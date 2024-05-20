@@ -12,7 +12,12 @@
           "package_name": "com.techtuni.tuni"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "41399715162-dqbo1dt7mdkdd465a29j5imqe52e625m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDXykFq1btawxYsaP6Bp2tXXSPkEN5GDLs"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "41399715162-dqbo1dt7mdkdd465a29j5imqe52e625m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "41399715162-0m92f58r7h4244uebpqdmfrrv2b6vfes.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tuni"
+              }
+            }
+          ]
         }
       }
     }
