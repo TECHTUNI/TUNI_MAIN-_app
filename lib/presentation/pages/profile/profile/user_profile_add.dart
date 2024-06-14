@@ -69,16 +69,19 @@ class _UserProfileEditState extends State<UserProfileAdd> {
                         UserProfileTextFormField(
                           text: "First Name",
                           controller: firstNameController,
+                          keyboardType: TextInputType.text,
                         ),
                         buildSizedBox(),
                         UserProfileTextFormField(
                           text: "Last Name",
                           controller: lastNameController,
+                          keyboardType: TextInputType.text,
                         ),
                         buildSizedBox(),
                         UserProfileTextFormField(
                           text: "Mobile Number",
                           controller: mobileNumberController,
+                          keyboardType: TextInputType.phone,
                         ),
                         // buildSizedBox(),
                         // Container(
@@ -195,14 +198,11 @@ class _UserProfileEditState extends State<UserProfileAdd> {
                             },
                             child: ElevatedButton(
                               onPressed: () {
-                                if (firstNameController.text.isNotEmpty &&
-                                    mobileNumberController.text.isNotEmpty &&
-                                    lastNameController.text.isNotEmpty
-                                // &&
-                                    // gender != "select a value" &&
-                                    // dd != null &&
-                                    // mm != null &&
-                                    // yyyy != null
+                                if (validateInputsforEditprofile([
+                                  firstNameController,
+                                    mobileNumberController,
+                                    lastNameController
+                                ],context)
                                 ) {
                                   context.read<UserProfileBloc>().add(
                                       OnAddUserDetailsEvent(
@@ -503,6 +503,74 @@ class _CupertinoDropdownButtonState<T>
           ],
         ),
       ),
+    );
+  }
+}
+
+bool validateInputsforEditprofile(List<TextEditingController> controllers, [BuildContext? context]) {
+  // Regular expression for letters only
+  RegExp lettersOnly = RegExp(r'^[a-zA-Z]+$');
+
+  // Check if any field is empty
+  for (var controller in controllers) {
+    if (controller.text.isEmpty) {
+      _showErrorDialog(context, 'Please fill in all fields.');
+      return false;
+    }
+  }
+
+  // Check if first name contains only letters
+  if (!lettersOnly.hasMatch(controllers[0].text)) {
+    _showErrorDialog(context, 'First name must contain only letters.');
+    return false;
+  }
+
+  // Check if last name contains only letters
+ if (!lettersOnly.hasMatch(controllers[1].text)) {
+  _showErrorDialog(context, 'Last name must contain only letters.');
+  return false;
+}
+
+  // Check mobile number length and if it contains only digits
+  if (controllers[2].text.length != 10 || !isNumeric(controllers[2].text)) {
+    _showErrorDialog(context, 'Mobile number must be exactly 10 digits.');
+    return false;
+  }
+
+  // Check pin code length
+  // if (controllers.last.text.length != 6) {
+  //   _showErrorDialog(context, 'Pin code must be exactly 6 digits.');
+  //   return false;
+  // }
+
+  return true;
+}
+
+bool isNumeric(String? str) {
+  if (str == null) {
+    return false;
+  }
+  return double.tryParse(str) != null;
+}
+
+void _showErrorDialog(BuildContext? context, String errorMessage) {
+  if (context != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

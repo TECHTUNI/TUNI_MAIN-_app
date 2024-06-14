@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_profile_event.dart';
-
 part 'user_profile_state.dart';
 
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
@@ -21,12 +20,12 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   FutureOr<void> onAddUserDetailsEvent(
       OnAddUserDetailsEvent event, Emitter<UserProfileState> emit) async {
     try {
-      final userId = user!.uid;
+      final userId = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance
           .collection("users")
           .doc(userId)
           .collection("personal_details")
-          .doc(user!.email)
+          .doc('personal_details')
           .set({
         "first_name": event.firstName,
         "last_name": event.lastName,

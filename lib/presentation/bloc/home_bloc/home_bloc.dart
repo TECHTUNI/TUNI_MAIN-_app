@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../auth_bloc/auth_repository.dart';
 import 'home_bloc_repository.dart';
 
 part 'home_event.dart';
-
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -22,6 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<OnRemoveCartButtonPressed>(onRemoveCartButtonPressed);
     on<OnAddedToCartButtonPressedEvent>(onAddedToCartButtonPressedEvent);
     on<OnDeleteUserEvent>(onDeleteUserEvent);
+    on<IncreaseQuantityPressed>(increaseQuantityPressed);
   }
 
   FutureOr<void> onLogoutEvent(
@@ -88,6 +89,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(AddedToCartSuccessState(size: ' ', itemCount: 1));
     } catch (e) {
       throw e.toString();
+    }
+  }
+
+  FutureOr<void> increaseQuantityPressed(IncreaseQuantityPressed event, Emitter<HomeState> emit) {
+    try{
+     int newcount = event.iteamscount+1;
+     emit(ItemCountAddedState(newcount));
+    }
+    catch(e)
+    {
+
     }
   }
 }

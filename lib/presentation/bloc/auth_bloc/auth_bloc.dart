@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_repository.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -20,6 +19,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<SignUpRequestEvent>(signUpRequestEvent);
     on<SignInRequestEvent>(signInRequestEvent);
+    on<ForgotPasswordEvent>(forgotPasswordEvent);
+
+
     // on<GoogleIconClickedEvent>(googleIconClickedEvent);
   }
 
@@ -62,6 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(LoadingState());
         final result = await authRepository.signIn(
             email: event.email, password: event.password);
+           // final result1= await FirebaseAuth.instance.sendPasswordResetEmail(email: email)
         if (result == true) {
           emit(Authenticated());
         } else {
@@ -74,6 +77,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  FutureOr<void> forgotPasswordEvent(
+      ForgotPasswordEvent event, Emitter<AuthState> emit) async {
+    try {
+      if (event.email.isEmpty) {
+        emit(TextFieldsEmptyState());
+      } else {
+        emit(ForgotPasswordLoading());
+        await authRepository.sendPasswordResetEmail(email: event.email);
+        emit(ForgotPasswordSuccess());
+      }
+    } catch (e) {
+      emit(ForgotPasswordError());
+      throw e.toString();
+    }
+  }
+}
+
   // FutureOr<void> googleIconClickedEvent(
   //     GoogleIconClickedEvent event, Emitter<AuthState> emit) async {
   //   emit(LoadingState());
@@ -85,4 +105,4 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //     throw e.toString();
   //   }
   // }
-}
+

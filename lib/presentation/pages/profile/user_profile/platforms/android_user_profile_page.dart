@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuni/presentation/pages/refferal_page/reffaral.dart';
 
 import '../../../../bloc/home_bloc/home_bloc.dart';
 import '../../../auth/sign_in/login.dart';
@@ -34,76 +35,76 @@ class AndroidUserProfilePage extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           child: ListView(
             children: [
-              // StreamBuilder<DocumentSnapshot>(
-              //     stream: FirebaseFirestore.instance
-              //         .collection("users")
-              //         .doc(userId)
-              //         .collection("personal_details")
-              //         .doc(userEmail)
-              //         .snapshots(),
-              //     builder: (context, snapshot) {
-              //       if (snapshot.connectionState == ConnectionState.waiting) {
-              //         return const CircularProgressIndicator();
-              //       } else if (snapshot.hasError) {
-              //         return Text("Error: ${snapshot.error}");
-              //       }
-              //       if (!snapshot.hasData || !snapshot.data!.exists) {
-              //         return const Text(" ");
-              //       }
-              //       String name = "";
-              //       String? initials;
+              StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(userId)
+                      .collection("personal_details")
+                      .doc('personal_details')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text("Error: ${snapshot.error}");
+                    }
+                    if (!snapshot.hasData || !snapshot.data!.exists) {
+                      return const Text(" ");
+                    }
+                    String name = "";
+                    String? initials;
 
-              //       if (snapshot.hasData && snapshot.data!.exists) {
-              //         var data = snapshot.data!.data() as Map<String, dynamic>;
-              //         name =
-              //         "${data["first_name"] ?? ""} ${data["last_name"] ?? ""}";
-              //         String? firstName = data["first_name"];
-              //         String? lastName = data["last_name"];
+                    if (snapshot.hasData && snapshot.data!.exists) {
+                      var data = snapshot.data!.data() as Map<String, dynamic>;
+                      name =
+                          "${data["first_name"] ?? ""} ${data["last_name"] ?? ""}";
+                      String? firstName = data["first_name"];
+                      String? lastName = data["last_name"];
 
-              //         initials =
-              //         "${firstName?.isNotEmpty == true ? firstName![0] : ""}${lastName?.isNotEmpty == true ? lastName![0] : ""}";
-              //       }
-              // return
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.black,
-                    radius: screenWidth * .1,
-                    child: RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                            text: "",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: screenWidth * .07)),
-                        // TextSpan(text: ""),
-                      ]),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  SizedBox(
-                    height: 60,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "",
-                            style: TextStyle(
-                                fontSize: screenWidth * .05,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2),
+                      initials =
+                          "${firstName?.isNotEmpty == true ? firstName![0] : ""}${lastName?.isNotEmpty == true ? lastName![0] : ""}";
+                    }
+                    return Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: screenWidth * .1,
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: "",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth * .07)),
+                              // TextSpan(text: ""),
+                            ]),
                           ),
-                          Text(
-                            userEmail,
-                            style: TextStyle(
-                                fontSize: screenWidth * .04, letterSpacing: 1),
-                          ),
-                        ]),
-                  )
-                ],
-              ),
-              // }),
+                        ),
+                        const SizedBox(width: 20),
+                        SizedBox(
+                          height: 60,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "",
+                                  style: TextStyle(
+                                      fontSize: screenWidth * .05,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2),
+                                ),
+                                Text(
+                                  userEmail,
+                                  style: TextStyle(
+                                      fontSize: screenWidth * .04,
+                                      letterSpacing: 1),
+                                ),
+                              ]),
+                        )
+                      ],
+                    );
+                  }),
               const SizedBox(height: 20),
               ListTile(
                 onTap: () {
@@ -115,6 +116,21 @@ class AndroidUserProfilePage extends StatelessWidget {
                   size: 20,
                 ),
                 title: const Text("Profile Details"),
+                trailing: const Icon(
+                  Icons.chevron_right,
+                  size: 15,
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RefferalPage()));
+                },
+                leading: const Icon(
+                  Icons.currency_rupee,
+                  size: 22,
+                ),
+                title: const Text("Reffer and earn"),
                 trailing: const Icon(
                   Icons.chevron_right,
                   size: 15,

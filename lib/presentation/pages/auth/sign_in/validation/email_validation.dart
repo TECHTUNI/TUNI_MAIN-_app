@@ -1,9 +1,4 @@
-import 'dart:convert';
-
-import 'package:blueprint/blueprint.dart';
 import 'package:emailjs/emailjs.dart';
-import 'package:http/http.dart' as http;
-import 'package:firebase_auth/firebase_auth.dart';
 
 String? validateEmail(String? email) {
   // Regular expression for validating email
@@ -22,7 +17,7 @@ String? validateEmail(String? email) {
   return null; // Return null if email is valid
 }
 
-Future<bool> sendEmail() async {
+Future<bool> sendEmail({required String name, required String senderEmail}) async {
   try {
     dynamic tempalate = 'hiiiiiiiiiiiiii';
     await EmailJS.send(

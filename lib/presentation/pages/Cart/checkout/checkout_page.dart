@@ -338,6 +338,7 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
   final TextEditingController nameController = TextEditingController();
 
   final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
 
   final User user = FirebaseAuth.instance.currentUser!;
 
@@ -426,7 +427,7 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
                         .collection('users')
                         .doc(userId)
                         .collection('personal_details')
-                        .doc()
+                        .doc('personal_details')
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -460,6 +461,11 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
                                               const SizedBox(height: 10),
                                               personalDetailsTextFormField(
                                                   controller:
+                                                      lastnameController,
+                                                  hintText: 'lastname'),
+                                              const SizedBox(height: 10),
+                                              personalDetailsTextFormField1(
+                                                  controller:
                                                       mobileNumberController,
                                                   hintText: 'Mobile no.'),
                                             ],
@@ -478,17 +484,26 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              context
-                                                  .read<PersonalDetailBloc>()
-                                                  .add(
-                                                    OnAddPersonalDetailsEvent(
-                                                      name: nameController.text,
-                                                      phone:
-                                                          mobileNumberController
-                                                              .text,
-                                                    ),
-                                                  );
-                                              Navigator.pop(context);
+                                              if (validateInputs1([
+                                                nameController,
+                                                mobileNumberController,
+                                              ], context)) {
+                                                context
+                                                    .read<PersonalDetailBloc>()
+                                                    .add(
+                                                      OnAddPersonalDetailsEvent(
+                                                        number:
+                                                            nameController.text,
+                                                        firstName:
+                                                            nameController.text,
+                                                        lastName:
+                                                            lastnameController
+                                                                .text,
+                                                      ),
+                                                    );
+
+                                                Navigator.pop(context);
+                                              }
                                             },
                                             child: const Text('Add'),
                                           ),
@@ -503,8 +518,8 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
                           ),
                         );
                       } else {
-                        firstName = snapshot.data!.get('name');
-                        // lastName = snapshot.data!.get('last_name');
+                        firstName = snapshot.data!.get('first_name');
+                        lastName = snapshot.data!.get('last_name');
                         mobile = snapshot.data!.get('phone_number');
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -577,6 +592,48 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+bool validateInputs1(List<TextEditingController> controllers,
+    [BuildContext? context]) {
+  for (var controller in controllers) {
+    if (controller == controllers[0]) {
+      // Assuming the first controller is for name
+      if (controller.text.isEmpty) {
+        _showErrorDialog(context, 'Name field is required.');
+        return false;
+      }
+    } else if (controller == controllers[1]) {
+      // Assuming the second controller is for phone number
+      if (controller.text.isEmpty || controller.text.length < 10) {
+        _showErrorDialog(context, 'Phone number must be at least 10 digits.');
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+void _showErrorDialog(BuildContext? context, String message) {
+  if (context != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

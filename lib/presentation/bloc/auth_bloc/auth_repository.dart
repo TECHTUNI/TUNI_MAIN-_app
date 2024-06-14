@@ -32,7 +32,6 @@ class AuthRepository {
     try {
       final result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      print('hiiiiiiiikiiiiiiiiiiiiiiiiiiiiiiiiii');
       sendEmail(name: 'Sebastian', senderEmail: email);
       return true;
     } catch (e) {
@@ -48,6 +47,12 @@ class AuthRepository {
   Future<void> deleteUser() async {
     await auth.currentUser?.delete();
   }
+
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    await auth.sendPasswordResetEmail(email: email);
+  }
+
+  //sendPasswordResetEmail({required String email}) {}
 
 // Future<OAuthCredential> googleSignIn() async {
 //   try {

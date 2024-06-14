@@ -3,11 +3,12 @@ part of 'personal_detail_bloc.dart';
 abstract class PersonalDetailEvent {}
 
 class OnAddPersonalDetailsEvent extends PersonalDetailEvent {
-  final String name;
-  final String phone;
+  final String firstName;
+  final String lastName;
+  final String number;
 
-  OnAddPersonalDetailsEvent(
-      {required this.name, required this.phone});
+  OnAddPersonalDetailsEvent({required this.firstName, required this.lastName, required this.number});
+
 }
 
 class OnAddPersonalDetailsEventIOS extends PersonalDetailEvent {

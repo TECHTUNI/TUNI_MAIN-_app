@@ -26,4 +26,10 @@ class SignInRequestEvent extends AuthEvent {
   });
 }
 
+class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+ 
+  ForgotPasswordEvent({required this.email});
+}
+
 class GoogleIconClickedEvent extends AuthEvent {}

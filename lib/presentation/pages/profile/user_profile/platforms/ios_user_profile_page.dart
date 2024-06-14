@@ -40,7 +40,7 @@ class IosUserProfilePage extends StatelessWidget {
                       .collection("users")
                       .doc(userId)
                       .collection("personal_details")
-                      .doc(userEmail)
+                      .doc('personal_details')
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

@@ -1,38 +1,101 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_auth/google_auth.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:tuni/core/provider/Google_signin_provider.dart';
 import 'package:tuni/presentation/pages/auth/sign_in/Phone_auth/Phone_auth_confirmation.dart';
 import 'package:tuni/presentation/pages/auth/sign_in/validation/email_validation.dart';
+
 import '../../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bottom_nav/pages/bottom_nav_bar_page.dart';
 import '../sign_up/sign_up.dart';
 import 'login_refactor.dart';
 
-class LogInPage extends StatelessWidget {
+class LogInPage extends StatefulWidget {
   final void Function()? onTap;
-  final _formKey = GlobalKey<FormState>();
 
-  LogInPage({super.key, this.onTap});
+  LogInPage({Key? key, this.onTap}) : super(key: key);
+
+  @override
+  _LogInPageState createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
+  final _formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  final TextEditingController otpController = TextEditingController();
+  late bool isConnected;
 
-  GoogleAuth googleAuth = GoogleAuth();
+  @override
+  void initState() {
+    super.initState();
+    checkInternetConnectivity();
+  }
+
+  Future<void> checkInternetConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      isConnected = connectivityResult != ConnectivityResult.none;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    return isConnected
+        ? _buildUI(context, screenWidth, screenHeight)
+        : Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "Assets/logo/Tuni logo.png",
+                    height: 200,
+                    width: 200,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Sorry! Connection is lost',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Please make sure you have good network',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    ' And try again',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      checkInternetConnectivity();
+                    },
+                    child: Text(
+                      'Retry',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+  }
+
+  Widget _buildUI(BuildContext context, double screenWidth, double screenHeight) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -42,7 +105,6 @@ class LogInPage extends StatelessWidget {
               backgroundColor: Colors.transparent,
               body: SafeArea(
                 child: SizedBox(
-                  // color: Colors.amberAccent,
                   height: screenHeight,
                   width: screenWidth,
                   child: SingleChildScrollView(
@@ -198,7 +260,23 @@ class LogInPage extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 20),
-
+                                Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align text to the left
+  children: [
+    TextButton(
+      onPressed: () {
+        // Implement logic if needed
+        _showForgotPasswordDialog(context);
+      },
+      child: const Text("Forgot Password?"),
+    ),
+    // Empty container to create space between text and login button
+    Container(
+      width: 100, // Adjust width as needed
+    ),
+  ],
+),
+                                     //login button
                                 BlocListener<AuthBloc, AuthState>(
                                   listener: (context, state) {
                                     if (state is LoadingState) {
@@ -510,6 +588,69 @@ class LogInPage extends StatelessWidget {
     );
   }
 
+void _showForgotPasswordDialog(BuildContext context) {
+    final TextEditingController forgotPasswordController =
+        TextEditingController();
+ 
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Forgot Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Enter your email to reset your password'),
+              const SizedBox(height: 10),
+              TextField(
+                controller: forgotPasswordController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (forgotPasswordController.text.isNotEmpty) {
+                  context.read<AuthBloc>().add(ForgotPasswordEvent(
+                      email: forgotPasswordController.text));
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Password reset Email sent successfully'),
+                    ),
+                  );
+                }
+              },
+              child: const Text('Reset Password'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+ 
+  String validateEmail(String value) {
+    // Add your email validation logic here
+    return '';
+  }
+ 
+  TextStyle loginPageJoinTextStyle({required Color color}) {
+    return TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: color);
+  }
+}
+
   String generateNonce([int length = 32]) {
     const charset =
         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
@@ -527,12 +668,11 @@ class LogInPage extends StatelessWidget {
   TextStyle loginPageJoinTextStyle({required Color color}) {
     return TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: color);
   }
-}
 
 class GoogleLoginButton extends StatelessWidget {
   const GoogleLoginButton({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -544,7 +684,7 @@ class GoogleLoginButton extends StatelessWidget {
         googleAuthProvider.signInWithGoogle().then((value) {
           if (value != null) {
             print('hiiiiiiiikiiiiiiiiiiiiiiiiiiiiiiiiii');
-            sendEmail();
+            sendEmail(name: '', senderEmail: '');
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

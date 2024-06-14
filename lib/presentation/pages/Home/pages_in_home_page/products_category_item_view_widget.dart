@@ -35,7 +35,6 @@ class ProductsItemViewState extends State<ProductsItemView> {
     // final productProvider = Provider.of<ProductProvider>(context);
     // final List<ProductCategory> typewise = productProvider.Allproducts;
 
-
     return Container(
       constraints: const BoxConstraints.expand(),
       child: widget.productList.isEmpty
@@ -45,9 +44,9 @@ class ProductsItemViewState extends State<ProductsItemView> {
           : GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.65,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
+                childAspectRatio: 0.55,
               ),
               itemCount: widget.productList.length,
               itemBuilder: (BuildContext context, int index) {

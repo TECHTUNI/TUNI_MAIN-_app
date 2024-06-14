@@ -24,7 +24,7 @@ class UserProfile extends StatelessWidget {
         .collection("users")
         .doc(userId)
         .collection("personal_details")
-        .doc(userEmail!)
+        .doc('personal_details')
         .snapshots();
     String firstName;
     String lastName;
@@ -72,7 +72,7 @@ class UserProfile extends StatelessWidget {
                         final data = snapshot.data!;
                         firstName = data["first_name"];
                         lastName = data["last_name"];
-                        number = data['phone_number'];
+                        number = data["phone_number"];
                         // gender = data["gender"];
                         // Map<String, dynamic> dateMap = data["date"];
                         // day = dateMap["day"];
@@ -235,7 +235,7 @@ class UserProfile extends StatelessWidget {
                       final data = snapshot.data!;
                       firstName = data["first_name"];
                       lastName = data["last_name"];
-                      number = data['phone_number'];
+                      number = data["phone_number"];
                       String? name =
                           "${data["first_name"] ?? ""} ${data["last_name"] ?? ""}";
                       // gender = data["gender"];
@@ -301,11 +301,7 @@ class UserProfile extends StatelessWidget {
                               ),
                               const SizedBox(height: 15),
 
-                              Text(
-                                userEmail,
-                                style:
-                                    const TextStyle(fontSize: 16, letterSpacing: 1),
-                              ),
+                            
                               const SizedBox(height: 15),
                               // userDetailsHeadingText(text: "Email"),
                               // const SizedBox(height: 5),

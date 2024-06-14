@@ -1,29 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class UserProfileTextFormField extends StatelessWidget {
   final String text;
   final TextEditingController controller;
+  final TextInputType keyboardType;
 
-  const UserProfileTextFormField(
-      {super.key, required this.text, required this.controller});
+  const UserProfileTextFormField({
+    Key? key,
+    required this.text,
+    required this.controller,
+    required this.keyboardType,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<TextInputFormatter>? inputFormatters;
+
+    // Determine input formatters based on the field type
+    if (text == "First Name" || text == "Last Name") {
+      inputFormatters = firstNameLastNameInputFormatters;
+    } else if (text == "Mobile Number") {
+      inputFormatters = phoneNumberInputFormatters;
+    }
+
     return SizedBox(
       height: 50,
       child: TextFormField(
         controller: controller,
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           labelText: text,
           filled: true,
           fillColor: Colors.grey.shade300,
           border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10)),
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
     );
   }
+
+  // Input formatters
+  static List<TextInputFormatter> firstNameLastNameInputFormatters = [
+    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')), // Allow letters and spaces
+  ];
+
+  static List<TextInputFormatter> phoneNumberInputFormatters = [
+    FilteringTextInputFormatter.digitsOnly, // Allow digits only
+  ];
 }
 
 class UserProfileElevatedButton extends StatelessWidget {

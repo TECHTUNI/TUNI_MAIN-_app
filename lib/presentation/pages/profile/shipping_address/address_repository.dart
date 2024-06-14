@@ -17,10 +17,13 @@ class AddressRepository {
             .collection('address')
             .get();
         return snapshot.docs.map((address) {
-          return AddressModel(houseName: address['houseName'],
+          return AddressModel(
+            phonenumber: address['phone_number'],
+            Adress1: address['address'],
+            Adress2: address['address1'],
               city: address['city'],
-              landMark: address['landmark'],
-              pincode: address['pincode']);
+              State: address['state'],
+              pincode: address['pincode'], );
         }).toList();
       }
     }
@@ -28,3 +31,5 @@ class AddressRepository {
     return [];
   }
 }
+
+

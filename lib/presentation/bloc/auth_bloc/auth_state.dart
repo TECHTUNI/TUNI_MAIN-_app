@@ -36,6 +36,14 @@ class GoogleSignInSuccessState extends AuthState {}
 //
 class GoogleSignInErrorState extends AuthState {}
 
+class ForgotPasswordInitial extends AuthState {}
+
+class ForgotPasswordLoading extends AuthState {}
+
+class ForgotPasswordSuccess extends AuthState {}
+
+class ForgotPasswordError extends AuthState {}
+
 
 
 

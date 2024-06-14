@@ -1,10 +1,10 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tuni/presentation/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:tuni/presentation/bloc/home_bloc/size_bloc.dart';
@@ -607,3 +607,6 @@ class IosProductDetailPage extends StatelessWidget {
     });
   }
 }
+
+
+

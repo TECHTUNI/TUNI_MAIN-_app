@@ -44,13 +44,16 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _searchProducts(String query) {
-    setState(() {
-      _filteredProducts = _products.where((product) {
-        final productName = product.name.toLowerCase();
-        return productName.contains(query.toLowerCase());
-      }).toList();
-    });
-  }
+  setState(() {
+    _filteredProducts = _products.where((product) {
+      final productName = product.name.toLowerCase();
+      final queryWords = query.toLowerCase().split(' ');
+      // Check if each word in the query is present in the product name
+      return queryWords.every((word) => productName.contains(word));
+    }).toList();
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +108,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           product.price,
                           product.imageUrlList[0],
                         ),
-                      );
+                      ); 
                     },
                   ),
           )

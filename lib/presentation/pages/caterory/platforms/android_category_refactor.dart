@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuni/presentation/pages/combo/combo.dart';
 import '../categories_refactor.dart';
 import '../pages_in_categories/category_all_page.dart';
 import '../pages_in_categories/category_men_page.dart';
@@ -64,6 +65,14 @@ class AndroidCategoryPage extends StatelessWidget {
                       categoryName: 'Women',
                       className: WomenCategory(),
                       image: "Assets/category_page/womentshirt.png",
+                      context: context),
+                  SizedBox(height: screenHeight * .02),
+                  categoriesItems(
+                      screenWidth: screenWidth,
+                      screenHeight: screenHeight,
+                      categoryName: 'Combo',
+                      className: ComboPage(),
+                      image: "Assets/category_page/tshirtimage.png",
                       context: context),
                 ],
               ),

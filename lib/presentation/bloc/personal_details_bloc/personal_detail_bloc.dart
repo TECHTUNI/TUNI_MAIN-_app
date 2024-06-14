@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'personal_detail_event.dart';
-
 part 'personal_detail_state.dart';
 
 class PersonalDetailBloc
@@ -20,15 +19,15 @@ class PersonalDetailBloc
   FutureOr<void> onAddPersonalDetailsEvent(OnAddPersonalDetailsEvent event,
       Emitter<PersonalDetailState> emit) async {
     final userId = user.uid;
-    final userEmail = user.email;
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
         .collection('personal_details')
-        .doc(userEmail)
+        .doc('personal_details')
         .set({
-      "name": event.name.toString(),
-      "phone_number": event.phone.toString(),
+      "first_name": event.firstName.toString(),
+      "last_name": event.lastName.toString(),
+      "phone_number": event.number.toString()
     });
     emit(PersonalDetailsAddedState());
   }

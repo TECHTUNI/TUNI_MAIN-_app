@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../Home/home_refactor.dart';
 
 Widget categoriesContainer(
@@ -41,13 +40,14 @@ Widget productView(String productName, String productPrice, String image) {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          height: 150,
-          width: 150,
+          height: 280,
+          width: 200,
           decoration: BoxDecoration(
               // color: Colors.amber,
-              borderRadius: BorderRadius.circular(30)),
+              // border: Border.all(),
+              borderRadius: BorderRadius.circular(5)),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(5),
             child: Image.network(
               image,
               fit: BoxFit.cover,
@@ -56,8 +56,8 @@ Widget productView(String productName, String productPrice, String image) {
                   return child;
                 } else {
                   return const Center(
-                    // child: CircularProgressIndicator(),
-                  );
+                      // child: CircularProgressIndicator(),
+                      );
                 }
               },
             ),

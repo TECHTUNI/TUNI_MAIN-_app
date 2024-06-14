@@ -10,6 +10,12 @@ class OnDeleteUserEvent extends HomeEvent {}
 class OnAddCartButtonPressed extends HomeEvent {}
 
 class OnRemoveCartButtonPressed extends HomeEvent {}
+ class IncreaseQuantityPressed extends HomeEvent{
+  final int iteamscount;
+
+  IncreaseQuantityPressed({ required this.iteamscount});
+
+ }
 
 class OnAddedToCartButtonPressedEvent extends HomeEvent {
   final String id;

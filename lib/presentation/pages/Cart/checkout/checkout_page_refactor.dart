@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+
 import '../cart_refactor.dart';
 
 // class CheckoutPageRazorPayButton extends StatelessWidget {
@@ -123,14 +124,14 @@ class CheckOutPageAddressView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.grey.shade200,
-      height: screenHeight * .22,
+      height: screenHeight * .35,
       width: screenWidth,
       child: Padding(
         padding: EdgeInsets.only(
           left: screenWidth * .05,
-          top: screenHeight * .02,
+          top: screenHeight * .01,
           right: screenWidth * .05,
-          bottom: screenHeight * .02,
+          bottom: screenHeight * .01,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,16 +139,23 @@ class CheckOutPageAddressView extends StatelessWidget {
             cartCheckoutSubHeadings(headingName: 'ADDRESS'),
             const SizedBox(height: 15),
             richTextInCheckout(
-                content: 'House Name', text: address['houseName']),
+                content: 'Address', text: address['address']),
+            const SizedBox(height: 10),
+            richTextInCheckout(
+                content: 'Address', text: address['address1']),
             const SizedBox(height: 10),
             richTextInCheckout(
                 content: 'Place', text: address['city'] ?? ''),
             const SizedBox(height: 10),
             richTextInCheckout(
-                content: 'Landmark', text: address['landmark'] ?? ''),
+                content: 'state', text: address['state'] ?? ''),
             const SizedBox(height: 10),
             richTextInCheckout(
                 content: 'Pin code', text: address['pincode'] ?? ''),
+                const SizedBox(height: 10),
+                richTextInCheckout(
+                content: 'phone number', text: address['phone_number'] ?? ''),
+            const SizedBox(height: 10),
           ],
         ),
       ),

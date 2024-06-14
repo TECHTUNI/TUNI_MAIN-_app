@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:tuni/core/provider/cart_provider.dart';
+import 'package:tuni/core/provider/combo_provider.dart';
 import 'package:tuni/core/provider/product_provider.dart';
 import 'package:tuni/firebase_options.dart';
 import 'package:tuni/presentation/bloc/address_bloc/address_bloc.dart';
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthRepository(),
       child: MultiBlocProvider(
         providers: [
+          ChangeNotifierProvider<CartProvider>(create: (_) => CartProvider()),
+          ChangeNotifierProvider<SelectedProductProvider>(
+              create: (_) => SelectedProductProvider()),
           ChangeNotifierProvider<ProductProvider>(
               create: (_) => ProductProvider()),
           BlocProvider(create: (context) => AuthBloc()),

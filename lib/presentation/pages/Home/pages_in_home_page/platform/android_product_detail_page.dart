@@ -200,7 +200,6 @@ class AndroidProductDetailPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: BlocBuilder<HomeBloc, HomeState>(
                         builder: (context, state) {
-                          widget.itemCount = 1;
                           if (state is ItemCountAddedState) {
                             widget.itemCount = state.itemCount;
                           } else if (state is ItemCountRemovedState) {
@@ -229,7 +228,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                                     onPressed: () {
                                       context
                                           .read<HomeBloc>()
-                                          .add(OnAddCartButtonPressed());
+                                          .add(IncreaseQuantityPressed(iteamscount: widget.itemCount));
                                     },
                                     icon: const Icon(Icons.add)),
                               ],
