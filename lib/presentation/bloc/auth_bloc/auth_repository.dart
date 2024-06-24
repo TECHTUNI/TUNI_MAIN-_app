@@ -32,7 +32,7 @@ class AuthRepository {
     try {
       final result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      sendEmail(name: 'Sebastian', senderEmail: email);
+      // sendEmail(name: 'Sebastian', senderEmail: email);
       return true;
     } catch (e) {
       return false;

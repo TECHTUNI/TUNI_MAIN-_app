@@ -1,206 +1,115 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:tuni/presentation/bloc/cart_bloc/cart_bloc.dart';
-import 'package:tuni/presentation/pages/Order_tracking/tracking.dart';
-import 'package:tuni/presentation/pages/profile/my_orders/Order_progress_bar/order_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:tuni/core/model/Order_history_model.dart';
+import 'package:tuni/core/provider/Order_Histroy_Provider.dart';
+import 'package:tuni/presentation/pages/profile/my_orders/combo_orderrefactor.dart';
+import 'my_orders_refactor.dart';
 import 'orders_detail.dart';
 
 class UserOrders extends StatelessWidget {
-  UserOrders({super.key});
-
-  final User? user = FirebaseAuth.instance.currentUser;
-
-  String _parseDate(String dateString) {
-    final dateTime = DateTime.parse(dateString);
-    final formattedDate = DateFormat('dd-MM-yy').format(dateTime);
-    return formattedDate;
-  }
+  UserOrders({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final userId = user?.uid;
-    final firestore = FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId)
-        .collection("orderList")
-        .snapshots();
-    return Platform.isAndroid
-        ? Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                'MY ORDERS',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 2,
-                ),
-              ),
-              centerTitle: true,
-              foregroundColor: Colors.black,
-            ),
-            body: StreamBuilder<QuerySnapshot>(
-              stream: firestore,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(
-                    child: Text("You have no ordered anything"),
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+
+    final orderHistoryProvider =
+        Provider.of<OrderHistoryProvider>(context, listen: false);
+
+    // Fetch order history items when the widget is built
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      orderHistoryProvider.fetchOrderHistoryItems(userId: userId);
+    });
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Orders'),
+      ),
+      body: Consumer<OrderHistoryProvider>(
+        builder: (context, provider, child) {
+          if (provider.orderHistoryItems.isEmpty) {
+            // Show shimmer effect while loading
+            return _buildShimmerEffect(screenWidth);
+          } else {
+            // Show actual order history items
+            return ListView.builder(
+              itemCount: provider.orderHistoryItems.length,
+              itemBuilder: (context, index) {
+                final OrderHistoryModel order =
+                    provider.orderHistoryItems[index];
+
+                final orderId = order.orderId!;
+                final productName = order.productName;
+                final productPrice = order.productPrice;
+                final address = order.orderAddress;
+                final orderStatus = order.orderStatus;
+                final formattedDate =
+                    order.orderAddress!['orderDateFormatted'] ?? '';
+                final imageUrl = order.productImageUrl?[0];
+                final comboThumbnailImage =
+                    order.productDetailsCombo?["tumbnail"];
+                final comboName = order.productDetailsCombo?["name"];
+                final selectedItems = order.selectedItems;
+
+                if (imageUrl != null) {
+                  return ProductsViewInMyOrders(
+                    orderId: orderId,
+                    imageUrl: imageUrl,
+                    productName: productName,
+                    productPrice: productPrice,
+                    address: address,
+                    screenWidth: screenWidth,
+                    orderStatus: orderStatus,
+                  );
+                } else {
+                  return ComboViewInMyOrders(
+                    orderId: orderId,
+                    address: address,
+                    screenWidth: screenWidth,
+                    // comboThumbnailImage: comboThumbnailImage,
+                    // comboName: comboName,
+                    orderStatus: orderStatus,
+                    selectedItems: selectedItems,
+                    productDetailsCombo: order.productDetailsCombo,
                   );
                 }
-                final reversedDoc = snapshot.data!.docs.reversed.toList();
-                if (reversedDoc.isEmpty) {
-                  return const Center(
-                    child: Text('You have no ordered anything'),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                }
-                return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, index) {
-                    final orderId = reversedDoc[index]['orderId'];
-                    final orderDateString =
-                        reversedDoc[index]['orderDate'] as String;
-                    final formattedDate = _parseDate(orderDateString);
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OrderTrackingPage(),
-                            ));
-                      },
-                      child: ListTile(
-                        leading: Text(formattedDate.toString()),
-                        title: Text(orderId),
-                        // subtitle: Text(houseName),
-                        trailing: TextButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: const Text(
-                                        "Do you want to cancel this order?"),
-                                    title: const Text("Are you sure?"),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            context.read<CartBloc>().add(
-                                                CancelOrderedProductEvent(
-                                                    orderId: orderId));
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("Yes")),
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("No")),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(color: Colors.red, fontSize: 12),
-                            )),
-                      ),
-                    );
-                  },
-                );
               },
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildShimmerEffect(double screenWidth) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      period: Duration(seconds: 2),
+      child: ListView.builder(
+        itemCount: 5, // Placeholder for shimmer effect
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Container(
+              width: 56,
+              height: 56,
+              color: Colors.white,
             ),
-          )
-        : CupertinoPageScaffold(
-            navigationBar: const CupertinoNavigationBar(
-              middle: Text("Your Orders"),
+            title: Container(
+              height: 16,
+              color: Colors.white,
             ),
-            child: CupertinoScrollbar(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: firestore,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(
-                      child: Text("You have no ordered anything"),
-                    );
-                  }
-                  final reversedDoc = snapshot.data!.docs.reversed.toList();
-                  if (reversedDoc.isEmpty) {
-                    return const Center(
-                      child: Text('You have no ordered anything'),
-                    );
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CupertinoActivityIndicator();
-                  }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final orderId = reversedDoc[index]['orderId'];
-                      final orderDateString =
-                          reversedDoc[index]['orderDate'] as String;
-                      final formattedDate = _parseDate(orderDateString);
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) =>
-                                    OrderDetailPage(orderId: orderId),
-                              ));
-                        },
-                        child: CupertinoListTile(
-                          leading: Text(formattedDate.toString()),
-                          title: Text(orderId),
-                          // subtitle: Text(houseName),
-                          trailing: CupertinoButton(
-                              onPressed: () {
-                                showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CupertinoAlertDialog(
-                                      content: const Text(
-                                          "Do you want to cancel this order?"),
-                                      title: const Text("Are you sure?"),
-                                      actions: [
-                                        CupertinoDialogAction(
-                                            onPressed: () {
-                                              context.read<CartBloc>().add(
-                                                  CancelOrderedProductEvent(
-                                                      orderId: orderId));
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text("Yes")),
-                                        CupertinoDialogAction(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text("No")),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: const Text(
-                                'Cancel',
-                                style: TextStyle(
-                                    color: CupertinoColors.systemRed,
-                                    fontSize: 12),
-                              )),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ));
+            subtitle: Container(
+              height: 16,
+              color: Colors.white,
+            ),
+          );
+        },
+      ),
+    );
   }
 }

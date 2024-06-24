@@ -294,10 +294,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:tuni/core/model/cart_model.dart';
 import 'package:tuni/core/model/product_order_model.dart';
+import 'package:tuni/core/provider/cart_provider.dart';
 import 'package:tuni/presentation/bloc/cart_bloc/cart_bloc.dart';
 import 'package:tuni/presentation/bloc/personal_details_bloc/personal_detail_bloc.dart';
 import 'package:tuni/presentation/pages/bottom_nav/pages/bottom_nav_bar_page.dart';
@@ -308,13 +312,15 @@ import 'checkout_page_refactor.dart';
 class CheckOutFromCartPage extends StatefulWidget {
   Map<String, dynamic> address = {};
 
-  List<OrderModel> orderList;
+  List<CartItemModel> orderList; //// changedddd
   int total;
+  List<String> ids;
 
   CheckOutFromCartPage(
       {super.key,
       required this.address,
       required this.orderList,
+      required this.ids,
       required this.total});
 
   @override
@@ -323,6 +329,100 @@ class CheckOutFromCartPage extends StatefulWidget {
 
 class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
   final Razorpay _razorpay = Razorpay();
+  Future razorPayCheckout(
+      {required int amount,
+      required String name,
+      required String email,
+      required Map<String, dynamic> address,
+      required String mobile,
+      required List<CartItemModel> orderList}) async {
+    Razorpay _razorpay = Razorpay();
+    CartProvider cartProvider = CartProvider();
+    try {
+      Map<String, dynamic> options = {
+        'key':
+            //  "rzp_test_TpsHVKhrkZuIUJ",
+            'rzp_live_W0t2SeLjFxX8SB',
+        'amount': amount * 100,
+        'name': 'Tuni',
+        'description': 'Payment for TUNi',
+        'timeout': 300,
+        'prefill': {
+          'contact': '8088473612',
+          'email': 'tunitechsolution@gmail.com'
+        }
+      };
+      _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+          (PaymentSuccessResponse response) {
+        cartProvider
+            .checkOut(
+                orderList: orderList,
+                address: address,
+                totalPrice: widget.total,
+                ids: widget.ids
+                // productDetailsCombo: productDetailsCombo,
+                // selectedItems: selectedItems,
+                // totalPrice: totalPrice,
+                // productQuantity: productQuantity,
+                // productBrand: productBrand,
+                // productCategory: productCategory,
+                // productColor: productColor,
+                // productDesign: productDesign,
+                // productGender: productGender,
+                // productId: productId,
+                // productImageUrls: productImageUrls,
+                // productName: productName,
+                // productPrice: productPrice,
+                // selectedSize: selectedSize,
+                // type: type,
+                // time: time,
+                // itemCountcustomer: itemCountcustomer
+                )
+            .then((value) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const BottomNavBarPage(),
+              ),
+              (route) => false);
+        });
+      });
+
+      _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+          (PaymentFailureResponse response) {
+        showCupertinoDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: const Text("Payment Failed"),
+              content: const Text("Something went wrong, please try again!!"),
+              actions: [
+                CupertinoDialogAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const BottomNavBarPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      });
+
+      _razorpay.on(
+          Razorpay.EVENT_EXTERNAL_WALLET, (ExternalWalletResponse response) {});
+      _razorpay.open(options);
+    } catch (e) {
+      throw e.toString();
+    }
+  }
 
   @override
   void initState() {
@@ -348,9 +448,9 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
   Widget build(BuildContext context) {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final email = user.email ?? "";
-    var firstName;
-    var lastName;
-    var mobile;
+    dynamic firstName;
+    dynamic lastName;
+    dynamic mobile;
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -439,7 +539,7 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
                           child: Text('Facing some error'),
                         );
                       } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                        print('hiii');
+                        debugPrint('hiii');
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -563,17 +663,25 @@ class _CheckOutFromCartPageState extends State<CheckOutFromCartPage> {
                   width: screenWidth * .8,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.read<CartBloc>().add(
-                            RazorPayEvent(
-                              context: context,
-                              name: firstName,
-                              email: user.email!,
-                              mobile: mobile,
-                              amount: widget.total,
-                              orderList: widget.orderList,
-                              address: widget.address,
-                            ),
-                          );
+                      // context.read<CartBloc>().add(
+                      //       RazorPayEvent(
+                      //         context: context,
+                      //         name: firstName,
+                      //         email: user.email!,
+                      //         mobile: mobile,
+                      //         amount: widget.total,
+                      //         orderList: widget.orderList,
+                      //         address: widget.address,
+                      //       ),
+                      //     );
+                      razorPayCheckout(
+                        address: widget.address,
+                        amount: widget.total,
+                        email: user.email ?? '',
+                        mobile: mobile,
+                        name: firstName,
+                        orderList: widget.orderList,
+                      );
                     },
                     child: const Text(
                       "RAZORPAY",
@@ -636,4 +744,62 @@ void _showErrorDialog(BuildContext? context, String message) {
       },
     );
   }
+}
+
+Widget personalDetailsTextFormField({
+  required TextEditingController controller,
+  required String hintText,
+}) {
+  List<TextInputFormatter>? inputFormatters = [
+    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'))
+  ];
+
+  return SizedBox(
+    height: 50,
+    child: TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        hintText: hintText,
+        filled: true,
+        fillColor: Colors.grey.shade100,
+        labelText: hintText,
+      ),
+      keyboardType: TextInputType.text,
+      inputFormatters: inputFormatters,
+    ),
+  );
+}
+
+// Widget for capturing the mobile number
+Widget personalDetailsTextFormField1({
+  required TextEditingController controller,
+  required String hintText,
+}) {
+  List<TextInputFormatter>? inputFormatters = [
+    FilteringTextInputFormatter.digitsOnly,
+    LengthLimitingTextInputFormatter(10) // Limit input to 10 characters
+  ];
+
+  return SizedBox(
+    height: 50,
+    child: TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        hintText: 'Mobile Number',
+        filled: true,
+        fillColor: Colors.grey.shade100,
+        labelText: 'Mobile Number',
+      ),
+      keyboardType: TextInputType.phone,
+      inputFormatters: inputFormatters,
+    ),
+  );
 }

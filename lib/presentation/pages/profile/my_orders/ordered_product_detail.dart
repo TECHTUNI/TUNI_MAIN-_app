@@ -26,8 +26,7 @@ class OrderedProductDetail extends StatelessWidget {
       required this.pincode,
       required this.landmark,
       required this.place,
-      required this.quantity
-      });
+      required this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +44,17 @@ class OrderedProductDetail extends StatelessWidget {
                 screenWidth: screenWidth),
             SizedBox(height: screenHeight * .02),
             OtherDetailsInOrderDetailPage(
-                productName: productName,
-                price: price,
-                screenHeight: screenHeight,
-                name: name,
-                number: number,
-                email: email,
-                houseName: houseName,
-                place: place,
-                landmark: landmark,
-                pincode: pincode,
+              productName: productName,
+              price: price,
+              screenHeight: screenHeight,
+              name: name,
+              number: number,
+              email: email,
+              houseName: houseName,
+              place: place,
+              landmark: landmark,
+              pincode: pincode,
               quantity: quantity,
-
             ),
           ],
         ),

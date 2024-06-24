@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:tuni/presentation/pages/profile/my_orders/user_orders.dart';
 import '../../../core/model/cart_model.dart';
-import '../../../core/model/product_order_model.dart';
 import '../../pages/bottom_nav/pages/bottom_nav_bar_page.dart';
 import 'cart_repository.dart';
 
@@ -62,7 +61,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   FutureOr<void> addCartItemCountEvent(
       AddCartItemCountEvent event, Emitter<CartState> emit) async {
-    print('hiiii');
     try {
       cartRepository.addCartItemCount(event.itemId, event.size);
       emit(CartActionSuccessState());
@@ -99,7 +97,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       Map<String, dynamic> options = {
         'key':
-            //  ' rzp_test_TpsHVKhrkZuIUJ',
+            // ' rzp_test_TpsHVKhrkZuIUJ',
             'rzp_live_W0t2SeLjFxX8SB',
         'amount': event.amount * 100,
         'name': 'Tuni',

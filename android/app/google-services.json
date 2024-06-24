@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "41399715162-ept9sirs9f6u0g719tmggniv67f4heud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtuni.tuni",
+            "certificate_hash": "cf645b703b8e2ea30ff2553205d8defe91fc2fb5"
+          }
+        },
+        {
+          "client_id": "41399715162-r062fc4qqgj7bqh37j41o5ts48fhld82.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtuni.tuni",
+            "certificate_hash": "02ed9d057f400c4b8be58a59a9364da39ed62be4"
+          }
+        },
+        {
           "client_id": "41399715162-dqbo1dt7mdkdd465a29j5imqe52e625m.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -27,7 +43,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "41399715162-dqbo1dt7mdkdd465a29j5imqe52e625m.apps.googleusercontent.com",
+              "client_id": "100548084011091927668",
               "client_type": 3
             },
             {

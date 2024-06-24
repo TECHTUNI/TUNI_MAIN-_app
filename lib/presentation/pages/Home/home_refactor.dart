@@ -444,7 +444,6 @@ class MainPageCarouselSlider extends StatelessWidget {
       items: [
         {'imagePath': 'Assets/Images/BAnner_grande.webp', 'text': 'T-shirts'},
         {'imagePath': 'Assets/Images/images.jpg', 'text': 'Shirts'},
-        {'imagePath': 'Assets/Images/BAnner_grande.webp', 'text': 'T-shirts'},
       ].map((item) {
         return Builder(
           builder: (BuildContext context) {

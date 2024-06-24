@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bottom_nav/pages/bottom_nav_bar_page.dart';
 import '../sign_up/refactor.dart';
@@ -153,36 +151,6 @@ class LoginCollectingEmailAndPassword extends StatelessWidget {
                         default:
                       }
                     }
-
-                    // String? uid =
-                    //     await GoogleSignInProvider().signInWithGoogle();
-                    // if (uid != null) {
-                    //   // Sign-in successful, handle navigation or other actions
-                    //   print('Signed in with UID: $uid');
-                    // } else {
-                    //   // Handle sign-in failure
-                    //   print('Sign-in failed.');
-                    // }
-                    // try {
-                    //   String? credential =
-                    //       await GoogleSignInProvider().signInWithGoogle();
-                    //   if (credential != null) {
-                    //     // Sign-in successful, handle navigation or other actions
-                    //     print('Signed in with credential: $credential');
-                    //     Navigator.pushReplacement(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) => BottomNavBarPage()));
-                    //   } else {
-                    //     // Handle sign-in failure
-                    //     print('Sign-in failed.');
-                    //   }
-                    // } catch (error) {
-                    //   // Handle any errors that occur during sign-in
-                    //   print('Error signing in: $error');
-                    // }
-                    // context.read<AuthBloc>().add(SignInRequestEvent(
-                    //     email: 'guest@gmail.com', password: 'guest@123'));
                   },
                   child: const Text(
                     ' + Guest Account ',
@@ -270,37 +238,6 @@ Widget authSignInButton(double screenWidth,
     ),
   );
 }
-
-// Widget authSignInButton(double screenWidth,
-//     {required BuildContext context,
-//     required TextEditingController email,
-//     required TextEditingController password}) {
-//   return SizedBox(
-//     width: screenWidth * 0.75,
-//     height: 45,
-//     child: ElevatedButton(
-//       style: ElevatedButton.styleFrom(
-//           backgroundColor: Colors.grey.shade700,
-//           foregroundColor: Colors.grey.shade900,
-//           shape: const RoundedRectangleBorder(
-//               borderRadius: BorderRadius.all(Radius.circular(10)))),
-//       onPressed: () {
-//         context.read<AuthBloc>().add(
-//             SignInRequestEvent(email: email.text, password: password.text));
-//         email.clear();
-//         password.clear();
-//       },
-//       child: const Text(
-//         'Sign In',
-//         style: TextStyle(
-//             color: Colors.white,
-//             fontSize: 15,
-//             letterSpacing: 1,
-//             fontWeight: FontWeight.bold),
-//       ),
-//     ),
-//   );
-// }
 
 Widget textFormField(String hintText, controller, double screenWidth) {
   return SizedBox(

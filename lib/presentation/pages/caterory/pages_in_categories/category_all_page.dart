@@ -1,191 +1,3 @@
-// import 'dart:io';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:tuni/presentation/pages/Home/pages_in_home_page/product_detail_page.dart';
-// import '../../../../core/model/product_category_model.dart';
-// import '../../../../core/provider/product_provider.dart';
-// import '../categories_refactor.dart';
-
-// import 'package:shimmer/shimmer.dart'; // Import Shimmer package
-
-// class AllCategory extends StatefulWidget {
-//   final List<ProductCategory>? allProductList;
-
-//   AllCategory({this.allProductList, super.key});
-
-//   @override
-//   State<AllCategory> createState() => _AllCategoryState();
-// }
-
-// class _AllCategoryState extends State<AllCategory> {
-//   late Future<List<ProductCategory>> _fetchAllProductsFuture;
-
-//   @override
-//   void initState() {
-//     _fetchAllProductsFuture =
-//         Provider.of<ProductProvider>(context, listen: false).fetchAllProducts();
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Platform.isAndroid
-//         ? Scaffold(
-//             appBar: AppBar(
-//               foregroundColor: Colors.black,
-//               title: const Text(
-//                 'All',
-//                 style: TextStyle(letterSpacing: 3, fontSize: 20),
-//               ),
-//               toolbarHeight: 60,
-//             ),
-//             body: FutureBuilder<List<ProductCategory>>(
-//               future: _fetchAllProductsFuture,
-//               builder: (context, snapshot) {
-//                 if (snapshot.connectionState == ConnectionState.waiting) {
-//                   return Center(
-//                     child: Shimmer.fromColors(
-//                       // Use Shimmer here
-//                       baseColor: Colors.grey[300]!,
-//                       highlightColor: Colors.grey[100]!,
-//                       child: GridView.builder(
-//                         padding: const EdgeInsets.all(5),
-//                         gridDelegate:
-//                             const SliverGridDelegateWithFixedCrossAxisCount(
-//                           crossAxisCount: 2,
-//                           childAspectRatio: 1,
-//                           mainAxisSpacing: 5,
-//                           crossAxisSpacing: 5,
-//                         ),
-//                         itemCount: 10,
-//                         itemBuilder: (context, index) {
-//                           return Container(
-//                             height: 100,
-//                             width: 100,
-//                             decoration: BoxDecoration(
-//                               color: Colors.white,
-//                               borderRadius: BorderRadius.circular(30),
-//                             ),
-//                           );
-//                         },
-//                       ),
-//                     ),
-//                   );
-//                 } else if (snapshot.hasError) {
-//                   return Center(
-//                     child: Text('Error: ${snapshot.error}'),
-//                   );
-//                 } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-//                   return const Center(
-//                     child: Text("Currently this category not available"),
-//                   );
-//                 } else {
-//                   return GridView.builder(
-//                     padding: const EdgeInsets.all(2),
-//                     gridDelegate:
-//                         const SliverGridDelegateWithFixedCrossAxisCount(
-//                       crossAxisCount: 2,
-//                       childAspectRatio: .55,
-//                     ),
-//                     itemCount: snapshot.data!.length,
-//                     itemBuilder: (context, index) {
-//                       final ProductCategory product = snapshot.data![index];
-//                       return InkWell(
-//                         onTap: () {
-//                           Navigator.push(
-//                             context,
-//                             MaterialPageRoute(
-//                               builder: (context) => ProductDetailPage(
-//                                 productId: product.id,
-//                                 productName: product.name,
-//                                 imageUrl: product.imageUrlList,
-//                                 color: product.color,
-//                                 brand: product.brand,
-//                                 price: product.price,
-//                                 size: product.size,
-//                                 category: "",
-//                                 gender: product.gender,
-//                                 time: product.time,
-//                               ),
-//                             ),
-//                           );
-//                         },
-//                         child: productView(product.name,
-//                             product.price.toString(), product.imageUrlList[0]),
-//                       );
-//                     },
-//                   );
-//                 }
-//               },
-//             ),
-//           )
-//         : CupertinoPageScaffold(
-//             navigationBar: const CupertinoNavigationBar(
-//               // foregroundColor: Colors.black,
-//               middle: Text(
-//                 'All',
-//                 style: TextStyle(letterSpacing: 3, fontSize: 20),
-//               ),
-//               // toolbarHeight: 60,
-//             ),
-//             child: FutureBuilder<List<ProductCategory>>(
-//               future: _fetchAllProductsFuture,
-//               builder: (context, snapshot) {
-//                 if (snapshot.connectionState == ConnectionState.waiting) {
-//                   return const Center(
-//                     child: CupertinoActivityIndicator(),
-//                   );
-//                 } else if (snapshot.hasError) {
-//                   return Center(
-//                     child: Text('Error: ${snapshot.error}'),
-//                   );
-//                 } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-//                   return const Center(
-//                     child: Text("Currently this category not available"),
-//                   );
-//                 } else {
-//                   return GridView.builder(
-//                     padding: const EdgeInsets.all(10),
-//                     gridDelegate:
-//                         const SliverGridDelegateWithFixedCrossAxisCount(
-//                       crossAxisCount: 2,
-//                       childAspectRatio: .72,
-//                     ),
-//                     itemCount: snapshot.data!.length,
-//                     itemBuilder: (context, index) {
-//                       final ProductCategory product = snapshot.data![index];
-//                       return GestureDetector(
-//                         onTap: () {
-//                           Navigator.push(
-//                             context,
-//                             CupertinoPageRoute(
-//                               builder: (context) => ProductDetailPage(
-//                                 productId: product.id,
-//                                 productName: product.name,
-//                                 imageUrl: product.imageUrlList,
-//                                 color: product.color,
-//                                 brand: product.brand,
-//                                 price: product.price,
-//                                 size: product.size,
-//                                 category: "",
-//                                 gender: product.gender,
-//                                 time: product.time,
-//                               ),
-//                             ),
-//                           );
-//                         },
-//                         child: productView(product.name,
-//                             product.price.toString(), product.imageUrlList[0]),
-//                       );
-//                     },
-//                   );
-//                 }
-//               },
-//             ),
-//           );
-//   }
-// }
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -223,7 +35,7 @@ class _AllCategoryState extends State<AllCategory> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'All',
           style: TextStyle(letterSpacing: 3, fontSize: 20),
         ),
@@ -232,7 +44,7 @@ class _AllCategoryState extends State<AllCategory> {
         future: _fetchAllProductsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -240,14 +52,14 @@ class _AllCategoryState extends State<AllCategory> {
               child: Text('Error: ${snapshot.error}'),
             );
           } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text("Currently this category not available"),
             );
           } else {
             List<ProductCategory> filteredProducts = snapshot.data!;
             if (selectedFilter != 'All') {
               filteredProducts = filteredProducts
-                  .where((product) => product.price == selectedFilter)
+                  .where((product) => product.type == selectedFilter)
                   .toList();
             }
 
@@ -267,7 +79,7 @@ class _AllCategoryState extends State<AllCategory> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: .72,
+                      childAspectRatio: .75,
                     ),
                     itemCount: filteredProducts.length,
                     itemBuilder: (context, index) {
@@ -311,7 +123,7 @@ class _AllCategoryState extends State<AllCategory> {
                       children: [
                         Platform.isAndroid
                             ? buildSortButton(screenWidth)
-                            : SizedBox(),
+                            : const SizedBox(),
                         Container(
                           height: 30,
                           width: 1,
@@ -321,7 +133,7 @@ class _AllCategoryState extends State<AllCategory> {
                         ),
                         Platform.isAndroid
                             ? buildFilterButton(screenWidth)
-                            : SizedBox(),
+                            : const SizedBox(),
                       ],
                     ),
                   ),
@@ -344,7 +156,7 @@ class _AllCategoryState extends State<AllCategory> {
         width: screenWidth * .35,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(5)),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
@@ -369,7 +181,7 @@ class _AllCategoryState extends State<AllCategory> {
         width: screenWidth * .35,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(5)),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
@@ -389,12 +201,12 @@ class _AllCategoryState extends State<AllCategory> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Sort'),
+          title: const Text('Sort'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text('High to Low'),
+                title: const Text('High to Low'),
                 onTap: () {
                   setState(() {
                     selectedSort = 'High to Low';
@@ -403,7 +215,7 @@ class _AllCategoryState extends State<AllCategory> {
                 },
               ),
               ListTile(
-                title: Text('Low to High'),
+                title: const Text('Low to High'),
                 onTap: () {
                   setState(() {
                     selectedSort = 'Low to High';
@@ -423,12 +235,15 @@ class _AllCategoryState extends State<AllCategory> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Filter'),
+          backgroundColor: Colors.white,
+          //alignment: Alignment.bottomCenter,
+
+          title: const Text('Filter'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text('All'),
+                title: const Text('All'),
                 onTap: () {
                   setState(() {
                     selectedFilter = 'All';
@@ -437,19 +252,46 @@ class _AllCategoryState extends State<AllCategory> {
                 },
               ),
               ListTile(
-                title: Text('Your Filter Option 1'),
+                title: const Text('full sleve'),
                 onTap: () {
                   setState(() {
-                    selectedFilter = 'Your Filter Option 1';
+                    selectedFilter = 'full sleve';
                   });
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: Text('Your Filter Option 2'),
+                title: const Text('half sleve'),
                 onTap: () {
                   setState(() {
-                    selectedFilter = 'Your Filter Option 2';
+                    selectedFilter = 'half sleve';
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('V-NECK'),
+                onTap: () {
+                  setState(() {
+                    selectedFilter = 'v-neck';
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Collor'),
+                onTap: () {
+                  setState(() {
+                    selectedFilter = 'collor';
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('round neck'),
+                onTap: () {
+                  setState(() {
+                    selectedFilter = 'round neck';
                   });
                   Navigator.pop(context);
                 },

@@ -46,7 +46,7 @@ class AndroidCategoryPage extends StatelessWidget {
                       screenWidth: screenWidth,
                       screenHeight: screenHeight,
                       categoryName: 'All',
-                      className: AllCategory(),
+                      className: const AllCategory(),
                       image: "Assets/category_page/unisextshirt.png",
                       color: Colors.white,
                       context: context),

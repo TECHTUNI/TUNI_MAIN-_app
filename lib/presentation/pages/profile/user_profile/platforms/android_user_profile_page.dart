@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:tuni/core/provider/notification_provider.dart';
 import 'package:tuni/presentation/pages/refferal_page/reffaral.dart';
 
 import '../../../../bloc/home_bloc/home_bloc.dart';
@@ -44,7 +46,7 @@ class AndroidUserProfilePage extends StatelessWidget {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text("Error: ${snapshot.error}");
                     }
@@ -72,7 +74,7 @@ class AndroidUserProfilePage extends StatelessWidget {
                           child: RichText(
                             text: TextSpan(children: [
                               TextSpan(
-                                  text: "",
+                                  text: initials ?? "",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: screenWidth * .07)),
@@ -88,7 +90,7 @@ class AndroidUserProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "",
+                                  name,
                                   style: TextStyle(
                                       fontSize: screenWidth * .05,
                                       fontWeight: FontWeight.bold,
@@ -179,6 +181,26 @@ class AndroidUserProfilePage extends StatelessWidget {
                   size: 20,
                 ),
                 title: const Text("Address Book"),
+                trailing: const Icon(
+                  Icons.chevron_right,
+                  size: 15,
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  // Get the instance of NotificationProvider
+                  NotificationProvider notificationProvider =
+                      Provider.of<NotificationProvider>(context, listen: false);
+
+                  // Call sendNotification method
+                  notificationProvider.sendNotification(
+                      'Test Notification', 'This is a test notification');
+                },
+                leading: const Icon(
+                  Icons.notifications,
+                  size: 20,
+                ),
+                title: const Text("Send Notification"),
                 trailing: const Icon(
                   Icons.chevron_right,
                   size: 15,

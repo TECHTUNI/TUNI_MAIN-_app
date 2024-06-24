@@ -9,9 +9,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:tuni/core/provider/Google_signin_provider.dart';
+import 'package:tuni/core/provider/google_signin_provider.dart';
+import 'package:tuni/core/provider/refferal_provider.dart';
 import 'package:tuni/presentation/pages/auth/sign_in/Phone_auth/Phone_auth_confirmation.dart';
 import 'package:tuni/presentation/pages/auth/sign_in/validation/email_validation.dart';
+import 'package:tuni/presentation/pages/refferal_page/reffaral.dart';
 
 import '../../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bottom_nav/pages/bottom_nav_bar_page.dart';
@@ -84,7 +86,7 @@ class _LogInPageState extends State<LogInPage> {
                     onPressed: () {
                       checkInternetConnectivity();
                     },
-                    child: Text(
+                    child: const Text(
                       'Retry',
                       style: TextStyle(fontSize: 16),
                     ),
@@ -95,7 +97,8 @@ class _LogInPageState extends State<LogInPage> {
           );
   }
 
-  Widget _buildUI(BuildContext context, double screenWidth, double screenHeight) {
+  Widget _buildUI(
+      BuildContext context, double screenWidth, double screenHeight) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -261,22 +264,23 @@ class _LogInPageState extends State<LogInPage> {
                                 ),
                                 const SizedBox(height: 20),
                                 Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align text to the left
-  children: [
-    TextButton(
-      onPressed: () {
-        // Implement logic if needed
-        _showForgotPasswordDialog(context);
-      },
-      child: const Text("Forgot Password?"),
-    ),
-    // Empty container to create space between text and login button
-    Container(
-      width: 100, // Adjust width as needed
-    ),
-  ],
-),
-                                     //login button
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween, // Align text to the left
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        // Implement logic if needed
+                                        _showForgotPasswordDialog(context);
+                                      },
+                                      child: const Text("Forgot Password?"),
+                                    ),
+                                    // Empty container to create space between text and login button
+                                    Container(
+                                      width: 100, // Adjust width as needed
+                                    ),
+                                  ],
+                                ),
+                                //login button
                                 BlocListener<AuthBloc, AuthState>(
                                   listener: (context, state) {
                                     if (state is LoadingState) {
@@ -588,10 +592,10 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-void _showForgotPasswordDialog(BuildContext context) {
+  void _showForgotPasswordDialog(BuildContext context) {
     final TextEditingController forgotPasswordController =
         TextEditingController();
- 
+
     showDialog(
       context: context,
       builder: (context) {
@@ -640,34 +644,34 @@ void _showForgotPasswordDialog(BuildContext context) {
       },
     );
   }
- 
+
   String validateEmail(String value) {
     // Add your email validation logic here
     return '';
   }
- 
+
   TextStyle loginPageJoinTextStyle({required Color color}) {
     return TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: color);
   }
 }
 
-  String generateNonce([int length = 32]) {
-    const charset =
-        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-    final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
-  }
+String generateNonce([int length = 32]) {
+  const charset =
+      '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+  final random = Random.secure();
+  return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+      .join();
+}
 
-  String sha256ofString(String input) {
-    final bytes = utf8.encode(input);
-    final digest = sha256.convert(bytes);
-    return digest.toString();
-  }
+String sha256ofString(String input) {
+  final bytes = utf8.encode(input);
+  final digest = sha256.convert(bytes);
+  return digest.toString();
+}
 
-  TextStyle loginPageJoinTextStyle({required Color color}) {
-    return TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: color);
-  }
+TextStyle loginPageJoinTextStyle({required Color color}) {
+  return TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: color);
+}
 
 class GoogleLoginButton extends StatelessWidget {
   const GoogleLoginButton({
@@ -682,9 +686,11 @@ class GoogleLoginButton extends StatelessWidget {
       onTap: () {
         GoogleSignInProvider googleAuthProvider = GoogleSignInProvider();
         googleAuthProvider.signInWithGoogle().then((value) {
+          RefferalProvider refferalProvider = RefferalProvider();
+          final code = refferalProvider.generateRandomCode(8);
+          print(code);
           if (value != null) {
-            print('hiiiiiiiikiiiiiiiiiiiiiiiiiiiiiiiiii');
-            sendEmail(name: '', senderEmail: '');
+            // sendEmail(name: '', senderEmail: '');
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

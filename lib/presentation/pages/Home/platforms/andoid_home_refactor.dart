@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuni/core/model/product_category_model.dart';
+import 'package:tuni/presentation/pages/bottom_nav/pages/video_player/video_player.dart';
+import 'package:tuni/presentation/pages/combo/combo_refactor.dart';
 import '../home_refactor.dart';
 
 class AndroidHome extends StatelessWidget {
@@ -46,8 +48,13 @@ class AndroidHome extends StatelessWidget {
                   ],
                 ),
               ),
+
               ExploreItemsInHomePage(products: productList),
               const SizedBox(height: 30),
+              // VideoPlayerWidget1(
+              //   videoUrl:
+              //       'https://firebasestorage.googleapis.com/v0/b/tunitest-e022d.appspot.com/o/Combo_videos%2F_1717588086532?alt=media&token=8dcc0bd1-ebc9-460e-a522-d882f12e7c63',
+              // ),
               Center(child: mainPageHeading('Filter by CATEGORY')),
               MainPageFilterByCategory(
                   screenWidth: screenWidth, screenHeight: screenHeight),

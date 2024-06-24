@@ -20,9 +20,9 @@ class CartRepository {
     List<CartModel> cartDataList = [];
 
     for (QueryDocumentSnapshot cartDoc in cartCollection.docs) {
-      CartModel cartData =
-          CartModel.fromMap(cartDoc.data() as Map<String, dynamic>);
-      cartDataList.add(cartData);
+      // CartModel cartData =
+      //     CartModel.fromMap(cartDoc.data() as Map<String, dynamic>);
+      // cartDataList.add(cartData);
     }
     return cartDataList;
   }
@@ -99,7 +99,8 @@ class CartRepository {
       required Map<dynamic, dynamic> address,
       required String mobile,
       required BuildContext context,
-      required List<OrderModel> orderList}) async {
+      required List<CartItemModel> orderList}) async {
+    //// changed
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final id = DateTime.now().millisecondsSinceEpoch.toString();
     final orderId = "order_$id";
@@ -116,7 +117,7 @@ class CartRepository {
     final List<Map<String, dynamic>> orderMapList = orderList.map((order) {
       return {
         "productId": order.productId,
-        "quantity": order.quantity,
+        "quantity": order.qunatity,
       };
     }).toList();
 
@@ -149,16 +150,16 @@ class CartRepository {
     //   await documentSnapshot.reference.delete();
     // }
 
-    for (OrderModel order in orderList) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('cartCollection')
-          .doc(order.productId)
-          .delete();
-    }
-    orderList.clear();
-    orderMapList.clear();
+    // for (OrderModel order in orderList) {
+    //   await FirebaseFirestore.instance
+    //       .collection('users')
+    //       .doc(userId)
+    //       .collection('cartCollection')
+    //       .doc(order.productId)
+    //       .delete();
+    // }
+    // orderList.clear();
+    // orderMapList.clear();
 
     // Navigator.pushAndRemoveUntil(
     //     context,

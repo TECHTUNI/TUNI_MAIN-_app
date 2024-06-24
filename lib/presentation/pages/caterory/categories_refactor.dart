@@ -13,10 +13,11 @@ Widget categoriesContainer(
         child: Text(
       text,
       style: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 2),
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 2,
+      ),
     )),
   );
 }
@@ -35,12 +36,12 @@ Widget productNameDisplay({required String text, required double size}) {
 
 Widget productView(String productName, String productPrice, String image) {
   return Padding(
-    padding: const EdgeInsets.all(10),
+    padding: const EdgeInsets.all(8),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          height: 280,
+          height: 180,
           width: 200,
           decoration: BoxDecoration(
               // color: Colors.amber,
@@ -101,21 +102,25 @@ Widget categoriesItems(
           width: screenWidth,
           height: screenHeight * .17,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              image:
-                  DecorationImage(fit: BoxFit.cover, image: AssetImage(image))),
+            borderRadius: BorderRadius.circular(15),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(image),
+            ),
+          ),
         ),
         Positioned(
-            top: MediaQuery.of(context).size.height * .07,
-            left: 30,
-            child: Text(
-              categoryName,
-              style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: Colors.black),
-            ))
+          top: MediaQuery.of(context).size.height * .07,
+          left: 30,
+          child: Text(
+            categoryName,
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2,
+                color: Colors.black),
+          ),
+        ),
       ],
     ),
   );

@@ -3,20 +3,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:tuni/core/model/cart_model.dart';
 
 import '../../../../../../core/model/product_order_model.dart';
 import '../../profile/shipping_address/address_refactor.dart';
 import 'checkout_page.dart';
 
 class SelectAddress extends StatefulWidget {
-  final List<OrderModel> orderList;
+  final List<CartItemModel> orderList;
   final int total;
+  final List<String> ids;
 
-  const SelectAddress({
-    super.key,
-    required this.orderList,
-    required this.total,
-  });
+  const SelectAddress(
+      {super.key,
+      required this.orderList,
+      required this.total,
+      required this.ids});
 
   @override
   State<SelectAddress> createState() => _SelectAddressState();
@@ -28,6 +30,7 @@ class _SelectAddressState extends State<SelectAddress> {
     SelectAddress(
       orderList: widget.orderList,
       total: widget.total,
+      ids: widget.ids,
     );
     super.dispose();
   }
@@ -358,6 +361,7 @@ class _SelectAddressState extends State<SelectAddress> {
                                 address: address,
                                 orderList: widget.orderList,
                                 total: widget.total,
+                                ids: widget.ids,
                               ),
                             ));
                       } else {

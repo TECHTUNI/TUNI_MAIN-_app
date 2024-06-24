@@ -60,6 +60,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+
     }
     signingConfigs {
        release {
@@ -93,6 +95,7 @@ dependencies {
   // TODO: Add the dependencies for Firebase products you want to use
   // When using the BoM, don't specify versions in Firebase dependencies
   implementation 'com.google.firebase:firebase-analytics'
+  implementation 'com.android.support:multidex:1.03'
 
 
   // Add the dependencies for any other desired Firebase products

@@ -468,15 +468,15 @@ class Ios extends StatelessWidget {
                                                 child: const Text("CHECKOUT"),
                                                 onPressed: () {
                                                   Navigator.pop(context);
-                                                  Navigator.push(
-                                                      context,
-                                                      CupertinoPageRoute(
-                                                        builder: (context) =>
-                                                            SelectAddress(
-                                                                orderList:
-                                                                    productIds,
-                                                                total: total),
-                                                      ));
+                                                  // Navigator.push(
+                                                  //     context,
+                                                  //     CupertinoPageRoute(
+                                                  //       builder: (context) =>
+                                                  //           SelectAddress(
+                                                  //               orderList:
+                                                  //                   productIds,
+                                                  //               total: total),
+                                                  //     ));
                                                 },
                                               ),
                                             ],

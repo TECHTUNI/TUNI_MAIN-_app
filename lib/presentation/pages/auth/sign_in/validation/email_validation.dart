@@ -1,5 +1,3 @@
-import 'package:emailjs/emailjs.dart';
-
 String? validateEmail(String? email) {
   // Regular expression for validating email
   final RegExp regex = RegExp(
@@ -17,28 +15,28 @@ String? validateEmail(String? email) {
   return null; // Return null if email is valid
 }
 
-Future<bool> sendEmail({required String name, required String senderEmail}) async {
-  try {
-    dynamic tempalate = 'hiiiiiiiiiiiiii';
-    await EmailJS.send(
-      'service_lv8pkvl',
-      'template_k9te8fc',
-      tempalate,
-      const Options(
-        publicKey: 'ezkCbhcGWzODm9srh',
-        privateKey: 'hJZTz9RNCr_6Pce6JkxcB',
-      ),
-    );
-    print('SUCCESS!');
-    return true;
-  } catch (error) {
-    if (error is EmailJSResponseStatus) {
-      print('ERROR... ${error.status}: ${error.text}');
-    }
-    print(error.toString());
-    return false;
-  }
-}
+// Future<bool> sendEmail({required String name, required String senderEmail}) async {
+//   try {
+//     dynamic tempalate = 'hiiiiiiiiiiiiii';
+//     await EmailJS.send(
+//       'service_lv8pkvl',
+//       'template_k9te8fc',
+//       tempalate,
+//       const Options(
+//         publicKey: 'ezkCbhcGWzODm9srh',
+//         privateKey: 'hJZTz9RNCr_6Pce6JkxcB',
+//       ),
+//     );
+//     print('SUCCESS!');
+//     return true;
+//   } catch (error) {
+//     if (error is EmailJSResponseStatus) {
+//       print('ERROR... ${error.status}: ${error.text}');
+//     }
+//     print(error.toString());
+//     return false;
+//   }
+// }
 
 // Future<void> sendEmail(
 // //     {required String name, required String senderEmail}) async {

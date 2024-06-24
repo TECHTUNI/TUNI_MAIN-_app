@@ -132,7 +132,10 @@ class ProductProvider extends ChangeNotifier {
         imageUrlList: List<String>.from(data['imageUrl'] ?? []),
         quantity: data['Quantity'] ?? '',
         color: data['color'] ?? '',
-        size: List<String>.from(data['size'] ?? []),
+        size: List<String>.from(
+          data['size'] ?? [],
+        ),
+        type: data['type'] ?? '',
       );
 
       allProducts.add(product);

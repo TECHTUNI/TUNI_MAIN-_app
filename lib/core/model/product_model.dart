@@ -39,5 +39,4 @@ class Product {
       color: productData['color'],
     );
   }
-
 }

@@ -100,12 +100,21 @@ class _SignUpPageState extends State<SignUpPage> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10)))),
                               onPressed: () {
-                                context.read<AuthBloc>().add(SignUpRequestEvent(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    confirmPassword:
-                                        confirmPasswordController.text,
-                                    name: nameController.text));
+                                final validation2 = validateInputs2([
+                                  nameController,
+                                  emailController,
+                                  passwordController,
+                                  confirmPasswordController,
+                                ], context);
+                                if (validation2 == true) {
+                                  context.read<AuthBloc>().add(
+                                      SignUpRequestEvent(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                          confirmPassword:
+                                              confirmPasswordController.text,
+                                          name: nameController.text));
+                                }
                               },
                               child: const Text(
                                 'Sign Up',
@@ -396,5 +405,83 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ));
+  }
+}
+
+bool validateInputs2(List<TextEditingController> controllers,
+    [BuildContext? context]) {
+  // Check if any field is empty
+  for (var controller in controllers) {
+    if (controller.text.isEmpty) {
+      _showErrorDialog(context, 'Please fill in all fields.');
+      return false;
+    }
+  }
+
+  // Check email format
+  if (!_isValidEmail(controllers[1].text)) {
+    _showErrorDialog(context, 'Invalid email address.');
+    return false;
+  }
+
+  // Check password complexity
+  if (!_isStrongPassword(controllers[2].text)) {
+    _showErrorDialog(context,
+        'Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+    return false;
+  }
+
+  // Check if passwords match
+  if (controllers[2].text != controllers[3].text) {
+    _showErrorDialog(context, 'Passwords do not match.');
+    return false;
+  }
+
+  return true;
+}
+
+bool _isStrongPassword(String password) {
+  // Password must be at least 6 characters long
+  if (password.length < 6) return false;
+
+  // Check if password contains at least one uppercase letter
+  if (!password.contains(RegExp(r'[A-Z]'))) return false;
+
+  // Check if password contains at least one lowercase letter
+  if (!password.contains(RegExp(r'[a-z]'))) return false;
+
+  // Check if password contains at least one number
+  if (!password.contains(RegExp(r'[0-9]'))) return false;
+
+  // Check if password contains at least one special character
+  if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return false;
+
+  return true;
+}
+
+bool _isValidEmail(String email) {
+  // Simple email validation, can be improved based on requirements
+  return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+}
+
+void _showErrorDialog(BuildContext? context, String errorMessage) {
+  if (context != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

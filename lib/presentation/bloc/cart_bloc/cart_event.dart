@@ -39,7 +39,7 @@ class RazorPayEvent extends CartEvent {
   final int amount;
   final String email;
   final String mobile;
-  final List<OrderModel> orderList;
+  final List<CartItemModel> orderList; /////////changed
   final Map<dynamic, dynamic> address;
 
   RazorPayEvent(
