@@ -10,6 +10,7 @@ import 'package:tuni/presentation/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:tuni/presentation/bloc/home_bloc/size_bloc.dart';
 import 'package:tuni/presentation/pages/Home/pages_in_home_page/platform/android_product_detail_page.dart';
 import 'package:tuni/presentation/pages/auth/sign_in/login.dart';
+import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
 
 import '../../../bloc/home_bloc/home_bloc.dart';
 
@@ -368,7 +369,7 @@ class IosProductDetailPage extends StatelessWidget {
                                                               CupertinoPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        LogInPage(),
+                                                                        WelcomePage(),
                                                               ),
                                                               (route) => false);
                                                     },
@@ -411,7 +412,7 @@ class IosProductDetailPage extends StatelessWidget {
                                                               CupertinoPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        LogInPage(),
+                                                                        WelcomePage(),
                                                               ),
                                                               (route) => false);
                                                     },
@@ -607,6 +608,3 @@ class IosProductDetailPage extends StatelessWidget {
     });
   }
 }
-
-
-

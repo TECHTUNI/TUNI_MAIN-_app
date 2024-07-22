@@ -1,13 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chewie/chewie.dart';
-import 'package:flutter/widgets.dart';
-import 'package:tuni/core/model/product_category_model.dart';
-import 'package:tuni/presentation/pages/Home/platforms/andoid_home_refactor.dart';
-import 'package:tuni/presentation/pages/auth/sign_in/Phone_auth/Phone_auth_confirmation.dart';
-import 'package:tuni/presentation/pages/auth/sign_in/login.dart';
-import 'package:tuni/presentation/pages/auth/sign_up/sign_up.dart';
+import 'package:provider/provider.dart';
+import 'package:tuni/core/provider/google_signin_provider.dart';
+import 'package:tuni/core/provider/login_provider.dart';
+import 'package:tuni/core/provider/refferal_provider.dart';
 import 'package:tuni/presentation/pages/bottom_nav/pages/bottom_nav_bar_page.dart';
 import 'package:video_player/video_player.dart';
 
@@ -19,16 +18,20 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
   List<String> videoPaths = [
-    'https://firebasestorage.googleapis.com/v0/b/tunitest-e022d.appspot.com/o/Combo_videos%2F_1717588086532?alt=media&token=8dcc0bd1-ebc9-460e-a522-d882f12e7c63',
-    // Add more video paths here if needed
+    // "https://firebasestorage.googleapis.com/v0/b/tunitest-e022d.appspot.com/o/Combo_videos%2Ftuni_ios_thumbnail_video.mp4?alt=media&token=c7c05c6c-f879-4280-89d1-4966835bfe4f"
+
+    "https://firebasestorage.googleapis.com/v0/b/tunitest-e022d.appspot.com/o/Combo_videos%2F_1717588086532?alt=media&token=8dcc0bd1-ebc9-460e-a522-d882f12e7c63"
   ];
 
   late List<VideoPlayerController> _videoControllers;
   late List<ChewieController> _chewieControllers;
   late CarouselController _carouselController;
-  // late List<ProductCategory> productList;
-  // late List<ComboDetailPage> productList1;
   int _currentPage = 0;
+
+  final TextEditingController phoneController = TextEditingController();
+  bool isOtpSent = false;
+  String? errorMessage;
+  final String countryCode = "+91";
 
   @override
   void initState() {
@@ -38,7 +41,7 @@ class _WelcomePageState extends State<WelcomePage>
     _videoControllers = videoPaths.map((path) {
       Uri uri = Uri.parse(path);
       if (uri.isAbsolute && (uri.scheme == 'http' || uri.scheme == 'https')) {
-        return VideoPlayerController.network(uri.toString());
+        return VideoPlayerController.networkUrl(uri);
       } else {
         return VideoPlayerController.asset(path);
       }
@@ -56,7 +59,7 @@ class _WelcomePageState extends State<WelcomePage>
               autoInitialize: true,
               errorBuilder: (context, errorMessage) {
                 print('Error: $errorMessage');
-                return Center(
+                return const Center(
                   child: Text('Error playing video'),
                 );
               },
@@ -101,21 +104,25 @@ class _WelcomePageState extends State<WelcomePage>
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<LoginProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          CarouselSlider.builder(
-            itemCount: 1,
-            itemBuilder: (context, index, realIndex) {
+          CarouselSlider(
+            items: videoPaths.map((path) {
+              int index = videoPaths.indexOf(path);
               return GestureDetector(
                 onTap: () => _onVideoTap(index),
                 child: Chewie(
                   controller: _chewieControllers[index],
                 ),
               );
-            },
+            }).toList(),
             carouselController: _carouselController,
             options: CarouselOptions(
+              autoPlay: false,
+              //autoPlayInterval: Duration(seconds: 100),
               onPageChanged: (index, reason) {
                 setState(() {
                   _currentPage = index;
@@ -124,7 +131,6 @@ class _WelcomePageState extends State<WelcomePage>
               },
               height: double.maxFinite,
               aspectRatio: 1,
-              autoPlay: false,
               enlargeCenterPage: true,
               disableCenter: true,
               viewportFraction:
@@ -133,127 +139,240 @@ class _WelcomePageState extends State<WelcomePage>
             ),
           ),
           // Overlay with gradient and content
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.4),
-                  Colors.black.withOpacity(0.8),
-                ],
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  // Animated welcome text
-                  AnimatedTextWidget(
-                    text: 'Welcome to\nTUNi Club',
-                    style: TextStyle(
-                      fontSize: 36.0,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10.0,
-                          color: Colors.black.withOpacity(0.5),
-                          offset: Offset(3.0, 3.0),
-                        ),
-                      ],
-                      decoration:
-                          TextDecoration.none, // Remove underline decoration
-                      foreground: Paint()
-                        ..shader = LinearGradient(
-                          colors: [
-                            Colors.purpleAccent,
-                            Colors.deepPurpleAccent,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          stops: [0.0, 1.0],
-                        ).createShader(Rect.fromLTWH(
-                            0.0, 0.0, 200.0, 70.0)), // Gradient text color
-                    ),
-                    duration: Duration(milliseconds: 1200),
-                    curve: Curves.easeOutCubic,
-                  ),
-                  SizedBox(height: 20.0),
-                  // Description text
-                  Text(
-                    "Life isn't perfect, but your outfit can be!\nStyle is a way to say who you are without having to speak",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 204, 231, 95),
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          color: Colors.black.withOpacity(0.5),
-                          offset: Offset(2.0, 2.0),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  SizedBox(height: 20.0),
-                  // Get Started button
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigate to the next screen or perform action
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LogInPage(),
-                        ),
-                        (route) => false,
-                      );
-                    },
-                    child: Text('Get Started'),
-                  ),
-                  SizedBox(height: 10.0), // Spacer
-
-                  // Login with Phone button
-                  TextButton(
-                    onPressed: () {
-                      // Navigate to login with phone screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PhoneAuth()),
-                      );
-                    },
-                    child: Text(
-                      'Login with Phone Number',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
-
-                  // Continue as Guest button
-                  // TextButton(
-                  //   onPressed: () {
-                  //     // Navigate to home screen as guest
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) => BottomNavBarPage()),
-                  //     );
-                  //   },
-                  //   child: Text(
-                  //     'Continue as Guest',
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //       fontSize: 16.0,
-                  //     ),
-                  //   ),
+          Positioned.fill(
+            bottom: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topLeft,
+                  //   end: Alignment.bottomCenter,
+                  //   colors: [
+                  //     Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
+                  //     Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
+                  //   ],
                   // ),
-                ],
+                  ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.only(top: 10.0, left: 00.0, right: 00.0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        // Color.fromRGBO(131, 58, 180, 0.7),  // Instagram purple with medium opacity
+                        // Color.fromRGBO(253, 29, 29, 0.6),   // Instagram red with slightly lower opacity
+                        Color.fromRGBO(255, 255, 255,
+                            0), // Instagram orange with even lower opacity
+                        Color.fromRGBO(255, 255, 255,
+                            0.4), // Instagram orange with slightly darker opacity
+                        Color.fromRGBO(106, 84, 84,
+                            0.29), // Instagram red with darker opacity
+                        Color.fromRGBO(109, 101, 114, 0.5),
+                        Color.fromRGBO(26, 15, 33,
+                            1), // Instagram purple with medium opacity
+                        Color.fromRGBO(97, 8, 93,
+                            1), // Instagram purple with darkest opacity
+                      ],
+
+                      // colors: [
+                      //   Color.fromRGBO(0, 0, 0, 0.498), // Darker color with 50% opacity at the top
+                      //   Color.fromRGBO(85, 85, 85, 0.8), // Slightly lighter color with 80% opacity
+                      // ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      const SizedBox(height: 20.0),
+//number textfiled
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        child: TextField(
+                          controller: phoneController,
+                          keyboardType: TextInputType.phone,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 233, 226, 226),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                          decoration: InputDecoration(
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: Text(
+                                '+91',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 19.0,
+                                ),
+                              ),
+                            ),
+                            prefixIconConstraints: const BoxConstraints(
+                                minWidth: 0,
+                                minHeight:
+                                    0), // Allows the icon to be centered vertically
+                            hintText: 'Enter your number',
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 14.0,
+                            ),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 211, 203, 203),
+                              ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 208, 202, 202),
+                              ),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 227, 57, 227),
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                          ),
+                        ),
+                      ),
+
+                      //SizedBox(height: 10.0),
+
+                      // Get OTP button
+                      ElevatedButton(
+                        //       color: Colors.pink, // Text color (Instagram color)
+
+                        // padding: EdgeInsets.zero,
+                        child: const Text(
+                          "Get OTP",
+                          style: TextStyle(color: Colors.pink),
+                        ),
+                        onPressed: () async {
+                          try {
+                            String? validationMessage =
+                                _validatePhoneNumber1(phoneController.text);
+
+                            print(validationMessage);
+                            if (validationMessage == null) {
+                              final phoneNumber =
+                                  countryCode + phoneController.text;
+                              await userProvider.signInWithPhone(
+                                  phoneNumber, context);
+                            }
+                          } catch (e) {
+                            throw e.toString();
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10.0),
+
+                      TextButton(
+                        onPressed: () async {
+                          // Navigate to home screen as guest
+                          try {
+                            await userProvider.signInAnonymously(context);
+
+                            _videoControllers.clear();
+                          } on FirebaseAuthException catch (e) {
+                            switch (e.code) {
+                              case "operation-not-allowed":
+                                break;
+                              default:
+                            }
+                          }
+                        },
+                        child: const Text(
+                          'Continue as Guest',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+
+                      TextButton(
+                        onPressed: () async {
+                          // GoogleSignInProvider googleAuthProvider =
+                          //     GoogleSignInProvider();
+                          // googleAuthProvider.signInWithGoogle().then((value) {
+                          //   ReferralProvider refferalProvider =
+                          //       ReferralProvider();
+                          //   final code = refferalProvider.(8);
+                          //   print(code);
+                          //   if (value != null) {
+                          //     // sendEmail(name: '', senderEmail: '');
+                          //     Navigator.pushReplacement(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //         builder: (context) => const BottomNavBarPage(
+                          //           passedIndex: 10,
+                          //         ),
+                          //       ),
+                          //     );
+                          //   }
+                          // });
+                          //navigating to sign-up
+
+                          // GoogleSignInProvider googleAuthProvider = GoogleSignInProvider();
+                          // googleAuthProvider.signInWithGoogle().then((value) {
+                          //   RefferalProvider refferalProvider = RefferalProvider();
+                          //   final code = refferalProvider.generateRandomCode(8);
+                          //   print(code);
+                          //   if (value != null) {
+                          //     // sendEmail(name: '', senderEmail: '');
+                          //     Navigator.pushReplacement(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (context) => const BottomNavBarPage(
+                          //                   passedIndex: 10,
+                          //                 )));
+                          //   }
+                          // });
+                          await userProvider.signInWithGoogle(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'OR CONNECT WITH',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              const SizedBox(
+                                  width:
+                                      10.0), // Adjust spacing between text and icons as needed
+                              InkWell(
+                                onTap: () async {
+                                  await userProvider.signInWithGoogle(context);
+                                },
+                                child: Image.asset(
+                                  'Assets/home_page/google_logo.png', // Replace with your actual image asset path
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const SizedBox(width: 10.0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -263,68 +382,24 @@ class _WelcomePageState extends State<WelcomePage>
   }
 }
 
-class AnimatedTextWidget extends StatefulWidget {
-  final String text;
-  final TextStyle style;
-  final Duration duration;
-  final Curve curve;
-
-  const AnimatedTextWidget({
-    required this.text,
-    required this.style,
-    this.duration = const Duration(milliseconds: 500),
-    this.curve = Curves.linear,
-  });
-
-  @override
-  _AnimatedTextWidgetState createState() => _AnimatedTextWidgetState();
+void _showSnackBar(String message, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+    ),
+  );
 }
 
-class _AnimatedTextWidgetState extends State<AnimatedTextWidget>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-  late String _displayText;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _controller,
-      curve: widget.curve,
-    ));
-    _displayText = widget.text.split('\n').join(' ');
-
-    _controller.forward();
-
-    _animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          _displayText = widget.text;
-        });
-      }
-    });
+String? _validatePhoneNumber1(String phoneNumber) {
+  if (phoneNumber.isEmpty) {
+    return "Please enter a phone number.";
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  String phoneNumberDigits = phoneNumber.replaceAll(RegExp(r'\D'), '');
+
+  if (phoneNumberDigits.length != 10) {
+    return "Phone number must have 10 digits.";
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _animation,
-      child: Text(
-        _displayText,
-        style: widget.style,
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
+  return null;
 }

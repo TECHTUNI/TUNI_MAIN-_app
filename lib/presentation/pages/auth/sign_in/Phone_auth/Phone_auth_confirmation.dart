@@ -131,16 +131,19 @@ class _PhoneAuthState extends State<PhoneAuth> {
                                     },
                                     codeSent: (String verificationId,
                                         int? resendToken) {
-                                      Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) =>
-                                                OtpVerificationPage(
-                                                    phoneNumber:
-                                                        phoneController.text,
-                                                    verificationId:
-                                                        verificationId),
-                                          ));
+                                      // Navigator.push(
+                                      //     context,
+                                      // CupertinoPageRoute(
+                                      //   builder: (context) =>
+                                      //       OtpVerificationPage(
+                                      //           phoneNumber:
+                                      //               phoneController.text,
+                                      //           verificationId:
+                                      //               verificationId,
+                                      //               onVerificationCompleted: ,
+
+                                      //               ),
+                                      // ));
                                     },
                                     codeAutoRetrievalTimeout:
                                         (String verificationId) {},
@@ -286,16 +289,17 @@ class _PhoneAuthState extends State<PhoneAuth> {
                                         (FirebaseAuthException e) {},
                                     codeSent: (String verificationId,
                                         int? resendToken) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                OtpVerificationPage(
-                                                    phoneNumber:
-                                                        phoneController.text,
-                                                    verificationId:
-                                                        verificationId),
-                                          ));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           OtpVerificationPage(
+                                      //               phoneNumber:
+                                      //                   phoneController.text,
+                                      //               verificationId:
+                                      //                   verificationId
+                                      //                   ),
+                                      //     ));
                                     },
                                     codeAutoRetrievalTimeout:
                                         (String verificationId) {},

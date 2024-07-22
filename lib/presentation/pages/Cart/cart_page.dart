@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/provider/cart_provider.dart';
 import 'cart_refactor.dart';
@@ -15,7 +15,7 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   final User? user = FirebaseAuth.instance.currentUser;
   bool _isLoadingTimedOut = false;
-
+  bool isComboAdded = false;
   List<String> ids = [];
 
   @override
@@ -24,7 +24,16 @@ class _CartPageState extends State<CartPage> {
     if (user != null) {
       Future.microtask(() {
         Provider.of<CartProvider>(context, listen: false)
-            .fetchCartItems(userId: user!.uid);
+            .fetchCartItems(userId: user!.uid)
+            .then((_) {
+          final cartProvider =
+              Provider.of<CartProvider>(context, listen: false);
+          bool comboInCart = cartProvider.cartItemList.any(
+              (item) => item.comboDocId != null && item.comboDocId!.isNotEmpty);
+          setState(() {
+            isComboAdded = comboInCart;
+          });
+        });
       });
     }
 
@@ -43,16 +52,27 @@ class _CartPageState extends State<CartPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.systemGrey5,
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text("CART"),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("CART"),
+        centerTitle: true,
       ),
-      child: Consumer<CartProvider>(
+      body: Consumer<CartProvider>(
         builder: (context, cartProvider, child) {
           if (user == null) {
             return const Center(child: Text('You are not logged in'));
           }
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            bool comboInCart = cartProvider.cartItemList.any((item) =>
+                item.comboDocId != null && item.comboDocId!.isNotEmpty);
+            if (comboInCart != isComboAdded) {
+              setState(() {
+                isComboAdded = comboInCart;
+              });
+            }
+          });
 
           if (cartProvider.cartItemList.isEmpty) {
             if (_isLoadingTimedOut) {
@@ -63,7 +83,7 @@ class _CartPageState extends State<CartPage> {
               return Center(
                 child: user!.isAnonymous
                     ? const Text('You are using Guest Account')
-                    : const CupertinoActivityIndicator(),
+                    : const CircularProgressIndicator(),
               );
             }
           }
@@ -88,8 +108,8 @@ class _CartPageState extends State<CartPage> {
                         value.comboItemCountCustomer;
                     final Map<String, dynamic>? comboProductDetails =
                         value.comboProductDetails;
-                    final List<dynamic>? comboSelectedItems =
-                        value.comboSelectedItems;
+                    // final List<dynamic>? comboSelectedItems =
+                    //     value.comboSelectedItems;
                     final String? comboDocId = value.comboDocId;
 
                     if (id != null && id.isNotEmpty) {
@@ -105,7 +125,7 @@ class _CartPageState extends State<CartPage> {
                         productColor: color,
                         productPrice: price!,
                         userId: userId,
-                        cartProductId: id + (sizecustomers ?? 'N/A'),
+                        cartProductId: id + sizecustomers,
                         productItemCountCustomer: itemCountCustomer ?? 0,
                         index: index,
                         cartList: cartProvider.cartItemList,
@@ -138,6 +158,21 @@ class _CartPageState extends State<CartPage> {
                   },
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              //   child: Container(
+              //     height: 200,
+              //     width: screenWidth,
+              //     decoration: BoxDecoration(
+              //       color: CupertinoColors.systemGrey,
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: Column(
+              //       children: [],
+              //     ),
+              //   ),
+              // ),
+              SizedBox(height: 10),
               Consumer<CartProvider>(
                 builder: (context, value, child) {
                   int totalPrice = value.calculateTotalPrice();
@@ -148,49 +183,47 @@ class _CartPageState extends State<CartPage> {
                       width: double.infinity,
                       child: Visibility(
                         visible: cartProvider.cartItemList.isNotEmpty,
-                        child: CupertinoButton.filled(
+                        child: ElevatedButton(
                           child: Text(
-                            "CONTINUE - \$${totalPrice.toString()}",
+                            "CONTINUE - ₹ ${totalPrice.toString()} /-",
                             style: const TextStyle(fontSize: 15),
                           ),
                           onPressed: () {
-                            showCupertinoDialog(
+                            showDialog(
                               context: context,
                               builder: (context) {
-                                return CupertinoAlertDialog(
+                                return AlertDialog(
                                   title: const Text('CART'),
                                   content: Text(
-                                      "Your cart total is ₹${totalPrice.toString()} Proceed to checkout?"),
+                                    "Your cart total is ₹${totalPrice.toString()} Proceed to checkout?",
+                                  ),
                                   actions: [
-                                    CupertinoDialogAction(
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
                                       child: const Text(
                                         "No",
-                                        style: TextStyle(
-                                            color: CupertinoColors.systemRed),
+                                        style: TextStyle(color: Colors.red),
                                       ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
                                     ),
-                                    CupertinoDialogAction(
-                                      child: const Text("CHECKOUT"),
+                                    TextButton(
                                       onPressed: () {
-                                        debugPrint(
-                                            "cart page: ${value.cartItemList.toString()}");
+                                        debugPrint(isComboAdded.toString());
                                         Navigator.pop(context);
                                         Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  SelectAddress(
-                                                orderList: value.cartItemList,
-                                                total: totalPrice,
-                                                ids: ids,
-                                              ),
-                                            ));
-                                        debugPrint(
-                                            "ids in cart passing to delete: ${ids.toString()}");
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SelectAddress(
+                                              orderList: value.cartItemList,
+                                              total: totalPrice,
+                                              ids: ids,
+                                              isComboAdded: isComboAdded,
+                                            ),
+                                          ),
+                                        );
                                       },
+                                      child: const Text("CHECKOUT"),
                                     ),
                                   ],
                                 );
@@ -203,6 +236,7 @@ class _CartPageState extends State<CartPage> {
                   );
                 },
               ),
+              SizedBox(height: 20)
             ],
           );
         },

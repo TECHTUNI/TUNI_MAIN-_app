@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
 
 import '../../../auth/sign_in/login.dart';
 
@@ -42,7 +43,7 @@ class AndroidAnonymousUserProfilePage extends StatelessWidget {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LogInPage(),
+                        builder: (context) => WelcomePage(),
                       ),
                       (route) => false);
                 },

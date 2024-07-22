@@ -19,7 +19,7 @@ class IosAnonymousUserProfilePage extends StatelessWidget {
             height: MediaQuery.of(context).size.height * .2,
           ),
           const CircleAvatar(
-            backgroundColor: CupertinoColors.black,
+            // backgroundColor: CupertinoColors.black,
             radius: 70,
             child: Icon(
               CupertinoIcons.person_crop_circle_fill_badge_exclam,
@@ -38,12 +38,12 @@ class IosAnonymousUserProfilePage extends StatelessWidget {
               ),
               onPressed: () {
                 FirebaseAuth.instance.currentUser?.delete();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => LogInPage(),
-                    ),
-                    (route) => false);
+                // Navigator.pushAndRemoveUntil(
+                //     context,
+                //     CupertinoPageRoute(
+                //       builder: (context) => LogInPage(),
+                //     ),
+                //     (route) => false);
               })
         ],
       ),

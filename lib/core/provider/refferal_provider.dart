@@ -1,41 +1,49 @@
-import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class RefferalProvider extends ChangeNotifier {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String collectionPath = 'referrals';
+class ReferralProvider with ChangeNotifier {
+  String? referralCode;
+  int rewardAmount = 0;
+  bool isLoading = true;
 
-  String generateRandomCode(int length) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    Random random = Random();
-    return String.fromCharCodes(Iterable.generate(
-      length,
-      (_) => chars.codeUnitAt(random.nextInt(chars.length)),
-    ));
-  }
+  Future<void> fetchReferralData() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
 
-  Future<void> addReferral(Map<String, dynamic> referralData) async {
     try {
-      String referralCode = generateRandomCode(8);
-      referralData['referralCode'] = referralCode;
-      await _firestore.collection(collectionPath).add(referralData);
+      // Fetch referral code
+      final referralSnapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .collection("personal_details")
+          .doc("details")
+          .get();
+
+      if (referralSnapshot.exists) {
+        referralCode = referralSnapshot.data()!["referralCode"];
+      }
+
+      // Fetch reward amount
+      if (referralCode != null) {
+        final referralCountSnapshot = await FirebaseFirestore.instance
+            .collection("referrals")
+            .doc(referralCode)
+            .collection("Use_Referal_Count")
+            .limit(1)
+            .get();
+
+        if (referralCountSnapshot.docs.isNotEmpty) {
+          final document = referralCountSnapshot.docs.first;
+          rewardAmount = document["rewardAmount"] ?? 0;
+        }
+      }
+
+      isLoading = false;
       notifyListeners();
     } catch (e) {
-      debugPrint("Error adding referral: $e");
-    }
-  }
-
-  Stream<QuerySnapshot> getReferrals() {
-    return _firestore.collection(collectionPath).snapshots();
-  }
-
-  Future<void> deleteReferral(String docId) async {
-    try {
-      await _firestore.collection(collectionPath).doc(docId).delete();
+      print('Error fetching referral data: $e');
+      isLoading = false;
       notifyListeners();
-    } catch (e) {
-      debugPrint("Error deleting referral: $e");
     }
   }
 }

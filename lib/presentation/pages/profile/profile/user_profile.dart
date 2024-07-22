@@ -1,342 +1,336 @@
-import 'dart:io';
-
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:tuni/presentation/pages/profile/profile/user_profile_add.dart';
-import 'package:tuni/presentation/pages/profile/profile/user_profile_edit.dart';
 import 'package:tuni/presentation/pages/profile/profile/user_profile_refactor.dart';
+import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
 
-class UserProfile extends StatelessWidget {
-  UserProfile({super.key});
-
-  final User? user = FirebaseAuth.instance.currentUser;
+class UserProfile extends StatefulWidget {
+  const UserProfile({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+  _UserProfileState createState() => _UserProfileState();
+}
 
+class _UserProfileState extends State<UserProfile> {
+  final User? user = FirebaseAuth.instance.currentUser;
+  DateTime? date;
+  String dobButtonText = "Select Date of Birth";
+
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController refferalcode = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
     final userId = user!.uid;
-    final userEmail = user!.email;
-    final firestore = FirebaseFirestore.instance
+    final docSnapshot = await FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
         .collection("personal_details")
-        .doc('personal_details')
-        .snapshots();
-    String firstName;
-    String lastName;
-    String number;
-    String gender;
-    int day;
-    int month;
-    int year;
+        .doc("details")
+        .get();
 
-    return Platform.isAndroid
-        ? Scaffold(
-            backgroundColor: Colors.grey.shade300,
-            appBar: AppBar(
-              foregroundColor: Colors.black,
-              title: const Text(
-                'MY PROFILE',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 2,
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data() as Map<String, dynamic>? ?? {};
+      final fetchedDate = data["dob"] ?? "Add DOB";
+
+      setState(() {
+        dobButtonText = fetchedDate;
+        date = fetchedDate != "Add DOB" ? parseDate(fetchedDate) : null;
+        firstNameController.text = data["first_name"] ?? "";
+        lastNameController.text = data["last_name"] ?? "";
+        mobileNumberController.text = data["mobileNumber"] ?? "";
+        emailController.text = data["email"] ?? "";
+        refferalcode.text = data["referralCode"] ?? "";
+      });
+    }
+  }
+
+  DateTime parseDate(String dateStr) {
+    final parts = dateStr.split('-');
+    if (parts.length != 3) {
+      throw FormatException('Invalid date format', dateStr);
+    }
+    final month = int.parse(parts[0]);
+    final day = int.parse(parts[1]);
+    final year = int.parse(parts[2]);
+    return DateTime(year, month, day);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("User Profile"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 10),
+                    Image.asset(
+                      "Assets/logo/userprofileicon.png",
+                      height: 80,
+                      width: 80,
+                    ),
+                    Text("Hey ${firstNameController.text}",
+                        style: TextStyle(fontSize: 16)),
+                  ],
                 ),
               ),
-            ),
-            body: SingleChildScrollView(
-              child: SizedBox(
-                width: screenWidth,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: StreamBuilder<DocumentSnapshot>(
-                    stream: firestore,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Text("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                        return const SizedBox(
-                            height: 500,
-                            child:
-                                Center(child: Text("No Personal data added!")));
-                      } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                        return const Text(" ");
-                      } else {
-                        final data = snapshot.data!;
-                        firstName = data["first_name"];
-                        lastName = data["last_name"];
-                        number = data["phone_number"];
-                        // gender = data["gender"];
-                        // Map<String, dynamic> dateMap = data["date"];
-                        // day = dateMap["day"];
-                        // month = dateMap["month"];
-                        // year = dateMap["year"];
-                        // final dob = "$day/$month/$year";
-
-                        return Container(
-                          height: screenHeight * .8,
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-
-                              children: [
-                                const Center(
-                                  child: CircleAvatar(
-                                    backgroundColor: CupertinoColors.black,
-                                    radius: 70,
-                                    child: Icon(
-                                      CupertinoIcons.person_crop_circle_fill_badge_exclam,
-                                      color: CupertinoColors.white,
-                                      size: 60,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                userDetailsHeadingText(text: "Email"),
-                                const SizedBox(height: 5),
-                                userDetailsDisplayingText(user!.email),
-                                const SizedBox(height: 20),
-                                userDetailsHeadingText(text: "First name"),
-                                const SizedBox(height: 5),
-                                userDetailsDisplayingText(firstName),
-                                const SizedBox(height: 20),
-                                userDetailsHeadingText(text: "Last name"),
-                                const SizedBox(height: 5),
-                                userDetailsDisplayingText(lastName),
-                                // const SizedBox(height: 20),
-                                // userDetailsHeadingText(text: "Date of birth"),
-                                // const SizedBox(height: 5),
-                                // userDetailsDisplayingText(dob),
-                                const SizedBox(height: 20),
-                                userDetailsHeadingText(text: "Number"),
-                                const SizedBox(height: 5),
-                                userDetailsDisplayingText(number),
-                                // const SizedBox(height: 20),
-                                // userDetailsHeadingText(text: "Gender"),
-                                // const SizedBox(height: 5),
-                                // userDetailsDisplayingText(gender),
-                                // const SizedBox(height: 20),
-                              ],
+              const SizedBox(height: 10),
+              const UserProfileHeadings(text: "Personal Details"),
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    UserProfileTextFields(
+                      controller: firstNameController,
+                      placeHolder: "First Name",
+                    ),
+                    const SizedBox(height: 10),
+                    UserProfileTextFields(
+                      controller: lastNameController,
+                      placeHolder: "Last Name",
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () => _showDatePicker(context),
+                          child: Text(
+                            dobButtonText,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
                             ),
                           ),
-                        );
-                      }
-                    },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              const UserProfileHeadings(text: "Contact Details"),
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    UserProfileTextFields(
+                      controller: mobileNumberController,
+                      placeHolder: "Mobile Number",
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: 10),
+                    UserProfileTextFields(
+                      controller: emailController,
+                      placeHolder: "Email Address",
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    _updateDetails();
+                  },
+                  child: const Text(
+                    "Done",
+                    style: TextStyle(fontSize: 14, color: Colors.white),
                   ),
                 ),
               ),
-            ),
-            bottomNavigationBar: StreamBuilder<DocumentSnapshot>(
-              stream: firestore,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const BottomAppBar(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return BottomAppBar(
-                    child: Text("Error: ${snapshot.error}"),
-                  );
-                } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                  return BottomAppBar(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const UserProfileAdd()));
-                      },
-                      child: const Text("Add Detail"),
-                    ),
-                  );
-                } else {
-                  return BottomAppBar(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const UserProfileEdit()));
-                      },
-                      child: const Text("Edit Details"),
-                    ),
-                  );
-                }
-              },
-            ),
-          )
-        : CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              middle: const Text("Details"),
-              trailing: StreamBuilder<DocumentSnapshot>(
-                  stream: firestore,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SizedBox(
-                          // child: CircularProgressIndicator(),
-                          );
-                    } else if (snapshot.hasError) {
-                      return SizedBox(
-                        child: Text("Error: ${snapshot.error}"),
-                      );
-                    } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                      return SizedBox(
-                          child: CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              child: const Icon(CupertinoIcons.add),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => const UserProfileAdd(),
-                                    ));
-                              }));
-                    } else {
-                      return SizedBox(
-                          child: CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              child: const Icon(CupertinoIcons.pen),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => const UserProfileEdit(),
-                                    ));
-                              }));
-                    }
-                  }),
-            ),
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: StreamBuilder<DocumentSnapshot>(
-                  stream: firestore,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CupertinoActivityIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text("Error: ${snapshot.error}");
-                    } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                      return const SizedBox(
-                          height: 500,
-                          child:
-                              Center(child: Text("No Personal data added!")));
-                    } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                      return const Text(" ");
-                    } else {
-                      final data = snapshot.data!;
-                      firstName = data["first_name"];
-                      lastName = data["last_name"];
-                      number = data["phone_number"];
-                      String? name =
-                          "${data["first_name"] ?? ""} ${data["last_name"] ?? ""}";
-                      // gender = data["gender"];
-                      // Map<String, dynamic> dateMap = data["date"];
-                      // day = dateMap["day"];
-                      // month = dateMap["month"];
-                      // year = dateMap["year"];
-                      // final dob = "$day/$month/$year";
-                      return SizedBox(
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenHeight * .05),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // const Row(
-                              //   children: [
-                              //     CircleAvatar(
-                              //       backgroundColor: Colors.black,
-                              //       radius: 40,
-                              //       child: Icon(
-                              //         CupertinoIcons.person_alt,
-                              //         size: 40,
-                              //         color: Colors.white,
-                              //       ),
-                              //     ),
-                              //     SizedBox(width: 20),
-                              //     SizedBox(
-                              //       height: 60,
-                              //       child: Column(
-                              //           mainAxisAlignment: MainAxisAlignment.start,
-                              //           crossAxisAlignment:
-                              //               CrossAxisAlignment.start,
-                              //           children: [
-                              //
-                              //           ]),
-                              //     )
-                              //   ],
-                              // ),
-                              const SizedBox(height: 40),
-
-                              const CircleAvatar(
-                                backgroundColor: Colors.black,
-                                radius: 40,
-                                child: Icon(
-                                  CupertinoIcons.person_alt,
-                                  size: 40,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 30),
-                              Center(
-                                child: Text(
-                                  name.toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: screenWidth * .07,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 2),
-                                ),
-                              ),
-                              const SizedBox(height: 15),
-
-                            
-                              const SizedBox(height: 15),
-                              // userDetailsHeadingText(text: "Email"),
-                              // const SizedBox(height: 5),
-                              // userDetailsDisplayingText(user!.email),
-                              // const SizedBox(height: 10),
-                              // userDetailsHeadingText(text: "First name"),
-                              // const SizedBox(height: 5),
-                              // userDetailsDisplayingText(firstName),
-                              // const SizedBox(height: 10),
-                              // userDetailsHeadingText(text: "Last name"),
-                              // const SizedBox(height: 5),
-                              // userDetailsDisplayingText(lastName),
-                              // const SizedBox(height: 10),
-                              // userDetailsHeadingText(text: "Number"),
-                              // const SizedBox(height: 10),
-                              userDetailsDisplayingText(number),
-
-                              // userDetailsHeadingText(text: "Date of birth"),
-                              // const SizedBox(height: 5),
-                              // userDetailsDisplayingText(dob),
-                              //
-                              // const SizedBox(height: 5),
-                              // const SizedBox(height: 10),
-                              // userDetailsHeadingText(text: "Gender"),
-                              // const SizedBox(height: 5),
-                              // userDetailsDisplayingText(gender),
-                              // const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
+              const SizedBox(height: 10),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    _deleteAccount();
                   },
-                )));
+                  child: const Text(
+                    "Delete Account",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
-  SizedBox buildSizedBox() => const SizedBox(height: 15);
+  void _showDatePicker(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate:
+          date ?? DateTime.now().subtract(const Duration(days: 365 * 16)),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != date) {
+      setState(() {
+        date = picked;
+        dobButtonText = '${picked.month}-${picked.day}-${picked.year}';
+      });
+    }
+  }
+
+  void _updateDetails() {
+    if (firstNameController.text.isNotEmpty &&
+        lastNameController.text.isNotEmpty &&
+        dobButtonText != "Select Date of Birth" &&
+        mobileNumberController.text.isNotEmpty &&
+        emailController.text.isNotEmpty) {
+      if (mobileNumberController.text.length == 10) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(user!.uid)
+            .collection("personal_details")
+            .doc("details")
+            .set({
+          "first_name": firstNameController.text.trim(),
+          "last_name": lastNameController.text.trim(),
+          "dob": dobButtonText,
+          "email": emailController.text.trim(),
+          "mobileNumber": mobileNumberController.text.trim(),
+          "referralCode": refferalcode.text.trim(),
+        }).then((value) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Details Updated Successfully'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("OK"),
+                  ),
+                ],
+              );
+            },
+          );
+        });
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Mobile Number should be 10 digits"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Please fill all details properly"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  void _deleteAccount() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WelcomePage(),
+      ),
+      (route) => false,
+    );
+    FirebaseAuth.instance.currentUser?.delete();
+  }
+}
+
+class UserProfileTextFields extends StatelessWidget {
+  final TextEditingController controller;
+  final String placeHolder;
+  final TextInputType keyboardType;
+
+  const UserProfileTextFields({
+    required this.controller,
+    required this.placeHolder,
+    this.keyboardType = TextInputType.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        hintText: placeHolder,
+      ),
+    );
+  }
+}
+
+class UserProfileHeadings extends StatelessWidget {
+  final String text;
+
+  const UserProfileHeadings({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+      ),
+    );
+  }
 }

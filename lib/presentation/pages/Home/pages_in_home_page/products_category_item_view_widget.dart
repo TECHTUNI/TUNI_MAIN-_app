@@ -46,7 +46,7 @@ class ProductsItemViewState extends State<ProductsItemView> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 0,
-                childAspectRatio: 0.55,
+                childAspectRatio: 0.8,
               ),
               itemCount: widget.productList.length,
               itemBuilder: (BuildContext context, int index) {

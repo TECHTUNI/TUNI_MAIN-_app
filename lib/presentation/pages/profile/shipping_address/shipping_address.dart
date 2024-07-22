@@ -610,7 +610,7 @@ class ShippingAddress extends StatelessWidget {
                                             text: snapshot.data!
                                                 .docs[index]['phone_number']
                                                 .toString()
-                                                .toUpperCase(),
+                                                .toLowerCase(),
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 letterSpacing: 1),

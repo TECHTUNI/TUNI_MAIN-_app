@@ -352,13 +352,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) => LogInPage(),
-                                        ),
-                                        (route) => false,
-                                      );
+                                      // Navigator.pushAndRemoveUntil(
+                                      //   context,
+                                      //   CupertinoPageRoute(
+                                      //     builder: (context) => LogInPage(),
+                                      //   ),
+                                      //   (route) => false,
+                                      // );
                                     },
                                     child: const Text(
                                       "Sign In",

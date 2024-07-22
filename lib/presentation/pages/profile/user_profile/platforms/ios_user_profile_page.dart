@@ -57,12 +57,12 @@ class IosUserProfilePage extends StatelessWidget {
                     if (snapshot.hasData && snapshot.data!.exists) {
                       var data = snapshot.data!.data() as Map<String, dynamic>;
                       name =
-                      "${data["first_name"] ?? ""} ${data["last_name"] ?? ""}";
+                          "${data["first_name"] ?? ""} ${data["last_name"] ?? ""}";
                       String? firstName = data["first_name"];
                       String? lastName = data["last_name"];
 
                       initials =
-                      "${firstName?.isNotEmpty == true ? firstName![0] : ""}${lastName?.isNotEmpty == true ? lastName![0] : ""}";
+                          "${firstName?.isNotEmpty == true ? firstName![0] : ""}${lastName?.isNotEmpty == true ? lastName![0] : ""}";
                     }
                     return Row(
                       children: [
@@ -156,7 +156,7 @@ class IosUserProfilePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (context) => const ShippingAddress(),
+                        builder: (context) => ShippingAddress(),
                       ));
                 },
                 leading: const Icon(
@@ -187,13 +187,13 @@ class IosUserProfilePage extends StatelessWidget {
                                 child: const Text("No")),
                             CupertinoDialogAction(
                                 onPressed: () {
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => LogInPage(),
-                                    ),
-                                        (route) => false,
-                                  );
+                                  // Navigator.pushAndRemoveUntil(
+                                  //   context,
+                                  //   CupertinoPageRoute(
+                                  //     builder: (context) => LogInPage(),
+                                  //   ),
+                                  //   (route) => false,
+                                  // );
                                 },
                                 child: const Text("Logout",
                                     style: TextStyle(
@@ -244,12 +244,12 @@ class IosUserProfilePage extends StatelessWidget {
                                 child: const Text("No")),
                             CupertinoDialogAction(
                                 onPressed: () {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) => LogInPage(),
-                                      ),
-                                          (route) => false);
+                                  // Navigator.pushAndRemoveUntil(
+                                  //     context,
+                                  //     CupertinoPageRoute(
+                                  //       builder: (context) => LogInPage(),
+                                  //     ),
+                                  //     (route) => false);
                                   context
                                       .read<HomeBloc>()
                                       .add(OnDeleteUserEvent());

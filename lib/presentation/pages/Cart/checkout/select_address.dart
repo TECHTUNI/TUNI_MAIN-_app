@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tuni/core/model/cart_model.dart';
 
@@ -13,12 +14,14 @@ class SelectAddress extends StatefulWidget {
   final List<CartItemModel> orderList;
   final int total;
   final List<String> ids;
+  final bool isComboAdded;
 
   const SelectAddress(
       {super.key,
       required this.orderList,
       required this.total,
-      required this.ids});
+      required this.ids,
+      required this.isComboAdded});
 
   @override
   State<SelectAddress> createState() => _SelectAddressState();
@@ -31,6 +34,7 @@ class _SelectAddressState extends State<SelectAddress> {
       orderList: widget.orderList,
       total: widget.total,
       ids: widget.ids,
+      isComboAdded: widget.isComboAdded,
     );
     super.dispose();
   }
@@ -358,11 +362,11 @@ class _SelectAddressState extends State<SelectAddress> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CheckOutFromCartPage(
-                                address: address,
-                                orderList: widget.orderList,
-                                total: widget.total,
-                                ids: widget.ids,
-                              ),
+                                  address: address,
+                                  orderList: widget.orderList,
+                                  total: widget.total,
+                                  ids: widget.ids,
+                                  isComboAdded: widget.isComboAdded),
                             ));
                       } else {
                         ScaffoldMessenger.of(context)

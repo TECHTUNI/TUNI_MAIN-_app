@@ -279,10 +279,10 @@ class _AllCategoryState extends State<AllCategory> {
                 },
               ),
               ListTile(
-                title: const Text('Collor'),
+                title: const Text('collar'),
                 onTap: () {
                   setState(() {
-                    selectedFilter = 'collor';
+                    selectedFilter = 'collar';
                   });
                   Navigator.pop(context);
                 },

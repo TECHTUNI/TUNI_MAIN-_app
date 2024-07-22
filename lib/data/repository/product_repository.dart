@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuni/core/model/product_category_model.dart';
+import 'package:tuni/presentation/pages/combo/combo_detail_page.dart';
 
 class ProductRepo {
   List<ProductCategory> fullTShirt = [];
   List<ProductCategory> halfSleeve = [];
   List<ProductCategory> typeWise = [];
+  List<ComboDetailPage> comboProducts = []; // List for combo products
 
   List<String> itemTypesList = ["Pant", "Shirt", "Tshirt", "Shorts"];
   List<String> gendersList = [
@@ -166,6 +168,31 @@ class ProductRepo {
     } catch (e) {
       debugPrint('Error fetching T-shirts: $e');
 
+      throw e.toString();
+    }
+  }
+
+// }
+  Future<List<ComboDetailPage>> fetchComboProducts() async {
+    comboProducts.clear();
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection(
+              "combo_products") // Replace with your collection name for combo products
+          .get();
+
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        ComboDetailPage comboProduct = ComboDetailPage.fromJson(data);
+        print(comboProduct.comboName);
+
+        comboProducts.add(comboProduct);
+      });
+
+      return comboProducts;
+    } catch (e) {
+      print('Error fetching combo products: $e');
       throw e.toString();
     }
   }

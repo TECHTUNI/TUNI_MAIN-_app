@@ -20,11 +20,11 @@ class SignUpBottomAppBar extends StatelessWidget {
           const Text("Already a member?"),
           TextButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LogInPage(),
-                    ));
+                // Navigator.push(
+                // context,
+                // MaterialPageRoute(
+                //   builder: (context) => LogInPage(),
+                // ));
               },
               style:
                   TextButton.styleFrom(foregroundColor: Colors.grey.shade500),
@@ -95,9 +95,9 @@ class SignUpCollectingDetails extends StatelessWidget {
                   context.read<AuthBloc>().add(GoogleIconClickedEvent());
                 },
                 child: Image.asset(
-                                  'asset/icons/google_icon.png',
-                                  height: 40,
-                                )),
+                  'asset/icons/google_icon.png',
+                  height: 40,
+                )),
           ),
         )
       ],

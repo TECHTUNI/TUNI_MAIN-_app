@@ -8,9 +8,11 @@ import 'package:tuni/core/provider/Order_Histroy_Provider.dart';
 import 'package:tuni/core/provider/address_provider.dart';
 import 'package:tuni/core/provider/cart_provider.dart';
 import 'package:tuni/core/provider/combo_provider.dart';
+import 'package:tuni/core/provider/login_provider.dart';
 import 'package:tuni/core/provider/notification_provider.dart';
 import 'package:tuni/core/provider/product_provider.dart';
 import 'package:tuni/core/provider/refferal_provider.dart';
+import 'package:tuni/core/provider/tshirt_category_provider.dart';
 import 'package:tuni/firebase_options.dart';
 import 'package:tuni/presentation/bloc/address_bloc/address_bloc.dart';
 import 'package:tuni/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -43,14 +45,17 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthRepository(),
       child: MultiBlocProvider(
         providers: [
+          ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
+          ChangeNotifierProvider<TShirtCategoryProvider>(
+              create: (_) => TShirtCategoryProvider()),
           ChangeNotifierProvider<AddressProvider>(
               create: (_) => AddressProvider()),
           ChangeNotifierProvider<NotificationProvider>(
               create: (_) => NotificationProvider()),
           ChangeNotifierProvider<OrderHistoryProvider>(
               create: (_) => OrderHistoryProvider()),
-          ChangeNotifierProvider<RefferalProvider>(
-              create: (_) => RefferalProvider()),
+          ChangeNotifierProvider<ReferralProvider>(
+              create: (_) => ReferralProvider()),
           ChangeNotifierProvider<CartProvider>(create: (_) => CartProvider()),
           ChangeNotifierProvider<SelectedProductProvider>(
               create: (_) => SelectedProductProvider()),

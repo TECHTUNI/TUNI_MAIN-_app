@@ -70,12 +70,12 @@ class Ios extends StatelessWidget {
                                     onPressed: () {
                                       FirebaseAuth.instance.currentUser!
                                           .delete();
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) => LogInPage(),
-                                          ),
-                                          (route) => false);
+                                      // Navigator.pushAndRemoveUntil(
+                                      //     context,
+                                      //     CupertinoPageRoute(
+                                      //       builder: (context) => LogInPage(),
+                                      //     ),
+                                      //     (route) => false);
                                     })
                                 : CupertinoButton(
                                     padding: EdgeInsets.zero,

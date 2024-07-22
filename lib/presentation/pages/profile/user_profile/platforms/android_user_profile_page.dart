@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:tuni/core/provider/notification_provider.dart';
 import 'package:tuni/presentation/pages/refferal_page/reffaral.dart';
-
+import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
 import '../../../../bloc/home_bloc/home_bloc.dart';
 import '../../../auth/sign_in/login.dart';
 import '../../Favorites/favorite_page.dart';
@@ -42,11 +42,11 @@ class AndroidUserProfilePage extends StatelessWidget {
                       .collection("users")
                       .doc(userId)
                       .collection("personal_details")
-                      .doc('personal_details')
+                      .doc('details')
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text("Error: ${snapshot.error}");
                     }
@@ -110,8 +110,10 @@ class AndroidUserProfilePage extends StatelessWidget {
               const SizedBox(height: 20),
               ListTile(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UserProfile()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserProfile()));
                 },
                 leading: const Icon(
                   Icons.person,
@@ -125,8 +127,10 @@ class AndroidUserProfilePage extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RefferalPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReferralPage()));
                 },
                 leading: const Icon(
                   Icons.currency_rupee,
@@ -227,7 +231,7 @@ class AndroidUserProfilePage extends StatelessWidget {
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => LogInPage(),
+                                      builder: (context) => WelcomePage(),
                                     ),
                                     (route) => false,
                                   );
@@ -260,45 +264,46 @@ class AndroidUserProfilePage extends StatelessWidget {
                 ),
               ),
               TextButton(
-                  child: const Text(
-                    "Delete Account",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text("Leaving us?"),
-                          content: const Text(
-                              "Are you sure you want to delete your account?"),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("No")),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => LogInPage(),
-                                      ),
-                                      (route) => false);
-                                  context
-                                      .read<HomeBloc>()
-                                      .add(OnDeleteUserEvent());
-                                },
-                                child: const Text(
-                                  "Delete",
-                                  style: TextStyle(color: Colors.red),
-                                )),
-                          ],
-                        );
-                      },
-                    );
-                  })
+                child: const Text(
+                  "Delete Account",
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Leaving us?"),
+                        content: const Text(
+                            "Are you sure you want to delete your account?"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("No")),
+                          TextButton(
+                              onPressed: () {
+                                // Navigator.pushAndRemoveUntil(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => LogInPage(),
+                                //     ),
+                                //     (route) => false);
+                                context
+                                    .read<HomeBloc>()
+                                    .add(OnDeleteUserEvent());
+                              },
+                              child: const Text(
+                                "Delete",
+                                style: TextStyle(color: Colors.red),
+                              )),
+                        ],
+                      );
+                    },
+                  );
+                },
+              )
             ],
           ),
         ),

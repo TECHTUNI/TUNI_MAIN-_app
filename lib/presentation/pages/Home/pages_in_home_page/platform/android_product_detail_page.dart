@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuni/presentation/pages/Cart/cart_page.dart';
+import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
 
 import '../../../../bloc/favorite_bloc/favorite_bloc.dart';
 import '../../../../bloc/home_bloc/home_bloc.dart';
@@ -34,36 +36,38 @@ class AndroidProductDetailPage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ========================================================= Product image Carousel Slide
-
+                    // Product image Carousel Slide
                     CarouselSlider(
-                        items: widget.imageUrl.map((url) {
-                          return Builder(
-                            builder: (context) {
-                              return SizedBox(
-                                height: screenHeight,
-                                width: screenWidth,
-                                child: Image.network(
-                                  url,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    } else {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        }).toList(),
-                        options: CarouselOptions(
-                            height: screenHeight * .5, viewportFraction: 1)),
-                    // ========================================================= Product Name
+                      items: widget.imageUrl.map((url) {
+                        return Builder(
+                          builder: (context) {
+                            return SizedBox(
+                              height: screenHeight,
+                              width: screenWidth,
+                              child: Image.network(
+                                url,
+                                fit: BoxFit.cover,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                      options: CarouselOptions(
+                        height: screenHeight * .5,
+                        viewportFraction: 1,
+                      ),
+                    ),
+                    // Product Name
                     SizedBox(height: screenHeight * .01),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -91,7 +95,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // ========================================================= Brand Name
+                    // Brand Name
                     SizedBox(height: screenHeight * .01),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -100,7 +104,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                         style: const TextStyle(letterSpacing: 1, fontSize: 20),
                       ),
                     ),
-                    // ========================================================= Product Color
+                    // Product Color
                     SizedBox(height: screenHeight * .02),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -118,7 +122,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                             ),
                           ])),
                     ),
-                    // ========================================================= SelectedSize
+                    // Selected Size
                     SizedBox(height: screenHeight * .02),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -131,13 +135,11 @@ class AndroidProductDetailPage extends StatelessWidget {
                         },
                       ),
                     ),
-
-                    // ========================================================= Size Selection
+                    // Size Selection
                     SizedBox(height: screenHeight * .007),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: SizedBox(
-                        // color: Colors.grey,
                         height: screenHeight * .05,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -189,8 +191,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    //========================================================== Quantity Widget
+                    // Quantity Widget
                     SizedBox(height: screenHeight * .02),
                     const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -226,9 +227,9 @@ class AndroidProductDetailPage extends StatelessWidget {
                                 ),
                                 IconButton(
                                     onPressed: () {
-                                      context
-                                          .read<HomeBloc>()
-                                          .add(IncreaseQuantityPressed(iteamscount: widget.itemCount));
+                                      context.read<HomeBloc>().add(
+                                          IncreaseQuantityPressed(
+                                              iteamscount: widget.itemCount));
                                     },
                                     icon: const Icon(Icons.add)),
                               ],
@@ -290,7 +291,8 @@ class AndroidProductDetailPage extends StatelessWidget {
                                         Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => LogInPage(),
+                                              builder: (context) =>
+                                                  WelcomePage(),
                                             ),
                                             (route) => false);
                                       },
@@ -303,7 +305,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                         icon: const Icon(Icons.favorite_border),
                       )),
                   SizedBox(
-                      width: 250,
+                      width: 150,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
@@ -327,7 +329,8 @@ class AndroidProductDetailPage extends StatelessWidget {
                                         Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => LogInPage(),
+                                              builder: (context) =>
+                                                  WelcomePage(),
                                             ),
                                             (route) => false);
                                       },
@@ -343,6 +346,19 @@ class AndroidProductDetailPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10))),
                         child: const Text('Add to Cart'),
                       )),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CartPage(), // Navigate to CartPage
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.shopping_cart),
+                    iconSize: 30,
+                  ),
                 ],
               ),
             )
@@ -405,7 +421,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                     },
                   ),
                   SizedBox(
-                      width: 250,
+                      width: 150,
                       height: 50,
                       child: BlocListener<HomeBloc, HomeState>(
                         listener: (context, state) {
@@ -445,6 +461,19 @@ class AndroidProductDetailPage extends StatelessWidget {
                           child: const Text('Add to Cart'),
                         ),
                       )),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CartPage(), // Navigate to CartPage
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.shopping_cart),
+                    iconSize: 30,
+                  ),
                 ],
               ),
             ),

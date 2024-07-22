@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tuni/core/model/product_category_model.dart';
+import 'package:tuni/presentation/pages/Home/pages_in_home_page/products_category_page.dart';
+import 'package:tuni/presentation/pages/caterory/pages_in_categories/mencat.dart';
 import 'package:tuni/presentation/pages/combo/combo.dart';
 import '../categories_refactor.dart';
 import '../pages_in_categories/category_all_page.dart';
@@ -6,14 +9,19 @@ import '../pages_in_categories/category_men_page.dart';
 import '../pages_in_categories/category_women_page.dart';
 
 class AndroidCategoryPage extends StatelessWidget {
+   
   const AndroidCategoryPage({
     super.key,
     required this.screenWidth,
-    required this.screenHeight,
+    required this.screenHeight, 
+    // required this.productList,
   });
 
   final double screenWidth;
   final double screenHeight;
+  
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +63,7 @@ class AndroidCategoryPage extends StatelessWidget {
                       screenWidth: screenWidth,
                       screenHeight: screenHeight,
                       categoryName: 'Men',
-                      className: MenCategory(),
+                      className: const MenCategory() ,
                       image: "Assets/category_page/tshirtimage.png",
                       context: context),
                   SizedBox(height: screenHeight * .02),

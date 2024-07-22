@@ -51,7 +51,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
                       .add(TabChangeEvent(tabIndex: index));
                 },
                 selectedIndex: state.tabIndex,
-                gap: 10,
+                gap: 9,
                 tabs: bottomNavItems));
       },
     );
