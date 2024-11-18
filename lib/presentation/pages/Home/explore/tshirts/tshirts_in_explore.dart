@@ -6,7 +6,7 @@ import '../../../../../core/provider/tshirt_category_provider.dart';
 import '../../../search/search_widget.dart';
 
 class TShirtsInExplore extends StatefulWidget {
-  const TShirtsInExplore({Key? key}) : super(key: key);
+  const TShirtsInExplore({super.key});
 
   @override
   TShirtsInExploreState createState() => TShirtsInExploreState();
@@ -42,7 +42,8 @@ class TShirtsInExploreState extends State<TShirtsInExplore> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start, // Align content to the top
-        crossAxisAlignment: CrossAxisAlignment.start, // Align content to the start (left)
+        crossAxisAlignment:
+            CrossAxisAlignment.start, // Align content to the start (left)
         children: [
           const SizedBox(height: 20), // Adjusted height
           SingleChildScrollView(

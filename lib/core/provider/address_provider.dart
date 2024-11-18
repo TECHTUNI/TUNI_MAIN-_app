@@ -13,7 +13,6 @@ class AddressProvider extends ChangeNotifier {
     required TextEditingController pinCodeController,
   }) async {
     try {
-      final userId = FirebaseAuth.instance.currentUser!.uid;
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
         final userId = currentUser.uid;

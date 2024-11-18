@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:tuni/presentation/pages/Home/explore/shirts/shirt_category_item_view.dart';
 import 'package:tuni/presentation/pages/Home/explore/tshirts/refactor_tshirt_in_explore.dart';
 import '../../../../../core/provider/tshirt_category_provider.dart';
-import '../../../search/search_widget.dart';
 
 class ShirtsInExplore extends StatefulWidget {
   const ShirtsInExplore({super.key});

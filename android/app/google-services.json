@@ -1,59 +1,45 @@
 {
   "project_info": {
-    "project_number": "41399715162",
-    "project_id": "tunitest-e022d",
-    "storage_bucket": "tunitest-e022d.appspot.com"
+    "project_number": "927735133078",
+    "project_id": "tuni-11553",
+    "storage_bucket": "tuni-11553.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:41399715162:android:9badb17b34b97a11161f63",
+        "mobilesdk_app_id": "1:927735133078:android:ca726f7938dfd4f06b23b7",
         "android_client_info": {
-          "package_name": "com.techtuni.tuni"
+          "package_name": "com.example.tuni"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "41399715162-ept9sirs9f6u0g719tmggniv67f4heud.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.techtuni.tuni",
-            "certificate_hash": "cf645b703b8e2ea30ff2553205d8defe91fc2fb5"
-          }
-        },
-        {
-          "client_id": "41399715162-r062fc4qqgj7bqh37j41o5ts48fhld82.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.techtuni.tuni",
-            "certificate_hash": "02ed9d057f400c4b8be58a59a9364da39ed62be4"
-          }
-        },
-        {
-          "client_id": "41399715162-dqbo1dt7mdkdd465a29j5imqe52e625m.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDXykFq1btawxYsaP6Bp2tXXSPkEN5GDLs"
+          "current_key": "AIzaSyDxOQMY_JMmZKJMn9IgzU2WFXhYpX1EMFU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "100548084011091927668",
-              "client_type": 3
-            },
-            {
-              "client_id": "41399715162-0m92f58r7h4244uebpqdmfrrv2b6vfes.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.tuni"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927735133078:android:7b490be8ccfc46236b23b7",
+        "android_client_info": {
+          "package_name": "com.example.tuni_web"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxOQMY_JMmZKJMn9IgzU2WFXhYpX1EMFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }

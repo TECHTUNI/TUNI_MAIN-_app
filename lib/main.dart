@@ -6,8 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:tuni/core/provider/Order_Histroy_Provider.dart';
 import 'package:tuni/core/provider/address_provider.dart';
+import 'package:tuni/core/provider/camera_provider.dart';
 import 'package:tuni/core/provider/cart_provider.dart';
+import 'package:tuni/core/provider/chat_provider.dart';
 import 'package:tuni/core/provider/combo_provider.dart';
+import 'package:tuni/core/provider/gp_tuni_provider.dart';
 import 'package:tuni/core/provider/login_provider.dart';
 import 'package:tuni/core/provider/notification_provider.dart';
 import 'package:tuni/core/provider/product_provider.dart';
@@ -45,6 +48,12 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthRepository(),
       child: MultiBlocProvider(
         providers: [
+          // ProductProvider
+          
+          ChangeNotifierProvider<GPTuniProvider>(create: (_) => GPTuniProvider()),
+ChangeNotifierProvider<CameraProvider>(create: (_) => CameraProvider()),
+          ChangeNotifierProvider<ChatProvider>(create: (_) => ChatProvider()),
+
           ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
           ChangeNotifierProvider<TShirtCategoryProvider>(
               create: (_) => TShirtCategoryProvider()),

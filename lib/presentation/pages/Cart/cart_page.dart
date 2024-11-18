@@ -55,7 +55,7 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("CART"),
+        title: const Text("CART"),
         centerTitle: true,
       ),
       body: Consumer<CartProvider>(
@@ -172,7 +172,7 @@ class _CartPageState extends State<CartPage> {
               //     ),
               //   ),
               // ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Consumer<CartProvider>(
                 builder: (context, value, child) {
                   int totalPrice = value.calculateTotalPrice();
@@ -185,7 +185,7 @@ class _CartPageState extends State<CartPage> {
                         visible: cartProvider.cartItemList.isNotEmpty,
                         child: ElevatedButton(
                           child: Text(
-                            "CONTINUE - ₹ ${totalPrice.toString()} /-",
+                            "CONTINUE - ₹${totalPrice.toString()} /-",
                             style: const TextStyle(fontSize: 15),
                           ),
                           onPressed: () {
@@ -236,7 +236,7 @@ class _CartPageState extends State<CartPage> {
                   );
                 },
               ),
-              SizedBox(height: 20)
+              const SizedBox(height: 20)
             ],
           );
         },

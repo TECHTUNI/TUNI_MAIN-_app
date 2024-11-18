@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/model/cart_model.dart';
-import '../../../core/model/product_order_model.dart';
 
 class CartRepository {
   final CollectionReference collection =
@@ -58,7 +57,7 @@ class CartRepository {
   }
 
   Future<void> addCartItemCount(String itemId, String selectedsize) async {
-    print(itemId + selectedsize);
+    debugPrint(itemId + selectedsize);
     final userId = FirebaseAuth.instance.currentUser!.uid;
     DocumentReference firebaseCartCollection = FirebaseFirestore.instance
         .collection('users')

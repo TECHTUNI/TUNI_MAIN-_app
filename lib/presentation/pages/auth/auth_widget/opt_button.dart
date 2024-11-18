@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tuni/presentation/pages/auth/sign_in/Phone_auth/Phone_auth_validation.dart';
 
 class OtpButton extends StatelessWidget {
   final TextEditingController phoneController;
@@ -54,7 +53,7 @@ class OtpButton extends StatelessWidget {
         foregroundColor: Colors.pink,
         backgroundColor: Colors.white,
       ),
-      child: Text(
+      child: const Text(
         'GET OTP',
         style: TextStyle(
           color: Colors.pink,

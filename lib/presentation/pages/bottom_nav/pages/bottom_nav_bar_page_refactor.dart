@@ -32,6 +32,6 @@ List<GButton> bottomNavItems = const <GButton>[
 List<Widget> bottomNavScreen = <Widget>[
   HomePage(),
   const Categories(),
-  CartPage(),
+  const CartPage(),
   ProfilePage()
 ];

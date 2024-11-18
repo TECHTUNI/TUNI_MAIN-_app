@@ -94,6 +94,7 @@ class Order {
   Order({required this.id, required this.status});
 }
 
+// ignore: use_key_in_widget_constructors
 class OrderTrackingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

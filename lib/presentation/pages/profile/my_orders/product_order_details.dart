@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuni/presentation/pages/profile/my_orders/combo_orderrefactor.dart';
 
-import 'my_orders_refactor.dart';
-
 class ProductsOrderDetailPage extends StatefulWidget {
   final String orderId;
   final dynamic imageUrl;
@@ -210,7 +208,7 @@ class ProductsOrderDetailPageState extends State<ProductsOrderDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("Shipping Address:"),
+                              const Text("Shipping Address:"),
                               const SizedBox(height: 10),
                               AddressHeadingInOrderDetails(
                                   text: widget.address["username"]),
@@ -248,5 +246,5 @@ class ProductsOrderDetailPageState extends State<ProductsOrderDetailPage> {
     );
   }
 
-  TextStyle addressInOrderDetailsTextStyle() => TextStyle(fontSize: 20);
+  TextStyle addressInOrderDetailsTextStyle() => const TextStyle(fontSize: 20);
 }

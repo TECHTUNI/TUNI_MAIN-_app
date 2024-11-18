@@ -404,19 +404,18 @@
 //   return null;
 // }
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chewie/chewie.dart';
 import 'package:provider/provider.dart';
-import 'package:tuni/core/provider/google_signin_provider.dart';
 import 'package:tuni/core/provider/login_provider.dart';
-import 'package:tuni/core/provider/refferal_provider.dart';
-import 'package:tuni/presentation/pages/bottom_nav/pages/bottom_nav_bar_page.dart';
+
 import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
 
 class WelcomePage extends StatefulWidget {
+  const WelcomePage({super.key});
+
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
@@ -548,16 +547,7 @@ class _WelcomePageState extends State<WelcomePage>
           Positioned.fill(
             bottom: 0,
             child: Container(
-              decoration: const BoxDecoration(
-                  // gradient: LinearGradient(
-                  //   begin: Alignment.topLeft,
-                  //   end: Alignment.bottomCenter,
-                  //   colors: [
-                  //     Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
-                  //     Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
-                  //   ],
-                  // ),
-                  ),
+              decoration: const BoxDecoration(),
               child: Padding(
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 00.0, right: 00.0),
@@ -565,25 +555,13 @@ class _WelcomePageState extends State<WelcomePage>
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        // Color.fromRGBO(131, 58, 180, 0.7),  // Instagram purple with medium opacity
-                        // Color.fromRGBO(253, 29, 29, 0.6),   // Instagram red with slightly lower opacity
-                        Color.fromRGBO(255, 255, 255,
-                            0), // Instagram orange with even lower opacity
-                        Color.fromRGBO(255, 255, 255,
-                            0.4), // Instagram orange with slightly darker opacity
-                        Color.fromRGBO(106, 84, 84,
-                            0.29), // Instagram red with darker opacity
+                        Color.fromRGBO(255, 255, 255, 0),
+                        Color.fromRGBO(255, 255, 255, 0.4),
+                        Color.fromRGBO(106, 84, 84, 0.29),
                         Color.fromRGBO(109, 101, 114, 0.5),
-                        Color.fromRGBO(26, 15, 33,
-                            1), // Instagram purple with medium opacity
-                        Color.fromRGBO(97, 8, 93,
-                            1), // Instagram purple with darkest opacity
+                        Color.fromRGBO(26, 15, 33, 1),
+                        Color.fromRGBO(97, 8, 93, 1),
                       ],
-
-                      // colors: [
-                      //   Color.fromRGBO(0, 0, 0, 0.498), // Darker color with 50% opacity at the top
-                      //   Color.fromRGBO(85, 85, 85, 0.8), // Slightly lighter color with 80% opacity
-                      // ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ),
@@ -593,7 +571,6 @@ class _WelcomePageState extends State<WelcomePage>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       const SizedBox(height: 20.0),
-//number textfiled
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
                         child: TextField(
@@ -623,7 +600,7 @@ class _WelcomePageState extends State<WelcomePage>
                                 minWidth: 0,
                                 minHeight:
                                     0), // Allows the icon to be centered vertically
-                            hintText: 'Enter Your Number',
+                            hintText: 'Enter Your Mobile Number',
                             hintStyle: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 14.0,
@@ -649,8 +626,6 @@ class _WelcomePageState extends State<WelcomePage>
                           ),
                         ),
                       ),
-
-                      //SizedBox(height: 10.0),
 
                       // Get OTP button
                       ElevatedButton(
@@ -723,15 +698,13 @@ class _WelcomePageState extends State<WelcomePage>
                                   fontSize: 16.0,
                                 ),
                               ),
-                              const SizedBox(
-                                  width:
-                                      10.0), // Adjust spacing between text and icons as needed
+                              const SizedBox(width: 10.0),
                               InkWell(
                                 onTap: () async {
                                   await userProvider.signInWithGoogle(context);
                                 },
                                 child: Image.asset(
-                                  'Assets/home_page/google_logo.png', // Replace with your actual image asset path
+                                  'Assets/home_page/google_logo.png',
                                   width: 25,
                                   height: 25,
                                 ),
@@ -766,10 +739,8 @@ String? _validatePhoneNumber1(String phoneNumber) {
     return "Please enter a phone number.";
   }
 
-  // Remove all non-digit characters
   String phoneNumberDigits = phoneNumber.replaceAll(RegExp(r'\D'), '');
 
-  // Check if exactly 10 digits are entered
   if (phoneNumberDigits.length != 10) {
     return "Phone number must have exactly 10 digits.";
   }

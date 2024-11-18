@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tuni/presentation/pages/auth/sign_in/Phone_auth/Phone_auth_validation.dart';
 import 'package:tuni/presentation/pages/auth/sign_in/login_refactor.dart';
 
 class PhoneAuth extends StatefulWidget {

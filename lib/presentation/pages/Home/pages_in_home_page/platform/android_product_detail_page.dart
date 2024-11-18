@@ -8,7 +8,6 @@ import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
 import '../../../../bloc/favorite_bloc/favorite_bloc.dart';
 import '../../../../bloc/home_bloc/home_bloc.dart';
 import '../../../../bloc/home_bloc/size_bloc.dart';
-import '../../../auth/sign_in/login.dart';
 import '../product_detail_page.dart';
 
 class AndroidProductDetailPage extends StatelessWidget {
@@ -292,7 +291,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  WelcomePage(),
+                                                  const WelcomePage(),
                                             ),
                                             (route) => false);
                                       },
@@ -330,7 +329,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  WelcomePage(),
+                                                  const WelcomePage(),
                                             ),
                                             (route) => false);
                                       },
@@ -352,7 +351,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CartPage(), // Navigate to CartPage
+                              const CartPage(), // Navigate to CartPage
                         ),
                       );
                     },
@@ -467,7 +466,7 @@ class AndroidProductDetailPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CartPage(), // Navigate to CartPage
+                              const CartPage(), // Navigate to CartPage
                         ),
                       );
                     },

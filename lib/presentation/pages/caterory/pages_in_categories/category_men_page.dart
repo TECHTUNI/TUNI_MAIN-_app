@@ -6,7 +6,7 @@ import '../../Home/pages_in_home_page/product_detail_page.dart';
 import '../categories_refactor.dart';
 
 class MenCategory extends StatefulWidget {
-  const MenCategory({Key? key}) : super(key: key);
+  const MenCategory({super.key});
 
   @override
   State<MenCategory> createState() => _MenCategoryState();
@@ -31,14 +31,14 @@ class _MenCategoryState extends State<MenCategory> {
       appBar: AppBar(
         title: Text(
           'Men'.toUpperCase(),
-          style: TextStyle(letterSpacing: 3, fontSize: 20),
+          style: const TextStyle(letterSpacing: 3, fontSize: 20),
         ),
       ),
       body: FutureBuilder<List<ProductCategory>>(
         future: _fetchAllProductsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -46,7 +46,7 @@ class _MenCategoryState extends State<MenCategory> {
               child: Text('Error: ${snapshot.error}'),
             );
           } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text("Currently this category is not available"),
             );
           } else {
@@ -71,7 +71,7 @@ class _MenCategoryState extends State<MenCategory> {
                   child: GridView.builder(
                     padding: const EdgeInsets.all(10),
                     gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: .75,
                     ),
@@ -179,7 +179,7 @@ class _MenCategoryState extends State<MenCategory> {
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(5)),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
@@ -222,10 +222,9 @@ class _MenCategoryState extends State<MenCategory> {
                                         child: Text(
                                           "All",
                                           style: TextStyle(
-                                            fontWeight:
-                                                selectedFilter == 'All'
-                                                    ? FontWeight.bold
-                                                    : FontWeight.normal,
+                                            fontWeight: selectedFilter == 'All'
+                                                ? FontWeight.bold
+                                                : FontWeight.normal,
                                           ),
                                         ),
                                       ),
@@ -326,7 +325,7 @@ class _MenCategoryState extends State<MenCategory> {
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(5)),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(

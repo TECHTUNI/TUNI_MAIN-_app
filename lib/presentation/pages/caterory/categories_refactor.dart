@@ -87,7 +87,7 @@ Widget categoriesItems(
     required className,
     required String categoryName,
     required String image,
-    Color? color}) {
+    Color? color, }) {
   return InkWell(
     onTap: () {
       Navigator.push(

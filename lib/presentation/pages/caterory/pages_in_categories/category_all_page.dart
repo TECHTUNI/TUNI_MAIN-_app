@@ -11,7 +11,7 @@ import '../categories_refactor.dart';
 class AllCategory extends StatefulWidget {
   final List<ProductCategory>? allProductList;
 
-  const AllCategory({this.allProductList, Key? key}) : super(key: key);
+  const AllCategory({this.allProductList, super.key});
 
   @override
   State<AllCategory> createState() => _AllCategoryState();

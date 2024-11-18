@@ -93,7 +93,7 @@ class TShirtsInHomePage extends StatelessWidget {
                       Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
-                          child: Container(
+                          child: const SizedBox(
                             height: 10,
                             width: 100,
                           )),
@@ -101,7 +101,7 @@ class TShirtsInHomePage extends StatelessWidget {
                       Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
-                          child: Container(
+                          child: SizedBox(
                             height: 10,
                             width: screenWidth * 0.95,
                           )),
@@ -109,7 +109,7 @@ class TShirtsInHomePage extends StatelessWidget {
                       Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
-                          child: Container(
+                          child: SizedBox(
                             height: 10,
                             width: screenWidth * 0.95,
                           )),

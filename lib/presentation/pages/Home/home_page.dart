@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuni/presentation/pages/Home/platforms/andoid_home_refactor.dart';
@@ -18,6 +16,7 @@ class HomePage extends StatefulWidget {
   ];
   final List<String> type = ["Pant", "Shirt", "Tshirt", "Shorts"];
 
+  // ignore: use_super_parameters
   HomePage({Key? key}) : super(key: key);
 
   @override
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProductProvider>(context, listen: false)
           .fetchallproduct("Tshirt", "full sleve");
     });

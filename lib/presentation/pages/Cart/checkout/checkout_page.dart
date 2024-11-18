@@ -569,14 +569,14 @@ class CheckOutFromCartPage extends StatelessWidget {
                         provider.applayrefferal(
                             provider.referralCodeController.text);
                       },
-                      child: Text('Verify'),
+                      child: const Text('Verify'),
                     ),
                   ],
                 ),
               ),
               if (provider.referralDetails != null) ...[
-                SizedBox(height: 16.0),
-                Text('Referral Details:'),
+                const SizedBox(height: 16.0),
+                const Text('Referral Details:'),
                 for (var detail in provider.referralDetails!)
                   Text(detail.toString()),
               ],
@@ -726,7 +726,7 @@ class CheckOutFromCartPage extends StatelessWidget {
 
   Widget buildPayButton(
       BuildContext context, double screenWidth, CheckOutProvider provider) {
-    return Container(
+    return SizedBox(
       width: screenWidth * .7,
       height: 50,
       child: ElevatedButton(

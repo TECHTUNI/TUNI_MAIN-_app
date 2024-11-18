@@ -790,7 +790,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuni/core/provider/combo_provider.dart';
 import 'package:tuni/presentation/pages/Cart/cart_page.dart';
-import 'package:tuni/presentation/pages/auth/sign_up/refactor.dart';
 import '../../../../core/model/combo_model.dart';
 import 'combo_refactor.dart';
 
@@ -1334,12 +1333,12 @@ class _ComboDetailPageState extends State<ComboDetailPage> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: Text("Success"),
-                                    content: Text(
+                                    title: const Text("Success"),
+                                    content: const Text(
                                         "Combo has been successfully added to your cart."),
                                     actions: [
                                       TextButton(
-                                        child: Text("OK"),
+                                        child: const Text("OK"),
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
@@ -1353,12 +1352,12 @@ class _ComboDetailPageState extends State<ComboDetailPage> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text(
+                                    title: const Text("Error"),
+                                    content: const Text(
                                         "Failed to add combo to your cart. Please try again."),
                                     actions: [
                                       TextButton(
-                                        child: Text("OK"),
+                                        child: const Text("OK"),
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
@@ -1396,7 +1395,7 @@ class _ComboDetailPageState extends State<ComboDetailPage> {
                       },
                       child: const Text("Add to Cart"),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     GestureDetector(
                       // onTap: () {
                       //   Navigator.push(
@@ -1412,17 +1411,17 @@ class _ComboDetailPageState extends State<ComboDetailPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  CartPage(), // Navigate to CartPage
+                                  const CartPage(), // Navigate to CartPage
                             ),
                           );
                         },
                         child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.blue,
                             ),
-                            child: Text('go to cart')),
+                            child: const Text('go to cart')),
                       ),
                     ),
                   ],
@@ -1516,7 +1515,7 @@ class _ComboDetailPageState extends State<ComboDetailPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Size'),
+          title: const Text('Select Size'),
           content: DropdownButton<String>(
             value: initialSize,
             onChanged: (String? newSize) {

@@ -1,8 +1,5 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -24,13 +21,9 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-def keystoreProperties = new Properties()
- def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-      keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-  }
+
 android {
-    namespace "com.example.tuni"
+    namespace "com.example.tuni_web"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -40,7 +33,6 @@ android {
     }
 
     kotlinOptions {
-
         jvmTarget = '1.8'
     }
 
@@ -50,34 +42,20 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.techtuni.tuni"
-        // applicationId "com.example.tuni"
-
+        applicationId "com.example.tuni_web"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        // minSdkVersion flutter.minSdkVersion
-        minSdkVersion 22
-        targetSdkVersion 34
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true
+    }
 
-    }
-    signingConfigs {
-       release {
-         keyAlias keystoreProperties['keyAlias']
-         keyPassword keystoreProperties['keyPassword']
-         storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-          storePassword keystoreProperties['storePassword']
-     }
-    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            // signingConfig signingConfigs.debug
-            signingConfig signingConfigs.release
-
+            signingConfig signingConfigs.debug
         }
     }
 }
@@ -86,18 +64,4 @@ flutter {
     source '../..'
 }
 
-// dependencies {}
-dependencies {
-  // Import the Firebase BoM
-  implementation platform('com.google.firebase:firebase-bom:32.8.1')
-
-
-  // TODO: Add the dependencies for Firebase products you want to use
-  // When using the BoM, don't specify versions in Firebase dependencies
-  implementation 'com.google.firebase:firebase-analytics'
-  implementation 'com.android.support:multidex:1.03'
-
-
-  // Add the dependencies for any other desired Firebase products
-  // https://firebase.google.com/docs/android/setup#available-libraries
-}
+dependencies {}

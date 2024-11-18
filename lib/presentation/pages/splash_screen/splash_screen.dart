@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
-import '../auth/sign_in/login.dart';
 import '../bottom_nav/pages/bottom_nav_bar_page.dart';
 
 class SplashScreen extends StatefulWidget {

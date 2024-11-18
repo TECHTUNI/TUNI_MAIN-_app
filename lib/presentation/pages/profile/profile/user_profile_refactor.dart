@@ -7,11 +7,11 @@ class UserProfileTextFormField extends StatelessWidget {
   final TextInputType keyboardType;
 
   const UserProfileTextFormField({
-    Key? key,
+    super.key,
     required this.text,
     required this.controller,
     required this.keyboardType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,8 @@ class UserProfileTextFormField extends StatelessWidget {
 
   // Input formatters
   static List<TextInputFormatter> firstNameLastNameInputFormatters = [
-    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')), // Allow letters and spaces
+    FilteringTextInputFormatter.allow(
+        RegExp(r'[a-zA-Z\s]')), // Allow letters and spaces
   ];
 
   static List<TextInputFormatter> phoneNumberInputFormatters = [

@@ -8,7 +8,7 @@ import 'package:tuni/presentation/pages/profile/user_profile/platforms/ios_is_an
 import 'package:tuni/presentation/pages/profile/user_profile/platforms/ios_user_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -45,6 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() {
     super.dispose();
-    ProfilePage();
+    const ProfilePage();
   }
 }

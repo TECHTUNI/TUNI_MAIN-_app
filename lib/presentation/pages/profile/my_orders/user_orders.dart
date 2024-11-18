@@ -5,15 +5,12 @@ import 'package:shimmer/shimmer.dart';
 import 'package:tuni/core/model/Order_history_model.dart';
 import 'package:tuni/core/provider/Order_Histroy_Provider.dart';
 import 'package:tuni/presentation/pages/profile/my_orders/combo_orderrefactor.dart';
-import 'my_orders_refactor.dart';
-import 'orders_detail.dart';
 
 class UserOrders extends StatelessWidget {
   UserOrders({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -21,13 +18,13 @@ class UserOrders extends StatelessWidget {
         Provider.of<OrderHistoryProvider>(context, listen: false);
 
     // Fetch order history items when the widget is built
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       orderHistoryProvider.fetchOrderHistoryItems(userId: userId);
     });
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Orders'),
+        title: const Text('My Orders'),
       ),
       body: Consumer<OrderHistoryProvider>(
         builder: (context, provider, child) {
@@ -89,7 +86,7 @@ class UserOrders extends StatelessWidget {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
-      period: Duration(seconds: 2),
+      period: const Duration(seconds: 2),
       child: ListView.builder(
         itemCount: 5, // Placeholder for shimmer effect
         itemBuilder: (context, index) {

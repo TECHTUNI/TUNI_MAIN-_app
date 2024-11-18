@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tuni/presentation/pages/profile/profile/user_profile_refactor.dart';
 import 'package:tuni/presentation/pages/splash_screen/welcom.dart';
 
 class UserProfile extends StatefulWidget {
@@ -68,7 +67,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Profile"),
+        title: const Text("User Profile"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -88,7 +87,7 @@ class _UserProfileState extends State<UserProfile> {
                       width: 80,
                     ),
                     Text("Hey ${firstNameController.text}",
-                        style: TextStyle(fontSize: 16)),
+                        style: const TextStyle(fontSize: 16)),
                   ],
                 ),
               ),
@@ -120,7 +119,7 @@ class _UserProfileState extends State<UserProfile> {
                           onPressed: () => _showDatePicker(context),
                           child: Text(
                             dobButtonText,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14.0,
                               color: Colors.black,
                             ),
@@ -232,7 +231,7 @@ class _UserProfileState extends State<UserProfile> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Details Updated Successfully'),
+                title: const Text('Details Updated Successfully'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -287,7 +286,7 @@ class _UserProfileState extends State<UserProfile> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (context) => WelcomePage(),
+        builder: (context) => const WelcomePage(),
       ),
       (route) => false,
     );
@@ -301,6 +300,7 @@ class UserProfileTextFields extends StatelessWidget {
   final TextInputType keyboardType;
 
   const UserProfileTextFields({
+    super.key,
     required this.controller,
     required this.placeHolder,
     this.keyboardType = TextInputType.text,
@@ -321,13 +321,13 @@ class UserProfileTextFields extends StatelessWidget {
 class UserProfileHeadings extends StatelessWidget {
   final String text;
 
-  const UserProfileHeadings({required this.text});
+  const UserProfileHeadings({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 18,
       ),

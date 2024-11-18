@@ -244,8 +244,8 @@ class ProductsCategoryInExploreState extends State<ProductsCategoryInExplore> {
   Widget build(BuildContext context) {
     return Platform.isIOS
         ? CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              middle: const Text('EXPLORE'),
+            navigationBar: const CupertinoNavigationBar(
+              middle: Text('EXPLORE'),
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -306,7 +306,7 @@ class ProductsCategoryInExploreState extends State<ProductsCategoryInExplore> {
   }
 
   Widget _buildHorizontalListView() {
-    return Container(
+    return SizedBox(
       height: 35, // Adjust height as needed
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -340,14 +340,17 @@ class ProductsCategoryInExploreState extends State<ProductsCategoryInExplore> {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(30),
-            color:
-                isSelected ? Color.fromARGB(255, 0, 3, 3) : Colors.transparent,
+            color: isSelected
+                ? const Color.fromARGB(255, 0, 3, 3)
+                : Colors.transparent,
           ),
           child: Center(
             child: Text(
               name.toUpperCase(),
               style: TextStyle(
-                color: isSelected ? Colors.white : Color.fromARGB(255, 2, 0, 0),
+                color: isSelected
+                    ? Colors.white
+                    : const Color.fromARGB(255, 2, 0, 0),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 letterSpacing: 1,
                 fontSize: isSelected ? 13 : 12,

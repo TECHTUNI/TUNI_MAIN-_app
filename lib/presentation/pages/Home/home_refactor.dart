@@ -1777,7 +1777,7 @@ class ViewAllButton extends StatelessWidget {
   final Type className;
 
   const ViewAllButton({
-    Key? key,
+    super.key,
     required this.className,
   });
 
@@ -1793,7 +1793,7 @@ class ViewAllButton extends StatelessWidget {
           ),
         );
       },
-      child: Text(
+      child: const Text(
         "View all",
         style: TextStyle(fontSize: 13),
       ),
@@ -1813,7 +1813,7 @@ class ViewAllButton extends StatelessWidget {
 }
 
 class MainPageSliverAppBar extends StatelessWidget {
-  const MainPageSliverAppBar({Key? key});
+  const MainPageSliverAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -1849,7 +1849,7 @@ class MainPageSliverAppBar extends StatelessWidget {
 
 class MainPageComboListing extends StatelessWidget {
   MainPageComboListing({
-    Key? key,
+    super.key,
     required this.screenWidth,
     required this.screenHeight,
   });
@@ -1981,7 +1981,7 @@ class MainPageComboListing extends StatelessWidget {
 Widget mainPageHeading(String text) {
   return Text(
     text.toUpperCase(),
-    style: TextStyle(
+    style: const TextStyle(
       letterSpacing: 3,
       fontSize: 15,
       fontWeight: FontWeight.w500,
@@ -1990,7 +1990,7 @@ Widget mainPageHeading(String text) {
 }
 
 TextStyle customTextStyle() {
-  return TextStyle(
+  return const TextStyle(
     letterSpacing: 1,
     fontSize: 15,
     fontWeight: FontWeight.w500,
@@ -2001,7 +2001,9 @@ FavoriteBloc favoriteBloc = FavoriteBloc();
 FavoriteRepository favoriteRepository = FavoriteRepository();
 
 class MainPageCarouselSlider extends StatelessWidget {
-  const MainPageCarouselSlider({Key? key});
+  const MainPageCarouselSlider({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

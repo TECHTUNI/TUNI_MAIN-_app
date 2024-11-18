@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tuni/presentation/pages/auth/sign_in/login.dart';
 import '../../../bloc/auth_bloc/auth_bloc.dart';
 import '../../../bloc/auth_bloc/auth_repository.dart';
 import '../../bottom_nav/pages/bottom_nav_bar_page.dart';

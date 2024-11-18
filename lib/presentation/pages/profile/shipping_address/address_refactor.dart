@@ -1,6 +1,3 @@
-
-
-
 // import 'dart:async';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
@@ -568,17 +565,14 @@
 //     maxLength: maxLength,
 //   );
 
-
 import 'dart:async';
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:tuni/presentation/pages/auth/sign_in/location/location_auto.dart';
-import 'package:http/http.dart' as http;
+
 import '../../../bloc/address_bloc/address_bloc.dart';
 import 'address_repository.dart';
 
@@ -594,100 +588,96 @@ Widget addNewAddress({
   required TextEditingController cityController,
   required TextEditingController StateController,
   required TextEditingController pincodeController,
-
-}) 
-{
+}) {
   final address = AddressRepository();
   return Scaffold(
-      appBar: AppBar(
-        title: Text('Add New Address'),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.phone),
-                      ),
-                      Text(
-                        'Contact Details',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  Divider(height: 20, thickness: 2),
-                  SizedBox(height: 10),
-                  buildCustomTextField(
-                     controller: nameController,
-                      keyboardType: TextInputType.text,
-                       hintText: 'Full name',
-                  ),
-                  SizedBox(height: 10),
-                  buildCustomTextField(
-                    
-                   
-                     controller: phoneNumberController,
-                     keyboardType: TextInputType.phone,
-                      hintText:  'phone number',
-                  ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Text(
-                      'Receiver will get updates on this number',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ),
-                ],
-              ),
+    appBar: AppBar(
+      title: const Text('Add New Address'),
+    ),
+    body: SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
             ),
-            SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-  // Shipping Details Row
-  Row(
-    children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(Icons.location_pin),
-      ),
-      Text(
-        'Shipping Details',
-        style: TextStyle(fontSize: 18),
-      ),
-    ],
-  ),
-  Divider(height: 20, thickness: 2),
-  
-        SizedBox(height: 10),
-          buildCustomTextField(
-    controller: adressLineController1,
-    hintText: 'Main Address', 
-    keyboardType:  TextInputType.text,
-  ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.phone),
+                    ),
+                    Text(
+                      'Contact Details',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                const Divider(height: 20, thickness: 2),
+                const SizedBox(height: 10),
+                buildCustomTextField(
+                  controller: nameController,
+                  keyboardType: TextInputType.text,
+                  hintText: 'Full name',
+                ),
+                const SizedBox(height: 10),
+                buildCustomTextField(
+                  controller: phoneNumberController,
+                  keyboardType: TextInputType.phone,
+                  hintText: 'phone number',
+                ),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: Text(
+                    'Receiver will get updates on this number',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Shipping Details Row
+                const Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.location_pin),
+                    ),
+                    Text(
+                      'Shipping Details',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                const Divider(height: 20, thickness: 2),
 
-          //LocationAutoComplete(),
-  // Current Live Location Text Field
+                const SizedBox(height: 10),
+                buildCustomTextField(
+                  controller: adressLineController1,
+                  hintText: 'Main Address',
+                  keyboardType: TextInputType.text,
+                ),
+
+                //LocationAutoComplete(),
+                // Current Live Location Text Field
 // Row(
 //   children: [
 //     Padding(
@@ -716,90 +706,85 @@ Widget addNewAddress({
 //   ],
 // ),
 
-  SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-  // Flat/Apartment Details Text Field
-  buildCustomTextField(
-     controller: adressLineController2,
-     hintText: 'Flat/Apartment details',
-     keyboardType: TextInputType.text
-  ),
-  SizedBox(height: 10),
+                // Flat/Apartment Details Text Field
+                buildCustomTextField(
+                    controller: adressLineController2,
+                    hintText: 'Flat/Apartment details',
+                    keyboardType: TextInputType.text),
+                const SizedBox(height: 10),
 
-  // Floor Number Text Field
-  // buildCustomTextField(
-  //   adressLineController2,
-  //   'Floor number',
-  //   TextInputType.text,
-  // ),
-  SizedBox(height: 10),
+                // Floor Number Text Field
+                // buildCustomTextField(
+                //   adressLineController2,
+                //   'Floor number',
+                //   TextInputType.text,
+                // ),
+                const SizedBox(height: 10),
 
-  // Additional Text Fields (City, State, Pin code)
-  buildCustomTextField(
-     controller:  cityController,
-     hintText: 'City',
-      keyboardType: TextInputType.text,
-  ),
-  SizedBox(height: 10),
+                // Additional Text Fields (City, State, Pin code)
+                buildCustomTextField(
+                  controller: cityController,
+                  hintText: 'City',
+                  keyboardType: TextInputType.text,
+                ),
+                const SizedBox(height: 10),
 
-  buildCustomTextField(
-     controller: StateController,
-      hintText: 'State', 
-      keyboardType: TextInputType.text,
-  ),
-  SizedBox(height: 10),
+                buildCustomTextField(
+                  controller: StateController,
+                  hintText: 'State',
+                  keyboardType: TextInputType.text,
+                ),
+                const SizedBox(height: 10),
 
-  buildCustomTextField(
-     controller: pincodeController,
-      hintText: 'pincode', 
-      keyboardType: TextInputType.number,
-      maxLength: 6,
-      isPinCode: true,
-  ),
-  
-],
-
-              ),
+                buildCustomTextField(
+                  controller: pincodeController,
+                  hintText: 'pincode',
+                  keyboardType: TextInputType.number,
+                  maxLength: 6,
+                  isPinCode: true,
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Handle form submission here
-                final validation = validateInputs([
-            nameController,
-            phoneNumberController,
-            adressLineController1,
-            adressLineController2,
-            cityController,
-            StateController,
-            pincodeController,
-          ], context);
-          if (validation == true) {
-            context.read<AddressBloc>().add(
-                  OnAddAddressEvent(
-                    Name: nameController.text,
-                    phone_number: phoneNumberController.text,
-                    city: cityController.text,
-                    Address1: adressLineController1.text,
-                    Address2: adressLineController2.text,
-                    state: StateController.text,
-                    pincode: pincodeController.text,
-                  ),
-                );
-            address.fetchAddressFromFirestore();
-            Navigator.pop(context);
-          }
-              },
-              child: Text('Add Address'),
-            ),
-            
-          ],
-         // LocationAutoComplete(),
-        ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              // Handle form submission here
+              final validation = validateInputs([
+                nameController,
+                phoneNumberController,
+                adressLineController1,
+                adressLineController2,
+                cityController,
+                StateController,
+                pincodeController,
+              ], context);
+              if (validation == true) {
+                context.read<AddressBloc>().add(
+                      OnAddAddressEvent(
+                        Name: nameController.text,
+                        phone_number: phoneNumberController.text,
+                        city: cityController.text,
+                        Address1: adressLineController1.text,
+                        Address2: adressLineController2.text,
+                        state: StateController.text,
+                        pincode: pincodeController.text,
+                      ),
+                    );
+                address.fetchAddressFromFirestore();
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Add Address'),
+          ),
+        ],
+        // LocationAutoComplete(),
       ),
-    );
+    ),
+  );
 }
-
 
 bool validateInputs(List<TextEditingController> controllers,
     [BuildContext? context]) {
@@ -861,14 +846,17 @@ Widget buildCustomTextField({
   // Determine input formatters based on parameters
   if (isPinCode) {
     inputFormatters.add(FilteringTextInputFormatter.digitsOnly);
-    inputFormatters.add(LengthLimitingTextInputFormatter(6)); // Limit pin code to 6 digits
+    inputFormatters
+        .add(LengthLimitingTextInputFormatter(6)); // Limit pin code to 6 digits
   } else if (keyboardType == TextInputType.phone) {
     inputFormatters.add(FilteringTextInputFormatter.digitsOnly);
-    inputFormatters.add(LengthLimitingTextInputFormatter(10)); // Limit phone number to 10 digits
+    inputFormatters.add(LengthLimitingTextInputFormatter(
+        10)); // Limit phone number to 10 digits
   } else if (keyboardType == TextInputType.text && allowSpecialChars) {
     inputFormatters.add(LengthLimitingTextInputFormatter(maxLength));
   } else if (keyboardType == TextInputType.text) {
-    inputFormatters.add(FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')));
+    inputFormatters
+        .add(FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')));
     inputFormatters.add(LengthLimitingTextInputFormatter(maxLength));
   }
 
@@ -881,7 +869,8 @@ Widget buildCustomTextField({
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
           hintText: hintText,
           labelText: hintText,
-          errorText: isPinCode && (controller.text.length != 6 && controller.text.isNotEmpty)
+          errorText: isPinCode &&
+                  (controller.text.length != 6 && controller.text.isNotEmpty)
               ? 'Pin code must be exactly 6 digits'
               : null,
         ),
@@ -890,8 +879,8 @@ Widget buildCustomTextField({
         maxLength: maxLength,
       ),
       if (hintText == 'Phone Number')
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
           child: Text(
             'Receiver will get updates on this number',
             style: TextStyle(fontSize: 12, color: Colors.grey),
@@ -900,6 +889,7 @@ Widget buildCustomTextField({
     ],
   );
 }
+
 // for search location widget
 Widget buildSearchLocationTextField(
   TextEditingController controller,
@@ -910,7 +900,8 @@ Widget buildSearchLocationTextField(
 }) {
   List<TextInputFormatter> inputFormatters = [
     FilteringTextInputFormatter.singleLineFormatter,
-    LengthLimitingTextInputFormatter(maxLength ?? 100), // Default max length if not provided
+    LengthLimitingTextInputFormatter(
+        maxLength ?? 100), // Default max length if not provided
   ];
 
   return TextField(
@@ -924,13 +915,9 @@ Widget buildSearchLocationTextField(
     keyboardType: TextInputType.text,
     inputFormatters: inputFormatters,
     maxLength: maxLength,
-    onChanged: (value) {
-      
-    },
+    onChanged: (value) {},
   );
 }
-
-
 
 void _fetchCurrentLocation() async {
   // Fetching current position
@@ -981,7 +968,7 @@ Future editAddress({
       builder: (BuildContext context) {
         return Dialog(
           backgroundColor: Colors.white, // Set dialog background to white
-          insetPadding: EdgeInsets.all(10),
+          insetPadding: const EdgeInsets.all(10),
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(10.0), // Reduced padding here
@@ -990,7 +977,7 @@ Future editAddress({
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Header with "Edit Address" in bold and big font
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
                       'Edit Address',
@@ -1009,11 +996,11 @@ Future editAddress({
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(color: Colors.grey, width: 1.0),
                     ),
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
+                        const Row(
                           children: [
                             Icon(Icons.phone, size: 20),
                             SizedBox(width: 10),
@@ -1023,14 +1010,14 @@ Future editAddress({
                             ),
                           ],
                         ),
-                        Divider(height: 20, thickness: 2),
-                        SizedBox(height: 10),
+                        const Divider(height: 20, thickness: 2),
+                        const SizedBox(height: 10),
                         buildTextFieldForEditing(
                           controller: nameController,
                           hintText: 'Full Name',
                           keyboardType: TextInputType.text,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         buildTextFieldForEditing(
                           controller: phoneNumberController,
                           hintText: 'Phone Number',
@@ -1039,7 +1026,7 @@ Future editAddress({
                       ],
                     ),
                   ),
-                 SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   // Shipping Details Section
                   Container(
                     decoration: BoxDecoration(
@@ -1047,11 +1034,11 @@ Future editAddress({
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(color: Colors.grey, width: 1.0),
                     ),
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
+                        const Row(
                           children: [
                             Icon(Icons.location_on, size: 20),
                             SizedBox(width: 10),
@@ -1061,34 +1048,34 @@ Future editAddress({
                             ),
                           ],
                         ),
-                        Divider(height: 20, thickness: 2),
-                        SizedBox(height: 10),
+                        const Divider(height: 20, thickness: 2),
+                        const SizedBox(height: 10),
                         buildTextFieldForEditing(
                           controller: adressLineController1,
                           hintText: 'Main Address',
                           keyboardType: TextInputType.text,
                           allowSpecialChars: true,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         buildTextFieldForEditing(
                           controller: adressLineController2,
                           hintText: 'Flat/Apartment Details',
                           keyboardType: TextInputType.text,
                           allowSpecialChars: true,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         buildTextFieldForEditing(
                           controller: cityController,
                           hintText: 'City',
                           keyboardType: TextInputType.text,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         buildTextFieldForEditing(
                           controller: StateController,
                           hintText: 'State',
                           keyboardType: TextInputType.text,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         buildTextFieldForEditing(
                           controller: pincodeController,
                           hintText: 'Pincode',
@@ -1100,7 +1087,7 @@ Future editAddress({
                     ),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Buttons section (Cancel and Update)
                   Row(
@@ -1115,7 +1102,7 @@ Future editAddress({
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       TextButton(
                         onPressed: () async {
                           // Validate inputs before updating
@@ -1143,7 +1130,8 @@ Future editAddress({
                                     pincode: pincodeController.text,
                                   ),
                                 );
-                            Navigator.pop(context); // Close dialog after updating
+                            Navigator.pop(
+                                context); // Close dialog after updating
                           }
                         },
                         child: const Text('Update'),
@@ -1253,12 +1241,13 @@ Widget buildTextFieldForEditing({
     inputFormatters.add(FilteringTextInputFormatter.digitsOnly);
   } else if (keyboardType == TextInputType.phone) {
     inputFormatters.add(FilteringTextInputFormatter.digitsOnly);
-    inputFormatters
-        .add(LengthLimitingTextInputFormatter(10)); // Limit phone number to 10 digits
+    inputFormatters.add(LengthLimitingTextInputFormatter(
+        10)); // Limit phone number to 10 digits
   } else if (keyboardType == TextInputType.text && allowSpecialChars) {
     inputFormatters.add(LengthLimitingTextInputFormatter(maxLength));
   } else if (keyboardType == TextInputType.text) {
-    inputFormatters.add(FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')));
+    inputFormatters
+        .add(FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')));
   }
 
   return Column(
@@ -1281,8 +1270,8 @@ Widget buildTextFieldForEditing({
         maxLength: maxLength,
       ),
       if (hintText == 'Phone Number')
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(10, 4, 0, 0),
           child: Text(
             'Receiver will get updates on this number',
             style: TextStyle(fontSize: 12, color: Colors.grey),

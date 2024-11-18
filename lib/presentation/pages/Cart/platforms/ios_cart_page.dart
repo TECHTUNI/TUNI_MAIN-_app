@@ -8,9 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/model/product_order_model.dart';
 import '../../../bloc/cart_bloc/cart_bloc.dart';
-import '../../auth/sign_in/login.dart';
 import '../../caterory/pages_in_categories/category_all_page.dart';
-import '../checkout/select_address.dart';
 
 class Ios extends StatelessWidget {
   Ios({
@@ -85,7 +83,8 @@ class Ios extends StatelessWidget {
                                       Navigator.push(
                                           context,
                                           CupertinoPageRoute(
-                                            builder: (context) => AllCategory(),
+                                            builder: (context) =>
+                                                const AllCategory(),
                                           ));
                                     })
                           ],
@@ -505,7 +504,7 @@ class Ios extends StatelessWidget {
                                                         context,
                                                         CupertinoPageRoute(
                                                           builder: (context) =>
-                                                              AllCategory(),
+                                                              const AllCategory(),
                                                         ));
                                                   },
                                                   child:

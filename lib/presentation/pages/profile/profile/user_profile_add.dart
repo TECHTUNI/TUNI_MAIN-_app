@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,6 @@ class _UserProfileEditState extends State<UserProfileAdd> {
 
   @override
   Widget build(BuildContext context) {
-    // final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Platform.isAndroid
@@ -83,108 +81,6 @@ class _UserProfileEditState extends State<UserProfileAdd> {
                           controller: mobileNumberController,
                           keyboardType: TextInputType.phone,
                         ),
-                        // buildSizedBox(),
-                        // Container(
-                        //   decoration:
-                        //       BoxDecoration(color: Colors.grey.shade300),
-                        //   padding: const EdgeInsets.only(left: 20),
-                        //   child: Row(
-                        //     children: [
-                        //       BlocBuilder<UserProfileBloc, UserProfileState>(
-                        //         builder: (context, state) {
-                        //           if (state is GenderSelectedState) {
-                        //             gender = state.gender;
-                        //           }
-                        //           return DropdownButton(
-                        //               icon: const Icon(
-                        //                   Icons.arrow_drop_down_outlined),
-                        //               hint: const Text("Select Gender"),
-                        //               value: gender,
-                        //               items: items.map((String items) {
-                        //                 return DropdownMenuItem(
-                        //                   value: items,
-                        //                   child: Text(items),
-                        //                 );
-                        //               }).toList(),
-                        //               onChanged: (value) {
-                        //                 context.read<UserProfileBloc>().add(
-                        //                     OnSelectGenderEvent(gender: value));
-                        //               });
-                        //         },
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // buildSizedBox(),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     const SizedBox(
-                        //       width: 0,
-                        //     ),
-                        //     BlocBuilder<UserProfileBloc, UserProfileState>(
-                        //       builder: (context, state) {
-                        //         if (state is DateOfBirthSelectedState) {
-                        //           dd = state.selectedDate.day;
-                        //           mm = state.selectedDate.month;
-                        //           yyyy = state.selectedDate.year;
-                        //         }
-                        //         return Row(
-                        //           children: [
-                        //             Container(
-                        //               width: 60,
-                        //               height: 45,
-                        //               decoration: BoxDecoration(
-                        //                   color: Colors.grey.shade300,
-                        //                   borderRadius:
-                        //                       BorderRadius.circular(10)),
-                        //               child: Center(
-                        //                   child: Text(dd?.toString() ?? "dd")),
-                        //             ),
-                        //             Padding(
-                        //               padding: const EdgeInsets.symmetric(
-                        //                   horizontal: 10),
-                        //               child: Container(
-                        //                 width: 60,
-                        //                 height: 45,
-                        //                 decoration: BoxDecoration(
-                        //                     color: Colors.grey.shade300,
-                        //                     borderRadius:
-                        //                         BorderRadius.circular(10)),
-                        //                 child: Center(
-                        //                     child:
-                        //                         Text(mm?.toString() ?? "mm")),
-                        //               ),
-                        //             ),
-                        //             Container(
-                        //               width: 80,
-                        //               height: 45,
-                        //               decoration: BoxDecoration(
-                        //                   color: Colors.grey.shade300,
-                        //                   borderRadius:
-                        //                       BorderRadius.circular(10)),
-                        //               child: Center(
-                        //                   child:
-                        //                       Text(yyyy?.toString() ?? "yyyy")),
-                        //             ),
-                        //           ],
-                        //         );
-                        //       },
-                        //     ),
-                        //     IconButton(
-                        //         onPressed: () {
-                        //           context
-                        //               .read<UserProfileBloc>()
-                        //               .add(OnCalenderIconClickedEvent(
-                        //                 context: context,
-                        //               ));
-                        //         },
-                        //         icon: const Icon(Icons.date_range)),
-                        //     const SizedBox(
-                        //       width: 10,
-                        //     ),
-                        //   ],
-                        // ),
                         const SizedBox(height: 30),
                         SizedBox(
                           width: screenWidth * .5,
@@ -200,58 +96,21 @@ class _UserProfileEditState extends State<UserProfileAdd> {
                               onPressed: () {
                                 if (validateInputsforEditprofile([
                                   firstNameController,
-                                    mobileNumberController,
-                                    lastNameController
-                                ],context)
-                                ) {
-                                  context.read<UserProfileBloc>().add(
-                                      OnAddUserDetailsEvent(
-                                          firstName: firstNameController.text,
-                                          lastName: lastNameController.text,
-                                          number: mobileNumberController.text,
-                                          // gender: gender!,
-                                          // day: dd,
-                                          // month: mm,
-                                          // year: yyyy
+                                  mobileNumberController,
+                                  lastNameController
+                                ], context)) {
+                                  context
+                                      .read<UserProfileBloc>()
+                                      .add(OnAddUserDetailsEvent(
+                                        firstName: firstNameController.text,
+                                        lastName: lastNameController.text,
+                                        number: mobileNumberController.text,
+                                        // gender: gender!,
+                                        // day: dd,
+                                        // month: mm,
+                                        // year: yyyy
                                       ));
                                 }
-                                // else {
-                                //   if (gender != "select a value") {
-                                //     showDialog(
-                                //       context: context,
-                                //       builder: (context) {
-                                //         return AlertDialog(
-                                //           content: const Text(
-                                //               "Please select your gender!"),
-                                //           actions: [
-                                //             TextButton(
-                                //                 onPressed: () {
-                                //                   Navigator.pop(context);
-                                //                 },
-                                //                 child: const Text("OK"))
-                                //           ],
-                                //         );
-                                //       },
-                                //     );
-                                //   } else {
-                                //     showDialog(
-                                //       context: context,
-                                //       builder: (context) {
-                                //         return AlertDialog(
-                                //           content: const Text(
-                                //               "Mandatory fields can't be empty!"),
-                                //           actions: [
-                                //             TextButton(
-                                //                 onPressed: () {
-                                //                   Navigator.pop(context);
-                                //                 },
-                                //                 child: const Text("OK"))
-                                //           ],
-                                //         );
-                                //       },
-                                //     );
-                                //   }
-                                // }
                               },
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -298,98 +157,34 @@ class _UserProfileEditState extends State<UserProfileAdd> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  // BlocBuilder<UserProfileBloc, UserProfileState>(
-                  //   builder: (context, state) {
-                  //     String? gender;
-                  //
-                  //     if (state is GenderSelectedState) {
-                  //       gender = state.gender;
-                  //     }
-                  //
-                  //     final List<String> items = [
-                  //       'Male',
-                  //       'Female',
-                  //     ]; // Example items
-                  //
-                  //     return CupertinoDropdownButton<String>(
-                  //       value: gender,
-                  //       items: items,
-                  //       onChanged: (value) {
-                  //         context.read<UserProfileBloc>().add(
-                  //               OnSelectGenderEvent(gender: value),
-                  //             );
-                  //       },
-                  //     );
-                  //   },
-                  // ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     const SizedBox(
-                  //       width: 0,
-                  //     ),
-                  //     const Text("DOB:"),
-                  //     Text(
-                  //       '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}',
-                  //       style: const TextStyle(fontSize: 18),
-                  //     ),
-                  //     CupertinoButton(
-                  //       onPressed: () {
-                  //         showCupertinoModalPopup(
-                  //           context: context,
-                  //           builder: (BuildContext context) {
-                  //             return Container(
-                  //               height: 200,
-                  //               child: CupertinoDatePicker(
-                  //                 mode: CupertinoDatePickerMode.date,
-                  //                 initialDateTime: selectedDate,
-                  //                 onDateTimeChanged: (DateTime newDate) {
-                  //                   setState(() {
-                  //                     selectedDate = newDate;
-                  //                   });
-                  //                 },
-                  //               ),
-                  //             );
-                  //           },
-                  //         );
-                  //       },
-                  //       child: const Text(
-                  //         'Select Date',
-                  //         style: TextStyle(color: CupertinoColors.activeBlue),
-                  //       ),
-                  //     ),
-                  //     const SizedBox(
-                  //       width: 10,
-                  //     ),
-                  //   ],
-                  // ),
-                  // const Spacer(),
                   CupertinoButton.filled(
                     child: const Text("Add"),
                     onPressed: () {
                       if (firstNameController.text.isNotEmpty &&
-                          mobileNumberController.text.isNotEmpty &&
-                          lastNameController.text.isNotEmpty
+                              mobileNumberController.text.isNotEmpty &&
+                              lastNameController.text.isNotEmpty
                           // selectedDate.day != null &&
                           // selectedDate.month != null &&
                           // selectedDate.year != null
-                      ) {
-                        context.read<UserProfileBloc>().add(
-                            OnAddUserDetailsEvent(
-                                firstName: firstNameController.text,
-                                lastName: lastNameController.text,
-                                number: mobileNumberController.text,
-                                // gender: gender!,
-                                // day: selectedDate.day,
-                                // month: selectedDate.month,
-                                // year: selectedDate.year
+                          ) {
+                        context
+                            .read<UserProfileBloc>()
+                            .add(OnAddUserDetailsEvent(
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              number: mobileNumberController.text,
+                              // gender: gender!,
+                              // day: selectedDate.day,
+                              // month: selectedDate.month,
+                              // year: selectedDate.year
                             ));
                       } else {
                         showCupertinoDialog(
                           context: context,
                           builder: (context) {
                             return CupertinoAlertDialog(
-                              title: const Text("Please add your details properly"),
+                              title: const Text(
+                                  "Please add your details properly"),
                               actions: [
                                 CupertinoDialogAction(
                                     onPressed: () {
@@ -439,8 +234,6 @@ class CupertinoDropdownButton<T> extends StatefulWidget {
 
 class _CupertinoDropdownButtonState<T>
     extends State<CupertinoDropdownButton<T>> {
-  late int? _selectedIndex;
-
   @override
   void initState() {
     super.initState();
@@ -457,18 +250,16 @@ class _CupertinoDropdownButtonState<T>
             return SizedBox(
               height: 200,
               child: CupertinoPicker(
-                scrollController:
-                FixedExtentScrollController(initialItem: 0),
+                scrollController: FixedExtentScrollController(initialItem: 0),
                 itemExtent: 40,
                 onSelectedItemChanged: (int index) {
                   setState(() {
-                    _selectedIndex = index;
                     widget.onChanged(widget.items[index]);
                   });
                 },
                 children: List<Widget>.generate(
                   widget.items.length,
-                      (int index) {
+                  (int index) {
                     return Center(
                       child: Text(
                         widget.items[index].toString(),
@@ -492,9 +283,9 @@ class _CupertinoDropdownButtonState<T>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(""
-              // widget.items[_selectedIndex].toString(),
-              // style: const TextStyle(fontSize: 18),
-            ),
+                // widget.items[_selectedIndex].toString(),
+                // style: const TextStyle(fontSize: 18),
+                ),
             Icon(
               CupertinoIcons.chevron_down,
               size: 24,
@@ -507,7 +298,8 @@ class _CupertinoDropdownButtonState<T>
   }
 }
 
-bool validateInputsforEditprofile(List<TextEditingController> controllers, [BuildContext? context]) {
+bool validateInputsforEditprofile(List<TextEditingController> controllers,
+    [BuildContext? context]) {
   // Regular expression for letters only
   RegExp lettersOnly = RegExp(r'^[a-zA-Z]+$');
 
@@ -526,22 +318,16 @@ bool validateInputsforEditprofile(List<TextEditingController> controllers, [Buil
   }
 
   // Check if last name contains only letters
- if (!lettersOnly.hasMatch(controllers[1].text)) {
-  _showErrorDialog(context, 'Last name must contain only letters.');
-  return false;
-}
+  if (!lettersOnly.hasMatch(controllers[1].text)) {
+    _showErrorDialog(context, 'Last name must contain only letters.');
+    return false;
+  }
 
   // Check mobile number length and if it contains only digits
   if (controllers[2].text.length != 10 || !isNumeric(controllers[2].text)) {
     _showErrorDialog(context, 'Mobile number must be exactly 10 digits.');
     return false;
   }
-
-  // Check pin code length
-  // if (controllers.last.text.length != 6) {
-  //   _showErrorDialog(context, 'Pin code must be exactly 6 digits.');
-  //   return false;
-  // }
 
   return true;
 }
@@ -574,4 +360,3 @@ void _showErrorDialog(BuildContext? context, String errorMessage) {
     );
   }
 }
-

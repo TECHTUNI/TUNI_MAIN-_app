@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tuni/presentation/pages/auth/sign_in/login_refactor.dart';
 import 'package:tuni/presentation/pages/bottom_nav/pages/bottom_nav_bar_page.dart';
 
 class OtpVerificationPage extends StatefulWidget {

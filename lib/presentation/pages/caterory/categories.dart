@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tuni/core/model/product_category_model.dart';
 import 'package:tuni/presentation/pages/caterory/platforms/android_category_refactor.dart';
 import 'package:tuni/presentation/pages/caterory/platforms/ios_category_refactor.dart';
 
@@ -15,9 +14,8 @@ class Categories extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     //final List<ProductCategory> productList;
     return Platform.isAndroid
-        ? AndroidCategoryPage(screenWidth: screenWidth, screenHeight: screenHeight)
+        ? AndroidCategoryPage(
+            screenWidth: screenWidth, screenHeight: screenHeight)
         : IosCategoryPage(screenWidth: screenWidth, screenHeight: screenHeight);
   }
 }
-
-

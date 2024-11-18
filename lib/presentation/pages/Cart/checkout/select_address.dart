@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tuni/core/model/cart_model.dart';
 
-import '../../../../../../core/model/product_order_model.dart';
 import '../../profile/shipping_address/address_refactor.dart';
 import 'checkout_page.dart';
 

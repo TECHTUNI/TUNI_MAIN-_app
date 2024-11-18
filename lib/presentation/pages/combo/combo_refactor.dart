@@ -23,6 +23,7 @@ void _showWarning(BuildContext context) {
 }
 
 class ComboAddedItems extends StatelessWidget {
+  // ignore: use_super_parameters
   const ComboAddedItems({
     Key? key,
     required this.title,
@@ -38,12 +39,12 @@ class ComboAddedItems extends StatelessWidget {
         ? RichText(
             text: TextSpan(children: [
             title == "Size"
-                ? TextSpan()
+                ? const TextSpan()
                 : TextSpan(
                     text: "$title: ",
                     style: const TextStyle(color: Colors.black)),
             title == "Size"
-                ? TextSpan()
+                ? const TextSpan()
                 : TextSpan(
                     text: text,
                     style: const TextStyle(
@@ -68,6 +69,7 @@ class ComboAddedItems extends StatelessWidget {
 class VideoWidget extends StatelessWidget {
   final String url;
 
+  // ignore: use_super_parameters
   const VideoWidget({
     Key? key,
     required this.url,
@@ -82,7 +84,7 @@ class VideoWidget extends StatelessWidget {
 class VideoPlayerWidget extends StatefulWidget {
   final String url;
 
-  const VideoPlayerWidget({Key? key, required this.url}) : super(key: key);
+  const VideoPlayerWidget({super.key, required this.url});
 
   @override
   VideoPlayerWidgetState createState() => VideoPlayerWidgetState();
@@ -107,7 +109,7 @@ class VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             aspectRatio: _controller.value.aspectRatio,
             child: VideoPlayer(_controller),
           )
-        : Center(child: CircularProgressIndicator());
+        : const Center(child: CircularProgressIndicator());
   }
 
   @override
