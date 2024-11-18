@@ -18,7 +18,7 @@ class AddressProvider extends ChangeNotifier {
         final userId = currentUser.uid;
         final String id = DateTime.now().millisecondsSinceEpoch.toString();
         CollectionReference collectionReference = FirebaseFirestore.instance
-            .collection('users')
+            .collection('user')
             .doc(userId)
             .collection('address');
         await collectionReference.doc(id).set({
@@ -75,7 +75,7 @@ class AddressProvider extends ChangeNotifier {
   static Future<void> fetchAddress() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final snapshot = await FirebaseFirestore.instance
-        .collection("users")
+        .collection("user")
         .doc(userId)
         .collection("address")
         .get();
